@@ -72,7 +72,14 @@
 
 
 Cexif::Cexif()
+	:m_exifinfo(NULL)
+	,ExifImageWidth(0)
+	,MotorolaOrder(0)
+	,SectionsRead(0)
+	,freeinfo(false)
 {
+	memset(m_szLastError, 0, sizeof(m_szLastError));
+	memset(Sections, 0, sizeof(Sections));
 }
 
 Cexif::~Cexif()
