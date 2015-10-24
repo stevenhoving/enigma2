@@ -3513,18 +3513,20 @@ struct date_time
 {
 	uint8_t data[5];
 	time_t tm;
-	date_time( const date_time &a )
+	date_time(const date_time &a)
 	{
 		memcpy(data, a.data, 5);
 		tm = a.tm;
 	}
-	date_time( const uint8_t data[5])
+	date_time(const uint8_t data[5])
 	{
 		memcpy(this->data, data, 5);
 		tm = parseDVBtime(data);
 	}
 	date_time()
 	{
+		memset(data, 0, sizeof(data));
+		tm = NULL;
 	}
 	const uint8_t& operator[](int pos) const
 	{
