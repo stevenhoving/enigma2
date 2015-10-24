@@ -37,7 +37,7 @@ struct DescriptorPair
 	int reference_count;
 	__u8* data;
 
-	DescriptorPair() {}
+	DescriptorPair(): reference_count(0), data(NULL) {}
 	DescriptorPair(int c, __u8* d): reference_count(c), data(d) {}
 };
 
