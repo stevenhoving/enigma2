@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openpli", "openpli\openpli.vcxproj", "{3CB8644B-8543-43E0-B86C-FC84D67A1E16}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{3CB8644B-8543-43E0-B86C-FC84D67A1E16}.Debug|Win32.ActiveCfg = Debug|Win32
+		{3CB8644B-8543-43E0-B86C-FC84D67A1E16}.Debug|Win32.Build.0 = Debug|Win32
+		{3CB8644B-8543-43E0-B86C-FC84D67A1E16}.Release|Win32.ActiveCfg = Release|Win32
+		{3CB8644B-8543-43E0-B86C-FC84D67A1E16}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

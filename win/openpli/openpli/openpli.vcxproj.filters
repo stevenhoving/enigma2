@@ -1,0 +1,957 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{8c098166-5676-4b7b-a644-5ae9033f49ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\actions">
+      <UniqueIdentifier>{42f293b0-ef74-4cb7-80a5-da39e753123f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\base">
+      <UniqueIdentifier>{f08884af-3947-4205-8b77-51ead5d0acde}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\components">
+      <UniqueIdentifier>{7638fc8b-5f46-4f3d-8d45-7e982ac075f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\driver">
+      <UniqueIdentifier>{e4d7dddd-09a2-4e8d-bb3b-ac84e4aef7a2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\dvb">
+      <UniqueIdentifier>{397a8907-1859-42cc-a88d-3ebabd1e9451}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\dvb\lowlevel">
+      <UniqueIdentifier>{9db5fe8c-7442-4dff-bc1d-e98f6de57a05}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\dvb_ci">
+      <UniqueIdentifier>{c2bbca82-3958-4be4-aa4e-6d95fc3f6747}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\gdi">
+      <UniqueIdentifier>{b9549b5a-3ef2-4bb7-b409-0c827ebf98c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\gui">
+      <UniqueIdentifier>{a12d1c92-e265-4bfa-afb1-758676331ada}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\mmi">
+      <UniqueIdentifier>{106156f1-c7c9-4dcf-93bd-bb3f48d77150}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\nav">
+      <UniqueIdentifier>{f4cfdee4-495c-469e-841c-36beb726adcd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\network">
+      <UniqueIdentifier>{ffaa6244-7c1a-42bc-854c-94a956a883cd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\service">
+      <UniqueIdentifier>{829eaf36-086b-4a3b-80eb-37635f1dc06e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\main">
+      <UniqueIdentifier>{91b9de65-8b7d-4124-a9c6-4b374c2f8659}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\python">
+      <UniqueIdentifier>{2bd8e15c-aa0a-4ce1-a3fb-612ce6f4f3d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{9b1fd6b8-9265-4ae8-99a3-491fc134e05c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\lib\actions\action.h">
+      <Filter>src\actions</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\benchmark.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\buffer.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\cachedtssource.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\cfile.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\console.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\ebase.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\eenv.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\eerror.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\elock.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\encoding.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\eptrlist.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\estring.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\etpm.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\filepush.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\freesatv2.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\httpstream.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\i18n.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\init.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\init_num.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\ioprio.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\itssource.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\message.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\nconfig.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\object.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\rawfile.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\ringbuffer.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\smartptr.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\thread.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\base\wrappers.h">
+      <Filter>src\base</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\components\tuxtxtapp.h">
+      <Filter>src\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\components\file_eraser.h">
+      <Filter>src\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\components\scan.h">
+      <Filter>src\components</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\driver\avswitch.h">
+      <Filter>src\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\driver\etimezone.h">
+      <Filter>src\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\driver\hdmi_cec.h">
+      <Filter>src\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\driver\input_fake.h">
+      <Filter>src\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\driver\misc_options.h">
+      <Filter>src\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\driver\rc.h">
+      <Filter>src\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\driver\rcconsole.h">
+      <Filter>src\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\driver\rcdbox.h">
+      <Filter>src\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\driver\rcdreambox2.h">
+      <Filter>src\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\driver\rcinput.h">
+      <Filter>src\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\driver\rcinput_swig.h">
+      <Filter>src\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\driver\rcsdl.h">
+      <Filter>src\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\driver\rfmod.h">
+      <Filter>src\driver</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\cablescan.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\cahandler.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\crc32.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\db.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\decoder.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\demux.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\dvb.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\dvbtime.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\eit.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\encoder.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\epgcache.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\esection.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\fastscan.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\frontend.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\frontendparms.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\idemux.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\idvb.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\isection.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\list.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\metaparser.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\pesparse.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\pmt.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\pmtparse.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\pvrparse.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\radiotext.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\rotor_calc.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\scan.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\sec.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\specs.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\streamserver.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\subtitle.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\teletext.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\tstools.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\volume.h">
+      <Filter>src\dvb</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\lowlevel\mhw.h">
+      <Filter>src\dvb\lowlevel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb\lowlevel\eit.h">
+      <Filter>src\dvb\lowlevel</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb_ci\dvbci_datetimemgr.h">
+      <Filter>src\dvb_ci</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb_ci\dvbci_mmi.h">
+      <Filter>src\dvb_ci</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb_ci\dvbci_resmgr.h">
+      <Filter>src\dvb_ci</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb_ci\dvbci_session.h">
+      <Filter>src\dvb_ci</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb_ci\dvbci_ui.h">
+      <Filter>src\dvb_ci</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb_ci\dvbci.h">
+      <Filter>src\dvb_ci</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb_ci\dvbci_appmgr.h">
+      <Filter>src\dvb_ci</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\dvb_ci\dvbci_camgr.h">
+      <Filter>src\dvb_ci</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\grc.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\lcd.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\picexif.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\picload.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\region.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\sdl.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\accel.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\compositing.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\epng.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\epoint.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\erect.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\esize.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\fb.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\font.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\gfbdc.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\gfont.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\glcddc.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\gmaindc.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gdi\gpixmap.h">
+      <Filter>src\gdi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\ewindowstyle.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\ewindowstyleskinned.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\ebutton.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\ecanvas.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\einput.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\einputnumber.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\einputstring.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\elabel.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\elistbox.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\elistboxcontent.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\epixmap.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\epositiongauge.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\eslider.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\esubtitle.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\evideo.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\ewidget.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\ewidgetanimation.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\ewidgetdesktop.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\gui\ewindow.h">
+      <Filter>src\gui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\mmi\mmi_ui.h">
+      <Filter>src\mmi</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\nav\pcore.h">
+      <Filter>src\nav</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\nav\core.h">
+      <Filter>src\nav</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\network\socket.h">
+      <Filter>src\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\network\xmlrpc.h">
+      <Filter>src\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\network\serversocket.h">
+      <Filter>src\network</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\service\event.h">
+      <Filter>src\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\service\iservice.h">
+      <Filter>src\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\service\listboxservice.h">
+      <Filter>src\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\service\service.h">
+      <Filter>src\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\service\servicedvb.h">
+      <Filter>src\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\service\servicedvbrecord.h">
+      <Filter>src\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\service\servicedvbstream.h">
+      <Filter>src\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\service\servicedvd.h">
+      <Filter>src\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\service\servicefs.h">
+      <Filter>src\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\service\servicehdmi.h">
+      <Filter>src\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\service\servicem2ts.h">
+      <Filter>src\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\service\servicemp3.h">
+      <Filter>src\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\service\servicexine.h">
+      <Filter>src\service</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\main\version_info.h">
+      <Filter>src\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\main\xmlgenerator.h">
+      <Filter>src\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\main\bsod.h">
+      <Filter>src\main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\python\swig.h">
+      <Filter>src\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\python\pythonconfig.h">
+      <Filter>src\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\python\connections.h">
+      <Filter>src\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\python\python.h">
+      <Filter>src\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\lib\python\python_helpers.h">
+      <Filter>src\python</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\connection.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\include\libsig_comp.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\lib\actions\action.cpp">
+      <Filter>src\actions</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\wrappers.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\buffer.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\cachedtssource.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\cfile.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\connection.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\console.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\ebase.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\eerror.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\elock.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\encoding.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\estring.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\etpm.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\filepush.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\freesatv2.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\httpstream.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\init.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\ioprio.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\message.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\nconfig.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\rawfile.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\smartptr.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\base\thread.cpp">
+      <Filter>src\base</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\components\file_eraser.cpp">
+      <Filter>src\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\components\scan.cpp">
+      <Filter>src\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\components\tuxtxtapp.cpp">
+      <Filter>src\components</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\driver\hdmi_cec.cpp">
+      <Filter>src\driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\driver\misc_options.cpp">
+      <Filter>src\driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\driver\rc.cpp">
+      <Filter>src\driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\driver\rcconsole.cpp">
+      <Filter>src\driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\driver\rcdreambox2.cpp">
+      <Filter>src\driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\driver\rcinput.cpp">
+      <Filter>src\driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\driver\rcsdl.cpp">
+      <Filter>src\driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\driver\rfmod.cpp">
+      <Filter>src\driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\driver\avswitch.cpp">
+      <Filter>src\driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\driver\etimezone.cpp">
+      <Filter>src\driver</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\volume.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\cablescan.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\cahandler.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\crc32.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\db.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\decoder.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\demux.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\dvb.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\dvbtime.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\eit.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\encoder.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\epgcache.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\esection.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\fastscan.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\frontend.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\frontendparms.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\metaparser.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\pesparse.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\pmt.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\pmtparse.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\pvrparse.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\radiotext.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\rotor_calc.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\scan.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\sec.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\streamserver.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\subtitle.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\teletext.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb\tstools.cpp">
+      <Filter>src\dvb</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb_ci\dvbci_mmi.cpp">
+      <Filter>src\dvb_ci</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb_ci\dvbci_resmgr.cpp">
+      <Filter>src\dvb_ci</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb_ci\dvbci_session.cpp">
+      <Filter>src\dvb_ci</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb_ci\dvbci_ui.cpp">
+      <Filter>src\dvb_ci</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb_ci\dvbci.cpp">
+      <Filter>src\dvb_ci</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb_ci\dvbci_appmgr.cpp">
+      <Filter>src\dvb_ci</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb_ci\dvbci_camgr.cpp">
+      <Filter>src\dvb_ci</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\dvb_ci\dvbci_datetimemgr.cpp">
+      <Filter>src\dvb_ci</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\grc.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\lcd.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\picexif.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\picload.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\region.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\sdl.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\accel.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\bcm.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\compositing.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\epng.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\erect.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\fb.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\font.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\font_arabic.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\gfbdc.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\gfont.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\glcddc.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\gmaindc.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gdi\gpixmap.cpp">
+      <Filter>src\gdi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\ewindowstyleskinned.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\ebutton.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\ecanvas.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\einput.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\einputnumber.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\einputstring.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\elabel.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\elistbox.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\elistboxcontent.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\epixmap.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\epositiongauge.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\eslider.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\esubtitle.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\evideo.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\ewidget.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\ewidgetanimation.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\ewidgetdesktop.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\ewindow.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\gui\ewindowstyle.cpp">
+      <Filter>src\gui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\mmi\mmi_ui.cpp">
+      <Filter>src\mmi</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\nav\pcore.cpp">
+      <Filter>src\nav</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\nav\core.cpp">
+      <Filter>src\nav</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\network\socket.cpp">
+      <Filter>src\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\network\xmlrpc.cpp">
+      <Filter>src\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\network\serversocket.cpp">
+      <Filter>src\network</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\service\servicem2ts.cpp">
+      <Filter>src\service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\service\servicemp3.cpp">
+      <Filter>src\service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\service\servicexine.cpp">
+      <Filter>src\service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\service\event.cpp">
+      <Filter>src\service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\service\listboxservice.cpp">
+      <Filter>src\service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\service\service.cpp">
+      <Filter>src\service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\service\servicedvb.cpp">
+      <Filter>src\service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\service\servicedvbrecord.cpp">
+      <Filter>src\service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\service\servicedvbstream.cpp">
+      <Filter>src\service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\service\servicedvd.cpp">
+      <Filter>src\service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\service\servicefs.cpp">
+      <Filter>src\service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\service\servicehdmi.cpp">
+      <Filter>src\service</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\main\enigma-playlist.cpp">
+      <Filter>src\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\main\enigma-scan.cpp">
+      <Filter>src\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\main\version_info.cpp">
+      <Filter>src\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\main\xmlgenerator.cpp">
+      <Filter>src\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\main\bsod.cpp">
+      <Filter>src\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\main\enigma.cpp">
+      <Filter>src\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\main\enigma-dvbtest.cpp">
+      <Filter>src\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\main\enigma-gdi.cpp">
+      <Filter>src\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\main\enigma-gui.cpp">
+      <Filter>src\main</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\python\connections.cpp">
+      <Filter>src\python</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\python\python.cpp">
+      <Filter>src\python</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\python\python_helpers.cpp">
+      <Filter>src\python</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\lib\python\pythonconfig.cpp">
+      <Filter>src\python</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,371 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\include\connection.h" />
+    <ClInclude Include="..\..\..\include\libsig_comp.h" />
+    <ClInclude Include="..\..\..\lib\actions\action.h" />
+    <ClInclude Include="..\..\..\lib\base\benchmark.h" />
+    <ClInclude Include="..\..\..\lib\base\buffer.h" />
+    <ClInclude Include="..\..\..\lib\base\cachedtssource.h" />
+    <ClInclude Include="..\..\..\lib\base\cfile.h" />
+    <ClInclude Include="..\..\..\lib\base\console.h" />
+    <ClInclude Include="..\..\..\lib\base\ebase.h" />
+    <ClInclude Include="..\..\..\lib\base\eenv.h" />
+    <ClInclude Include="..\..\..\lib\base\eerror.h" />
+    <ClInclude Include="..\..\..\lib\base\elock.h" />
+    <ClInclude Include="..\..\..\lib\base\encoding.h" />
+    <ClInclude Include="..\..\..\lib\base\eptrlist.h" />
+    <ClInclude Include="..\..\..\lib\base\estring.h" />
+    <ClInclude Include="..\..\..\lib\base\etpm.h" />
+    <ClInclude Include="..\..\..\lib\base\filepush.h" />
+    <ClInclude Include="..\..\..\lib\base\freesatv2.h" />
+    <ClInclude Include="..\..\..\lib\base\httpstream.h" />
+    <ClInclude Include="..\..\..\lib\base\i18n.h" />
+    <ClInclude Include="..\..\..\lib\base\init.h" />
+    <ClInclude Include="..\..\..\lib\base\init_num.h" />
+    <ClInclude Include="..\..\..\lib\base\ioprio.h" />
+    <ClInclude Include="..\..\..\lib\base\itssource.h" />
+    <ClInclude Include="..\..\..\lib\base\message.h" />
+    <ClInclude Include="..\..\..\lib\base\nconfig.h" />
+    <ClInclude Include="..\..\..\lib\base\object.h" />
+    <ClInclude Include="..\..\..\lib\base\rawfile.h" />
+    <ClInclude Include="..\..\..\lib\base\ringbuffer.h" />
+    <ClInclude Include="..\..\..\lib\base\smartptr.h" />
+    <ClInclude Include="..\..\..\lib\base\thread.h" />
+    <ClInclude Include="..\..\..\lib\base\wrappers.h" />
+    <ClInclude Include="..\..\..\lib\components\file_eraser.h" />
+    <ClInclude Include="..\..\..\lib\components\scan.h" />
+    <ClInclude Include="..\..\..\lib\components\tuxtxtapp.h" />
+    <ClInclude Include="..\..\..\lib\driver\avswitch.h" />
+    <ClInclude Include="..\..\..\lib\driver\etimezone.h" />
+    <ClInclude Include="..\..\..\lib\driver\hdmi_cec.h" />
+    <ClInclude Include="..\..\..\lib\driver\input_fake.h" />
+    <ClInclude Include="..\..\..\lib\driver\misc_options.h" />
+    <ClInclude Include="..\..\..\lib\driver\rc.h" />
+    <ClInclude Include="..\..\..\lib\driver\rcconsole.h" />
+    <ClInclude Include="..\..\..\lib\driver\rcdbox.h" />
+    <ClInclude Include="..\..\..\lib\driver\rcdreambox2.h" />
+    <ClInclude Include="..\..\..\lib\driver\rcinput.h" />
+    <ClInclude Include="..\..\..\lib\driver\rcinput_swig.h" />
+    <ClInclude Include="..\..\..\lib\driver\rcsdl.h" />
+    <ClInclude Include="..\..\..\lib\driver\rfmod.h" />
+    <ClInclude Include="..\..\..\lib\dvb\cablescan.h" />
+    <ClInclude Include="..\..\..\lib\dvb\cahandler.h" />
+    <ClInclude Include="..\..\..\lib\dvb\crc32.h" />
+    <ClInclude Include="..\..\..\lib\dvb\db.h" />
+    <ClInclude Include="..\..\..\lib\dvb\decoder.h" />
+    <ClInclude Include="..\..\..\lib\dvb\demux.h" />
+    <ClInclude Include="..\..\..\lib\dvb\dvb.h" />
+    <ClInclude Include="..\..\..\lib\dvb\dvbtime.h" />
+    <ClInclude Include="..\..\..\lib\dvb\eit.h" />
+    <ClInclude Include="..\..\..\lib\dvb\encoder.h" />
+    <ClInclude Include="..\..\..\lib\dvb\epgcache.h" />
+    <ClInclude Include="..\..\..\lib\dvb\esection.h" />
+    <ClInclude Include="..\..\..\lib\dvb\fastscan.h" />
+    <ClInclude Include="..\..\..\lib\dvb\frontend.h" />
+    <ClInclude Include="..\..\..\lib\dvb\frontendparms.h" />
+    <ClInclude Include="..\..\..\lib\dvb\idemux.h" />
+    <ClInclude Include="..\..\..\lib\dvb\idvb.h" />
+    <ClInclude Include="..\..\..\lib\dvb\isection.h" />
+    <ClInclude Include="..\..\..\lib\dvb\list.h" />
+    <ClInclude Include="..\..\..\lib\dvb\lowlevel\eit.h" />
+    <ClInclude Include="..\..\..\lib\dvb\lowlevel\mhw.h" />
+    <ClInclude Include="..\..\..\lib\dvb\metaparser.h" />
+    <ClInclude Include="..\..\..\lib\dvb\pesparse.h" />
+    <ClInclude Include="..\..\..\lib\dvb\pmt.h" />
+    <ClInclude Include="..\..\..\lib\dvb\pmtparse.h" />
+    <ClInclude Include="..\..\..\lib\dvb\pvrparse.h" />
+    <ClInclude Include="..\..\..\lib\dvb\radiotext.h" />
+    <ClInclude Include="..\..\..\lib\dvb\rotor_calc.h" />
+    <ClInclude Include="..\..\..\lib\dvb\scan.h" />
+    <ClInclude Include="..\..\..\lib\dvb\sec.h" />
+    <ClInclude Include="..\..\..\lib\dvb\specs.h" />
+    <ClInclude Include="..\..\..\lib\dvb\streamserver.h" />
+    <ClInclude Include="..\..\..\lib\dvb\subtitle.h" />
+    <ClInclude Include="..\..\..\lib\dvb\teletext.h" />
+    <ClInclude Include="..\..\..\lib\dvb\tstools.h" />
+    <ClInclude Include="..\..\..\lib\dvb\volume.h" />
+    <ClInclude Include="..\..\..\lib\dvb_ci\dvbci.h" />
+    <ClInclude Include="..\..\..\lib\dvb_ci\dvbci_appmgr.h" />
+    <ClInclude Include="..\..\..\lib\dvb_ci\dvbci_camgr.h" />
+    <ClInclude Include="..\..\..\lib\dvb_ci\dvbci_datetimemgr.h" />
+    <ClInclude Include="..\..\..\lib\dvb_ci\dvbci_mmi.h" />
+    <ClInclude Include="..\..\..\lib\dvb_ci\dvbci_resmgr.h" />
+    <ClInclude Include="..\..\..\lib\dvb_ci\dvbci_session.h" />
+    <ClInclude Include="..\..\..\lib\dvb_ci\dvbci_ui.h" />
+    <ClInclude Include="..\..\..\lib\gdi\accel.h" />
+    <ClInclude Include="..\..\..\lib\gdi\compositing.h" />
+    <ClInclude Include="..\..\..\lib\gdi\epng.h" />
+    <ClInclude Include="..\..\..\lib\gdi\epoint.h" />
+    <ClInclude Include="..\..\..\lib\gdi\erect.h" />
+    <ClInclude Include="..\..\..\lib\gdi\esize.h" />
+    <ClInclude Include="..\..\..\lib\gdi\fb.h" />
+    <ClInclude Include="..\..\..\lib\gdi\font.h" />
+    <ClInclude Include="..\..\..\lib\gdi\gfbdc.h" />
+    <ClInclude Include="..\..\..\lib\gdi\gfont.h" />
+    <ClInclude Include="..\..\..\lib\gdi\glcddc.h" />
+    <ClInclude Include="..\..\..\lib\gdi\gmaindc.h" />
+    <ClInclude Include="..\..\..\lib\gdi\gpixmap.h" />
+    <ClInclude Include="..\..\..\lib\gdi\grc.h" />
+    <ClInclude Include="..\..\..\lib\gdi\lcd.h" />
+    <ClInclude Include="..\..\..\lib\gdi\picexif.h" />
+    <ClInclude Include="..\..\..\lib\gdi\picload.h" />
+    <ClInclude Include="..\..\..\lib\gdi\region.h" />
+    <ClInclude Include="..\..\..\lib\gdi\sdl.h" />
+    <ClInclude Include="..\..\..\lib\gui\ebutton.h" />
+    <ClInclude Include="..\..\..\lib\gui\ecanvas.h" />
+    <ClInclude Include="..\..\..\lib\gui\einput.h" />
+    <ClInclude Include="..\..\..\lib\gui\einputnumber.h" />
+    <ClInclude Include="..\..\..\lib\gui\einputstring.h" />
+    <ClInclude Include="..\..\..\lib\gui\elabel.h" />
+    <ClInclude Include="..\..\..\lib\gui\elistbox.h" />
+    <ClInclude Include="..\..\..\lib\gui\elistboxcontent.h" />
+    <ClInclude Include="..\..\..\lib\gui\epixmap.h" />
+    <ClInclude Include="..\..\..\lib\gui\epositiongauge.h" />
+    <ClInclude Include="..\..\..\lib\gui\eslider.h" />
+    <ClInclude Include="..\..\..\lib\gui\esubtitle.h" />
+    <ClInclude Include="..\..\..\lib\gui\evideo.h" />
+    <ClInclude Include="..\..\..\lib\gui\ewidget.h" />
+    <ClInclude Include="..\..\..\lib\gui\ewidgetanimation.h" />
+    <ClInclude Include="..\..\..\lib\gui\ewidgetdesktop.h" />
+    <ClInclude Include="..\..\..\lib\gui\ewindow.h" />
+    <ClInclude Include="..\..\..\lib\gui\ewindowstyle.h" />
+    <ClInclude Include="..\..\..\lib\gui\ewindowstyleskinned.h" />
+    <ClInclude Include="..\..\..\lib\mmi\mmi_ui.h" />
+    <ClInclude Include="..\..\..\lib\nav\core.h" />
+    <ClInclude Include="..\..\..\lib\nav\pcore.h" />
+    <ClInclude Include="..\..\..\lib\network\serversocket.h" />
+    <ClInclude Include="..\..\..\lib\network\socket.h" />
+    <ClInclude Include="..\..\..\lib\network\xmlrpc.h" />
+    <ClInclude Include="..\..\..\lib\python\connections.h" />
+    <ClInclude Include="..\..\..\lib\python\python.h" />
+    <ClInclude Include="..\..\..\lib\python\pythonconfig.h" />
+    <ClInclude Include="..\..\..\lib\python\python_helpers.h" />
+    <ClInclude Include="..\..\..\lib\python\swig.h" />
+    <ClInclude Include="..\..\..\lib\service\event.h" />
+    <ClInclude Include="..\..\..\lib\service\iservice.h" />
+    <ClInclude Include="..\..\..\lib\service\listboxservice.h" />
+    <ClInclude Include="..\..\..\lib\service\service.h" />
+    <ClInclude Include="..\..\..\lib\service\servicedvb.h" />
+    <ClInclude Include="..\..\..\lib\service\servicedvbrecord.h" />
+    <ClInclude Include="..\..\..\lib\service\servicedvbstream.h" />
+    <ClInclude Include="..\..\..\lib\service\servicedvd.h" />
+    <ClInclude Include="..\..\..\lib\service\servicefs.h" />
+    <ClInclude Include="..\..\..\lib\service\servicehdmi.h" />
+    <ClInclude Include="..\..\..\lib\service\servicem2ts.h" />
+    <ClInclude Include="..\..\..\lib\service\servicemp3.h" />
+    <ClInclude Include="..\..\..\lib\service\servicexine.h" />
+    <ClInclude Include="..\..\..\main\bsod.h" />
+    <ClInclude Include="..\..\..\main\version_info.h" />
+    <ClInclude Include="..\..\..\main\xmlgenerator.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\lib\actions\action.cpp" />
+    <ClCompile Include="..\..\..\lib\base\buffer.cpp" />
+    <ClCompile Include="..\..\..\lib\base\cachedtssource.cpp" />
+    <ClCompile Include="..\..\..\lib\base\cfile.cpp" />
+    <ClCompile Include="..\..\..\lib\base\connection.cpp" />
+    <ClCompile Include="..\..\..\lib\base\console.cpp" />
+    <ClCompile Include="..\..\..\lib\base\ebase.cpp" />
+    <ClCompile Include="..\..\..\lib\base\eerror.cpp" />
+    <ClCompile Include="..\..\..\lib\base\elock.cpp" />
+    <ClCompile Include="..\..\..\lib\base\encoding.cpp" />
+    <ClCompile Include="..\..\..\lib\base\estring.cpp" />
+    <ClCompile Include="..\..\..\lib\base\etpm.cpp" />
+    <ClCompile Include="..\..\..\lib\base\filepush.cpp" />
+    <ClCompile Include="..\..\..\lib\base\freesatv2.cpp" />
+    <ClCompile Include="..\..\..\lib\base\httpstream.cpp" />
+    <ClCompile Include="..\..\..\lib\base\init.cpp" />
+    <ClCompile Include="..\..\..\lib\base\ioprio.cpp" />
+    <ClCompile Include="..\..\..\lib\base\message.cpp" />
+    <ClCompile Include="..\..\..\lib\base\nconfig.cpp" />
+    <ClCompile Include="..\..\..\lib\base\rawfile.cpp" />
+    <ClCompile Include="..\..\..\lib\base\smartptr.cpp" />
+    <ClCompile Include="..\..\..\lib\base\thread.cpp" />
+    <ClCompile Include="..\..\..\lib\base\wrappers.cpp" />
+    <ClCompile Include="..\..\..\lib\components\file_eraser.cpp" />
+    <ClCompile Include="..\..\..\lib\components\scan.cpp" />
+    <ClCompile Include="..\..\..\lib\components\tuxtxtapp.cpp" />
+    <ClCompile Include="..\..\..\lib\driver\avswitch.cpp" />
+    <ClCompile Include="..\..\..\lib\driver\etimezone.cpp" />
+    <ClCompile Include="..\..\..\lib\driver\hdmi_cec.cpp" />
+    <ClCompile Include="..\..\..\lib\driver\misc_options.cpp" />
+    <ClCompile Include="..\..\..\lib\driver\rc.cpp" />
+    <ClCompile Include="..\..\..\lib\driver\rcconsole.cpp" />
+    <ClCompile Include="..\..\..\lib\driver\rcdreambox2.cpp" />
+    <ClCompile Include="..\..\..\lib\driver\rcinput.cpp" />
+    <ClCompile Include="..\..\..\lib\driver\rcsdl.cpp" />
+    <ClCompile Include="..\..\..\lib\driver\rfmod.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\cablescan.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\cahandler.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\crc32.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\db.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\decoder.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\demux.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\dvb.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\dvbtime.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\eit.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\encoder.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\epgcache.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\esection.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\fastscan.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\frontend.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\frontendparms.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\metaparser.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\pesparse.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\pmt.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\pmtparse.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\pvrparse.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\radiotext.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\rotor_calc.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\scan.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\sec.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\streamserver.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\subtitle.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\teletext.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\tstools.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb\volume.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb_ci\dvbci.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb_ci\dvbci_appmgr.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb_ci\dvbci_camgr.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb_ci\dvbci_datetimemgr.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb_ci\dvbci_mmi.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb_ci\dvbci_resmgr.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb_ci\dvbci_session.cpp" />
+    <ClCompile Include="..\..\..\lib\dvb_ci\dvbci_ui.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\accel.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\bcm.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\compositing.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\epng.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\erect.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\fb.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\font.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\font_arabic.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\gfbdc.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\gfont.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\glcddc.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\gmaindc.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\gpixmap.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\grc.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\lcd.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\picexif.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\picload.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\region.cpp" />
+    <ClCompile Include="..\..\..\lib\gdi\sdl.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\ebutton.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\ecanvas.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\einput.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\einputnumber.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\einputstring.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\elabel.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\elistbox.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\elistboxcontent.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\epixmap.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\epositiongauge.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\eslider.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\esubtitle.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\evideo.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\ewidget.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\ewidgetanimation.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\ewidgetdesktop.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\ewindow.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\ewindowstyle.cpp" />
+    <ClCompile Include="..\..\..\lib\gui\ewindowstyleskinned.cpp" />
+    <ClCompile Include="..\..\..\lib\mmi\mmi_ui.cpp" />
+    <ClCompile Include="..\..\..\lib\nav\core.cpp" />
+    <ClCompile Include="..\..\..\lib\nav\pcore.cpp" />
+    <ClCompile Include="..\..\..\lib\network\serversocket.cpp" />
+    <ClCompile Include="..\..\..\lib\network\socket.cpp" />
+    <ClCompile Include="..\..\..\lib\network\xmlrpc.cpp" />
+    <ClCompile Include="..\..\..\lib\python\connections.cpp" />
+    <ClCompile Include="..\..\..\lib\python\python.cpp" />
+    <ClCompile Include="..\..\..\lib\python\pythonconfig.cpp" />
+    <ClCompile Include="..\..\..\lib\python\python_helpers.cpp" />
+    <ClCompile Include="..\..\..\lib\service\event.cpp" />
+    <ClCompile Include="..\..\..\lib\service\listboxservice.cpp" />
+    <ClCompile Include="..\..\..\lib\service\service.cpp" />
+    <ClCompile Include="..\..\..\lib\service\servicedvb.cpp" />
+    <ClCompile Include="..\..\..\lib\service\servicedvbrecord.cpp" />
+    <ClCompile Include="..\..\..\lib\service\servicedvbstream.cpp" />
+    <ClCompile Include="..\..\..\lib\service\servicedvd.cpp" />
+    <ClCompile Include="..\..\..\lib\service\servicefs.cpp" />
+    <ClCompile Include="..\..\..\lib\service\servicehdmi.cpp" />
+    <ClCompile Include="..\..\..\lib\service\servicem2ts.cpp" />
+    <ClCompile Include="..\..\..\lib\service\servicemp3.cpp" />
+    <ClCompile Include="..\..\..\lib\service\servicexine.cpp" />
+    <ClCompile Include="..\..\..\main\bsod.cpp" />
+    <ClCompile Include="..\..\..\main\enigma-dvbtest.cpp" />
+    <ClCompile Include="..\..\..\main\enigma-gdi.cpp" />
+    <ClCompile Include="..\..\..\main\enigma-gui.cpp" />
+    <ClCompile Include="..\..\..\main\enigma-playlist.cpp" />
+    <ClCompile Include="..\..\..\main\enigma-scan.cpp" />
+    <ClCompile Include="..\..\..\main\enigma.cpp" />
+    <ClCompile Include="..\..\..\main\version_info.cpp" />
+    <ClCompile Include="..\..\..\main\xmlgenerator.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{3CB8644B-8543-43E0-B86C-FC84D67A1E16}</ProjectGuid>
+    <RootNamespace>openpli</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>LLVM-vs2010</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>D:\dev\enigma2</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <AdditionalIncludeDirectories>D:\dev\openpli\openpli-enigma2</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
