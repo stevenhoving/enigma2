@@ -1,3 +1,6 @@
+#ifndef __src_lib_base_benchmark_h__
+#define __src_lib_base_benchmark_h__
+
 #include <time.h>
 
 class Stopwatch
@@ -28,3 +31,4 @@ public:
 				(m_stop.tv_nsec - m_start.tv_nsec) / 1000;
 	}
 };
+#endif // __src_lib_base_benchmark_h__
