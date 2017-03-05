@@ -1,0 +1,59 @@
+git:
+  depth: 150
+
+# disabled because we want to build all (I think)
+#branches:
+#  only:
+#    - master
+
+language: bash
+
+before_script:
+  - sudo apt-get update -qq
+
+  # Install OE dependencies
+  # -----------------------
+  - sudo apt-get install -qq gawk
+  - sudo apt-get install -qq wget
+  - sudo apt-get install -qq git-core
+  - sudo apt-get install -qq diffstat
+  - sudo apt-get install -qq unzip
+  - sudo apt-get install -qq texinfo
+  - sudo apt-get install -qq gcc-multilib
+  - sudo apt-get install -qq build-essential
+  - sudo apt-get install -qq chrpath
+  #- sudo apt-get install -qq socat
+  - sudo apt-get install -qq libsdl1.2-dev
+  - sudo apt-get install -qq xterm
+
+  # Specific for openpli
+  - sudo apt-get install -qq sed
+  - sudo apt-get install -qq cvs  # do we still need this one?
+  - sudo apt-get install -qq subversion  # do we still need this one?
+  - sudo apt-get install -qq desktop-file-utils
+  - sudo apt-get install -qq docbook-utils
+  - sudo apt-get install -qq help2man
+  - sudo apt-get install -qq python-pysqlite2
+
+  # Install git
+  # -----------
+  - sudo apt-get install -qq git
+
+  # Create and initialize the build environment
+  # -------------------------------------------
+  - rm -rf /tmp/build_env
+  #- git clone git://git.openembedded.org/openembedded-core-contrib --branch=kraj/master --depth=1 /tmp/build_env
+  - git clone https://github.com/stevenhoving/openpli-oe-core.git --recursive --branch=origin/master --depth=1 /tmp/build_env
+  #- git clone git://github.com/openembedded/bitbake --branch=master --depth=1 /tmp/build_env/bitbake
+  - git clone $(pwd) /tmp/build_env/$(basename $(pwd))
+
+script:
+  #- cd /tmp/build_env/openpli-oe-core
+  - MACHINE=et8000 make
+
+  #- PATH="/usr/sbin:/usr/bin:/sbin:/bin" . /tmp/build_env/oe-init-build-env && echo "BBLAYERS +=\"/tmp/build_env/meta-musl\"" >> $(pwd)/conf/bblayers.conf && echo "DISTRO_FEATURES_append = \" wayland opengl \"" >> $(pwd)/conf/local.conf && TCLIBC=musl MACHINE=qemux86 bitbake core-image-weston | tee -a world.log
+  #- PATH="/usr/sbin:/usr/bin:/sbin:/bin" . /tmp/build_env/oe-init-build-env && echo "BBLAYERS +=\"/tmp/build_env/meta-musl\"" >> $(pwd)/conf/bblayers.conf && echo "DISTRO_FEATURES_append = \" wayland opengl \"" >> $(pwd)/conf/local.conf && TCLIBC=musl MACHINE=qemux86-64 bitbake core-image-weston | tee -a world.log
+  #- PATH="/usr/sbin:/usr/bin:/sbin:/bin" . /tmp/build_env/oe-init-build-env && echo "BBLAYERS +=\"/tmp/build_env/meta-musl\"" >> $(pwd)/conf/bblayers.conf && echo "DISTRO_FEATURES_append = \" wayland opengl \"" >> $(pwd)/conf/local.conf && TCLIBC=musl MACHINE=qemuarm bitbake core-image-weston | tee -a world.log
+  #- PATH="/usr/sbin:/usr/bin:/sbin:/bin" . /tmp/build_env/oe-init-build-env && echo "BBLAYERS +=\"/tmp/build_env/meta-musl\"" >> $(pwd)/conf/bblayers.conf && echo "DISTRO_FEATURES_append = \" wayland opengl \"" >> $(pwd)/conf/local.conf && TCLIBC=musl MACHINE=qemuarm64 bitbake core-image-weston | tee -a world.log
+  #- PATH="/usr/sbin:/usr/bin:/sbin:/bin" . /tmp/build_env/oe-init-build-env && echo "BBLAYERS +=\"/tmp/build_env/meta-musl\"" >> $(pwd)/conf/bblayers.conf && echo "DISTRO_FEATURES_append = \" wayland opengl \"" >> $(pwd)/conf/local.conf && TCLIBC=musl MACHINE=qemumips bitbake core-image-weston | tee -a world.log
+  #- PATH="/usr/sbin:/usr/bin:/sbin:/bin" . /tmp/build_env/oe-init-build-env && echo "BBLAYERS +=\"/tmp/build_env/meta-musl\"" >> $(pwd)/conf/bblayers.conf && echo "DISTRO_FEATURES_append = \" wayland opengl \"" >> $(pwd)/conf/local.conf && TCLIBC=musl MACHINE=qemuppc bitbake core-image-weston | tee -a world.log
