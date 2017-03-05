@@ -43,10 +43,10 @@ before_script:
   # -------------------------------------------
   - rm -rf /tmp/build_env
   - git clone https://github.com/stevenhoving/openpli-oe-core.git --recursive --branch=master --depth=1 /tmp/build_env
-  - git clone $(pwd) /tmp/build_env/openpli-oe-core $(pwd)
+  #- git clone $(pwd) /tmp/build_env/openpli-oe-core $(pwd)
 
 script:
-  #- cd /tmp/build_env/openpli-oe-core
+  - cd /tmp/build_env/openpli-oe-core
   - MACHINE=et8000 make
 
   #- PATH="/usr/sbin:/usr/bin:/sbin:/bin" . /tmp/build_env/oe-init-build-env && echo "BBLAYERS +=\"/tmp/build_env/meta-musl\"" >> $(pwd)/conf/bblayers.conf && echo "DISTRO_FEATURES_append = \" wayland opengl \"" >> $(pwd)/conf/local.conf && TCLIBC=musl MACHINE=qemux86 bitbake core-image-weston | tee -a world.log
