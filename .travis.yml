@@ -8,6 +8,7 @@ git:
 
 language: bash
 
+
 before_script:
   - sudo apt-get update -qq
 
@@ -48,5 +49,5 @@ before_script:
 script:
   - cd /tmp/build_env
   - MACHINE=et8000 make
-  #- MACHINE=et8000 make image
+  - source env.source
   - MACHINE=et80000 bitbake enigma2
