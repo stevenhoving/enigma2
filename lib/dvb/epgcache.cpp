@@ -94,7 +94,7 @@ const eServiceReference &handleGroup(const eServiceReference &ref)
 				eBouquet *bouquet = NULL;
 				if (!db->getBouquet(ref, bouquet))
 				{
-					std::list<eServiceReference>::iterator it(bouquet->m_services.begin());
+					auto it = bouquet->m_services.begin();;
 					if (it != bouquet->m_services.end())
 						return *it;
 				}
