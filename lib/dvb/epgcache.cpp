@@ -142,7 +142,7 @@ eventData::eventData(const eit_event_struct* e, int size, int _type, int tsidoni
 				case PDC_DESCRIPTOR:
 				{
 					uint32_t crc = calculate_crc_hash(descr, descr_len);
-					DescriptorMap::iterator it = descriptors.find(crc);
+					auto it = descriptors.find(crc);
 					if ( it == descriptors.end() )
 					{
 						CacheSize+=descr_len;
@@ -198,7 +198,7 @@ eventData::eventData(const eit_event_struct* e, int size, int _type, int tsidoni
 						title_len += 2; //add 2 the length to include the 2 bytes in the header
 						uint32_t title_crc = calculate_crc_hash(title_data, title_len);
 
-						DescriptorMap::iterator it = descriptors.find(title_crc);
+						auto it = descriptors.find(title_crc);
 						if ( it == descriptors.end() )
 						{
 							CacheSize += title_len;
@@ -231,7 +231,7 @@ eventData::eventData(const eit_event_struct* e, int size, int _type, int tsidoni
 						text_len += 2; //add 2 the length to include the 2 bytes in the header
 						uint32_t text_crc = calculate_crc_hash(text_data, text_len);
 
-						DescriptorMap::iterator it = descriptors.find(text_crc);
+						auto it = descriptors.find(text_crc);
 						if ( it == descriptors.end() )
 						{
 							CacheSize += text_len;
@@ -273,7 +273,7 @@ const eit_event_struct* eventData::get() const
 	unsigned int descriptors_length = 0;
 	for (uint8_t i = 0; i < n_crc; ++i)
 	{
-		DescriptorMap::iterator it = descriptors.find(crc_list[i]);
+		auto it = descriptors.find(crc_list[i]);
 		if (it != descriptors.end())
 		{
 			unsigned int b = it->second.data[1] + 2;
@@ -296,7 +296,7 @@ eventData::~eventData()
 {
 	for ( uint8_t i = 0; i < n_crc; ++i )
 	{
-		DescriptorMap::iterator it = descriptors.find(crc_list[i]);
+		auto it = descriptors.find(crc_list[i]);
 		if ( it != descriptors.end() )
 		{
 			DescriptorPair &p = it->second;
@@ -3375,7 +3375,7 @@ PyObject *eEPGCache::search(ePyObject arg)
 							for (uint8_t i = 0; i < evData->n_crc; ++i)
 							{
 								uint32_t crc = evData->crc_list[i];
-								DescriptorMap::iterator it =
+								auto it =
 									eventData::descriptors.find(crc);
 								if (it != eventData::descriptors.end())
 								{
