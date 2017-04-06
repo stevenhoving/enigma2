@@ -49,5 +49,7 @@ before_script:
 script:
   - cd /tmp/build_env
   - MACHINE=et8000 make
+
+  - cd /tmp/build_env/build
   - source env.source
   - MACHINE=et80000 bitbake enigma2
