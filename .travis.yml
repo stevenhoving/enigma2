@@ -1,5 +1,5 @@
 git:
-  depth: 150
+  depth: 100
 
 # disabled because we want to build all (I think)
 #branches:
@@ -48,4 +48,5 @@ before_script:
 script:
   - cd /tmp/build_env
   - MACHINE=et8000 make
-  - MACHINE=et8000 make image
+  #- MACHINE=et8000 make image
+  - MACHINE=et80000 bitbake enigma2
