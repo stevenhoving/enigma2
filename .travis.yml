@@ -52,4 +52,4 @@ script:
 
   - cd /tmp/build_env/build
   - source env.source
-  - MACHINE=et80000 bitbake enigma2
+  - MACHINE=et8000 bitbake enigma2
