@@ -1,0 +1,102 @@
+set(DVB_PATH "${ENIGMA2_ROOT}/lib/dvb")
+
+add_library(dvb STATIC
+    ${DVB_PATH}/absdiff.h
+    ${DVB_PATH}/atsc.cpp
+    ${DVB_PATH}/atsc.h
+    ${DVB_PATH}/cablescan.cpp
+    ${DVB_PATH}/cablescan.h
+    ${DVB_PATH}/cahandler.cpp
+    ${DVB_PATH}/cahandler.h
+    ${DVB_PATH}/crc32.cpp
+    ${DVB_PATH}/crc32.h
+    ${DVB_PATH}/db.cpp
+    ${DVB_PATH}/db.h
+    ${DVB_PATH}/decoder.cpp
+    ${DVB_PATH}/decoder.h
+    ${DVB_PATH}/demux.cpp
+    ${DVB_PATH}/demux.h
+    ${DVB_PATH}/dvb.cpp
+    ${DVB_PATH}/dvb.h
+    ${DVB_PATH}/dvbtime.cpp
+    ${DVB_PATH}/dvbtime.h
+    ${DVB_PATH}/eit.cpp
+    ${DVB_PATH}/eit.h
+    ${DVB_PATH}/encoder.cpp
+    ${DVB_PATH}/encoder.h
+    ${DVB_PATH}/epgcache.cpp
+    ${DVB_PATH}/epgcache.h
+    ${DVB_PATH}/esection.cpp
+    ${DVB_PATH}/esection.h
+    ${DVB_PATH}/fastscan.cpp
+    ${DVB_PATH}/fastscan.h
+    ${DVB_PATH}/fbc.cpp
+    ${DVB_PATH}/fbc.h
+    ${DVB_PATH}/filepush.cpp
+    ${DVB_PATH}/filepush.h
+    ${DVB_PATH}/frontend.cpp
+    ${DVB_PATH}/frontend.h
+    ${DVB_PATH}/frontendparms.cpp
+    ${DVB_PATH}/frontendparms.h
+    ${DVB_PATH}/idemux.h
+    ${DVB_PATH}/idvb.h
+    ${DVB_PATH}/isection.h
+    ${DVB_PATH}/list.h
+    ${DVB_PATH}/metaparser.cpp
+    ${DVB_PATH}/metaparser.h
+    ${DVB_PATH}/opentv.cpp
+    ${DVB_PATH}/opentv.h
+    ${DVB_PATH}/pesparse.cpp
+    ${DVB_PATH}/pesparse.h
+    ${DVB_PATH}/pmt.cpp
+    ${DVB_PATH}/pmt.h
+    ${DVB_PATH}/pmtparse.cpp
+    ${DVB_PATH}/pmtparse.h
+    ${DVB_PATH}/pvrparse.cpp
+    ${DVB_PATH}/pvrparse.h
+    ${DVB_PATH}/radiotext.cpp
+    ${DVB_PATH}/radiotext.h
+    ${DVB_PATH}/rotor_calc.cpp
+    ${DVB_PATH}/rotor_calc.h
+    ${DVB_PATH}/scan.cpp
+    ${DVB_PATH}/scan.h
+    ${DVB_PATH}/sec.cpp
+    ${DVB_PATH}/sec.h
+    ${DVB_PATH}/specs.h
+    ${DVB_PATH}/streamserver.cpp
+    ${DVB_PATH}/streamserver.h
+    ${DVB_PATH}/subtitle.cpp
+    ${DVB_PATH}/subtitle.h
+    ${DVB_PATH}/teletext.cpp
+    ${DVB_PATH}/teletext.h
+    ${DVB_PATH}/tstools.cpp
+    ${DVB_PATH}/tstools.h
+    ${DVB_PATH}/volume.cpp
+    ${DVB_PATH}/volume.h
+)
+
+target_include_directories(dvb
+  PUBLIC
+    ${ENIGMA2_ROOT}
+    ${ENIGMA2_ROOT}/include
+)
+
+target_link_libraries(dvb
+  PUBLIC
+    # project deps
+    base
+    python
+    libiconv
+    fixup::fixup
+
+    # library deps
+    sigc-3.0
+    libdvbsicpp
+    xml2
+)
+
+target_compile_definitions(dvb
+  PRIVATE
+    _CRT_NONSTDC_NO_WARNINGS
+    _CRT_SECURE_NO_WARNINGS
+)
