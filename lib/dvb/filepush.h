@@ -3,10 +3,12 @@
 
 #include <lib/base/thread.h>
 #include <lib/base/ioprio.h>
-#include <libsig_comp.h>
 #include <lib/base/message.h>
-#include <sys/types.h>
 #include <lib/base/rawfile.h>
+#include <libsig_comp.h>
+#include <sys/types.h>
+#include <mutex>
+#include <condition_variable>
 
 class iFilePushScatterGather
 {
@@ -55,8 +57,8 @@ private:
 	ePtr<iTsSource> m_source;
 
 	eFixedMessagePump<int> m_messagepump;
-	eSingleLock m_run_mutex;
-	eCondition m_run_cond;
+    std::mutex m_run_mutex;
+    std::condition_variable m_run_cond;
 	int m_run_state;
 
 	void recvEvent(const int &evt);

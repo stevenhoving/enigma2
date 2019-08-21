@@ -52,7 +52,7 @@ public:
 template<class T>
 class eFixedMessagePump: public sigc::trackable, FD
 {
-	eSingleLock lock;
+	std::mutex lock;
 	ePtr<eSocketNotifier> sn;
 	std::queue<T> m_queue;
 	void do_recv(int)
@@ -100,7 +100,7 @@ public:
 	void send(const T &msg)
 	{
 		{
-			eSingleLocker s(lock);
+			std::scoped_lock<std::mutex> s(lock);
 			m_queue.push(msg);
 		}
 		trigger_event();

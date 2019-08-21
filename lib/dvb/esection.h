@@ -4,9 +4,9 @@
 #include <lib/dvb/idemux.h>
 #include <set>
 
-#define TABLE_eDebug(x...) do { if (m_debug) eDebug(x); } while(0)
-#define TABLE_eDebugNoNewLineStart(x...) do { if (m_debug) eDebugNoNewLineStart(x); } while(0)
-#define TABLE_eDebugNoNewLine(x...) do { if (m_debug) eDebugNoNewLine(x); } while(0)
+#define TABLE_eDebug(...) do { if (m_debug) eDebug(__VA_ARGS__); } while(0)
+#define TABLE_eDebugNoNewLineStart(...) do { if (m_debug) eDebugNoNewLineStart(__VA_ARGS__); } while(0)
+#define TABLE_eDebugNoNewLine(...) do { if (m_debug) eDebugNoNewLine(__VA_ARGS__); } while(0)
 
 class eGTable: public iObject, public sigc::trackable
 {

@@ -82,7 +82,7 @@ void gAccel::dumpDebug() {}
 
 void gAccel::releaseAccelMemorySpace()
 {
-	eSingleLocker lock(m_allocation_lock);
+	std::scoped_lock<std::mutex> lock(m_allocation_lock);
 	dumpDebug();
 	for (MemoryBlockList::const_iterator it = m_accel_allocation.begin();
 		 it != m_accel_allocation.end();
@@ -109,7 +109,7 @@ void gAccel::setAccelMemorySpace(void *addr, int phys_addr, int size)
 {
 	if (size > 0)
 	{
-		eSingleLocker lock(m_allocation_lock);
+		std::scoped_lock<std::mutex> lock(m_allocation_lock);
 		m_accel_size = size >> ACCEL_ALIGNMENT_SHIFT;
 		m_accel_addr = addr;
 		m_accel_phys_addr = phys_addr;
@@ -232,7 +232,7 @@ int gAccel::accelAlloc(gUnmanagedSurface* surface)
 	size += ACCEL_ALIGNMENT_MASK;
 	size >>= ACCEL_ALIGNMENT_SHIFT;
 
-	eSingleLocker lock(m_allocation_lock);
+	std::scoped_lock<std::mutex> lock(m_allocation_lock);
 
 	for (MemoryBlockList::iterator it = m_accel_allocation.begin();
 		 it != m_accel_allocation.end();
@@ -273,7 +273,7 @@ void gAccel::accelFree(gUnmanagedSurface* surface)
 		/* The lock scope is "good enough", the only other method that
 		 * might alter data_phys is the global release, and that will
 		 * be called in a safe context. So don't obtain the lock. */
-		eSingleLocker lock(m_allocation_lock);
+		std::scoped_lock<std::mutex> lock(m_allocation_lock);
 
 		phys_addr -= m_accel_phys_addr;
 		phys_addr >>= ACCEL_ALIGNMENT_SHIFT;

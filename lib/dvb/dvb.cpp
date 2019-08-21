@@ -1624,7 +1624,7 @@ void eDVBChannel::cueSheetEvent(int event)
 			m_cue->m_lock.WrLock();
 			m_cue->m_seek_requests.push_back(std::pair<int, pts_t>(1, 0)); /* resync */
 			m_cue->m_lock.Unlock();
-			eRdLocker l(m_cue->m_lock);
+			std::shared_lock<std::shared_mutex> l(m_cue->m_lock);
 			if (m_cue->m_skipmode_ratio)
 			{
 				m_tstools_lock.lock();
@@ -1843,7 +1843,7 @@ void eDVBChannel::getNextSourceSpan(off_t current_offset, size_t bytes_read, off
 		{
 			eDebug("[eDVBChannel] AP relative seeking: %lld, at %lld", pts, now);
 			pts_t nextap;
-			eSingleLocker l(m_tstools_lock);
+			std::scoped_lock<std::mutex> l(m_tstools_lock);
 			if (m_tstools.getNextAccessPoint(nextap, now, pts))
 			{
 				pts = now - 90000; /* approx. 1s */

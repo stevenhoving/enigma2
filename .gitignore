@@ -39,3 +39,5 @@ compile
 mipsel-oe-linux-libtool
 /.vs
 .vscode/
+vs_build
+win

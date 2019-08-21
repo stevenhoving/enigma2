@@ -49,7 +49,7 @@ static bool CompareLastUsed(NameToPixmap::value_type i, NameToPixmap::value_type
 	return i.second.lastUsed < j.second.lastUsed;
 }
 
-static eSingleLock pixmapCacheLock;
+static estd::scoped_lock<std::mutex> pixmapCacheLock;
 static NameToPixmap pixmapCache;
 
 /* The "dispose" method isn't very efficient, but not called unless
@@ -61,7 +61,7 @@ static NameToPixmap pixmapCache;
  * from the same thread anyway. */
 void PixmapCache::PixmapDisposed(gPixmap* pixmap)
 {
-	eSingleLocker lock(pixmapCacheLock);
+	std::scoped_lock<std::mutex> lock(pixmapCacheLock);
 
 	for (NameToPixmap::iterator it = pixmapCache.begin();
 		 it != pixmapCache.end();
@@ -79,7 +79,7 @@ gPixmap* PixmapCache::Get(const char *filename)
 {
 	gPixmap* disposePixmap = NULL;
 	{
-		eSingleLocker lock(pixmapCacheLock);
+		std::scoped_lock<std::mutex> lock(pixmapCacheLock);
 		NameToPixmap::iterator it = pixmapCache.find(filename);
 		if (it != pixmapCache.end())
 		{
@@ -113,7 +113,7 @@ void PixmapCache::Set(const char *filename, gPixmap* pixmap)
 {
 	gPixmap* disposePixmap = NULL;
 	{
-		eSingleLocker lock(pixmapCacheLock);
+		std::scoped_lock<std::mutex> lock(pixmapCacheLock);
 		struct stat img_stat;
 		if (stat(filename, &img_stat) == 0)
 		{

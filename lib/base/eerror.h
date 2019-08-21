@@ -46,7 +46,7 @@ static inline void AddTrack(unsigned int addr,  unsigned int asize,  const char 
 	info.size = asize;
 	info.type = type;
 	info.btcount = 0; //backtrace( info.backtrace, BACKTRACE_DEPTH );
-	singleLock s(memLock);
+	std::scoped_lock<std::mutex> s(memLock);
 	(*allocList)[addr]=info;
 };
 
@@ -55,7 +55,7 @@ static inline void RemoveTrack(unsigned int addr, unsigned int type)
 	if(!allocList)
 		return;
 	AllocList::iterator i;
-	singleLock s(memLock);
+	std::scoped_lock<std::mutex> s(memLock);
 	i = allocList->find(addr);
 	if ( i != allocList->end() )
 	{
@@ -107,7 +107,11 @@ void DumpUnfreed();
 
 #ifndef SWIG
 
+#ifndef WIN32
 #define CHECKFORMAT __attribute__ ((__format__(__printf__, 2, 3)))
+#else
+#define CHECKFORMAT
+#endif
 
 /*
  * Current loglevel

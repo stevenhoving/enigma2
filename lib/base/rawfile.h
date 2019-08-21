@@ -1,13 +1,14 @@
 #ifndef __lib_base_rawfile_h
 #define __lib_base_rawfile_h
 
-#include <string>
 #include <lib/base/itssource.h>
+#include <string>
 
 class eRawFile: public iTsSource
 {
 	DECLARE_REF(eRawFile);
-	eSingleLock m_lock;
+	//std::scoped_lock<std::mutex> m_lock;
+    std::mutex m_lock;
 public:
 	eRawFile(int packetsize = 188);
 	~eRawFile();

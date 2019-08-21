@@ -1,9 +1,10 @@
 #ifndef __lib_base_thread_h
 #define __lib_base_thread_h
 
+#include <lib/base/elock.h>
 #include <pthread.h>
 #include <signal.h>
-#include <lib/base/elock.h>
+
 
 /* the following states are possible:
  1 thread has not yet started
@@ -43,13 +44,16 @@ public:
 
 	int sendSignal(int sig);
 
-		/* join the thread, i.e. busywait until thread has finnished. */
+		/* join the thread, i.e. busywait until thread has finished. */
 	void kill();
 
 	/* Call pthread_cancel, please don't do this. */
-	void abort_badly() { pthread_cancel(the_thread); }
+	//void abort_badly() { pthread_cancel(the_thread); }
+    void abort_badly() {  }
+
 private:
-	pthread_t the_thread;
+	//pthread_t the_thread;
+    std::thread the_thread;
 
 		/* waits until thread is in "run" state */
 		/* result: 0 - thread is not alive

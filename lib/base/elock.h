@@ -1,108 +1,10 @@
 #ifndef __elock_h
 #define __elock_h
 
-#include <pthread.h>
+#include <mutex>
+#include <condition_variable>
 
-class singleLock
-{
-	pthread_mutex_t &lock;
-public:
-	singleLock(pthread_mutex_t &m )
-		:lock(m)
-	{
-		pthread_mutex_lock(&lock);
-	}
-	~singleLock()
-	{
-		pthread_mutex_unlock(&lock);
-	}
-};
-
-class eRdWrLock
-{
-	friend class eRdLocker;
-	friend class eWrLocker;
-	pthread_rwlock_t m_lock;
-	eRdWrLock(eRdWrLock &);
-public:
-	eRdWrLock()
-	{
-		pthread_rwlock_init(&m_lock, 0);
-	}
-	~eRdWrLock()
-	{
-		pthread_rwlock_destroy(&m_lock);
-	}
-	void RdLock()
-	{
-		pthread_rwlock_rdlock(&m_lock);
-	}
-	void WrLock()
-	{
-		pthread_rwlock_wrlock(&m_lock);
-	}
-	void Unlock()
-	{
-		pthread_rwlock_unlock(&m_lock);
-	}
-};
-
-class eRdLocker
-{
-	eRdWrLock &m_lock;
-public:
-	eRdLocker(eRdWrLock &m)
-		: m_lock(m)
-	{
-		pthread_rwlock_rdlock(&m_lock.m_lock);
-	}
-	~eRdLocker()
-	{
-		pthread_rwlock_unlock(&m_lock.m_lock);
-	}
-};
-
-class eWrLocker
-{
-	eRdWrLock &m_lock;
-public:
-	eWrLocker(eRdWrLock &m)
-		: m_lock(m)
-	{
-		pthread_rwlock_wrlock(&m_lock.m_lock);
-	}
-	~eWrLocker()
-	{
-		pthread_rwlock_unlock(&m_lock.m_lock);
-	}
-};
-
-class eSingleLock
-{
-protected:
-	pthread_mutex_t m_lock;
-private:
-	eSingleLock(const eSingleLock &);
-public:
-	eSingleLock()
-	{
-		pthread_mutex_init(&m_lock, 0);
-	}
-	~eSingleLock()
-	{
-		pthread_mutex_destroy(&m_lock);
-	}
-	void lock()
-	{
-		pthread_mutex_lock(&m_lock);
-	}
-	void unlock()
-	{
-		pthread_mutex_unlock(&m_lock);
-	}
-	operator pthread_mutex_t&() { return m_lock; }
-};
-
+#if 0
 class eCondition
 {
 private:
@@ -129,26 +31,29 @@ public:
 	operator pthread_cond_t&() { return m_cond; }
 };
 
-class eSingleLocker
+
+class std::scoped_lock<std::mutex>
 {
 protected:
-	eSingleLock &m_lock;
+	estd::scoped_lock<std::mutex> &m_lock;
 public:
-	eSingleLocker(eSingleLock &m)
+	std::scoped_lock<std::mutex>(estd::scoped_lock<std::mutex> &m)
 		: m_lock(m)
 	{
 		m_lock.lock();
 	}
-	~eSingleLocker()
+	~std::scoped_lock<std::mutex>()
 	{
 		m_lock.unlock();
 	}
 };
 
+#endif
+
 class eLock
 {
-	pthread_mutex_t mutex;
-	pthread_cond_t cond;
+	std::mutex mutex;
+	std::condition_variable cond;
 
 	int counter, max;
 public:
@@ -159,27 +64,19 @@ public:
 	~eLock();
 };
 
-class eLocker
-{
-	eLock &lock;
-	int res;
-public:
-	eLocker(eLock &lock, int res=100);
-	~eLocker();
-};
 
 class eSemaphore
 {
 	int v;
-	pthread_mutex_t mutex;
-	pthread_cond_t cond;
+	std::mutex mutex;
+	std::condition_variable cond;
 public:
 	eSemaphore();
 	~eSemaphore();
 
-	int down();
-	int decrement();
-	int up();
+	void down();
+	void decrement();
+	void up();
 	int value();
 };
 

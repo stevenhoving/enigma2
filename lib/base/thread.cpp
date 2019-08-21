@@ -1,15 +1,15 @@
 #include <lib/base/thread.h>
-
-#include <stdio.h>
-#include <unistd.h>
 #include <lib/base/eerror.h>
+
+#include <unistd.h>
+#include <stdio.h>
 
 void eThread::thread_completed(void *ptr)
 {
 	eThread *p = (eThread*) ptr;
 	p->m_alive = 0;
 
-		/* recover state in case thread was cancelled before calling hasStarted */
+		/* recover state in case thread was canceled before calling hasStarted */
 	if (!p->m_started)
 		p->hasStarted();
 
@@ -19,15 +19,18 @@ void eThread::thread_completed(void *ptr)
 void *eThread::wrapper(void *ptr)
 {
 	eThread *p = (eThread*)ptr;
-	pthread_cleanup_push(thread_completed, (void*)p);
+	//pthread_cleanup_push(thread_completed, (void*)p);
 	p->thread();
-	pthread_exit(0);
-	pthread_cleanup_pop(1);
+    thread_completed(p);
+
+	//pthread_exit(0);
+	//pthread_cleanup_pop(1);
 	return 0;
 }
 
 eThread::eThread()
-	: the_thread(0), m_alive(0)
+	: the_thread()
+    , m_alive(0)
 {
 }
 
@@ -48,34 +51,42 @@ int eThread::runAsync(int prio, int policy)
 	m_started = 0;
 
 		/* start thread. */
-	pthread_attr_t attr;
-	pthread_attr_init(&attr);
-	if (pthread_attr_setstacksize(&attr, default_stack_size) != 0)
-		eDebug("[eThread] pthread_attr_setstacksize failed");
+    //pthread_attr_t attr;
+    //pthread_attr_init(&attr);
+    //if (pthread_attr_setstacksize(&attr, default_stack_size) != 0)
+    //	eDebug("[eThread] pthread_attr_setstacksize failed");
 
 	if (prio || policy)
 	{
-		struct sched_param p;
-		p.__sched_priority=prio;
-		pthread_attr_setschedpolicy(&attr, policy);
-		pthread_attr_setschedparam(&attr, &p);
+        //struct sched_param p;
+        //p.__sched_priority=prio;
+        //pthread_attr_setschedpolicy(&attr, policy);
+        //pthread_attr_setschedparam(&attr, &p);
 	}
 
-	if (the_thread) {
-		int ret = pthread_join(the_thread, 0);
-		eDebug("[eThread] old thread joined %d", ret);
-		the_thread = 0;
+	if (the_thread.joinable()) {
+        the_thread.join();
+		//int ret = pthread_join(the_thread, 0);
+		eDebug("[eThread] old thread joined");
+		//the_thread ;
 	}
 
-	if (pthread_create(&the_thread, &attr, wrapper, this))
-	{
-		pthread_attr_destroy(&attr);
-		m_alive = 0;
-		eDebug("[eThread] couldn't create new thread");
-		return -1;
-	}
+    the_thread = std::thread(
+        [this]
+        {
+            wrapper(this);
+        }
+    );
 
-	pthread_attr_destroy(&attr);
+	//if (pthread_create(&the_thread, &attr, wrapper, this))
+	//{
+	//	pthread_attr_destroy(&attr);
+	//	m_alive = 0;
+	//	eDebug("[eThread] couldn't create new thread");
+	//	return -1;
+	//}
+    //
+	//pthread_attr_destroy(&attr);
 	return 0;
 }
 
@@ -89,7 +100,7 @@ int eThread::run(int prio, int policy)
 
 eThread::~eThread()
 {
-	if (the_thread)
+	if (the_thread.joinable())
 	{
 		/* Warn about this class' design being borked */
 		eWarning("[eThread] Destroyed thread without joining it, this usually means your thread is now running with a halfway destroyed object");
@@ -112,24 +123,28 @@ int eThread::sync(void)
 
 int eThread::sendSignal(int sig)
 {
-	if (m_alive)
-		return pthread_kill(the_thread, sig);
-	else
-		eDebug("[eThread] send signal to non running thread");
-	return -1;
+    printf("kill thread, sig: %d\n", sig);
+	//if (m_alive)
+	//	return pthread_kill(the_thread, sig);
+	//else
+	//	eDebug("[eThread] send signal to non running thread");
+	//return -1;
+    return 0;
 }
 
 void eThread::kill()
 {
-	/* FIXME: Allthough in Linux we seem to get away with it, there is no
+	/* FIXME: Although in Linux we seem to get away with it, there is no
 	 * guarantee that "0" is an invalid value for pthread_t */
-	if (!the_thread) /* already joined */
+	if (!the_thread.joinable()) /* already joined */
 		return;
 
-	int ret = pthread_join(the_thread, NULL);
-	the_thread = 0;
-	if (ret)
-		eWarning("[eThread] pthread_join failed, code: %d", ret);
+    the_thread.join();
+
+	//int ret = pthread_join(the_thread, NULL);
+	//the_thread = 0;
+	//if (ret)
+	//	eWarning("[eThread] pthread_join failed, code: %d", ret);
 }
 
 void eThread::hasStarted()

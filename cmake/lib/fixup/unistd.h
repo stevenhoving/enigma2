@@ -1,6 +1,7 @@
 #pragma once
 
 #include <io.h>
+#include <thread>
 
 #define F_OK	0
 #define X_OK	1
@@ -30,3 +31,27 @@
 //#define _O_CREAT       0x0100  // create and open file
 //#define _O_TRUNC       0x0200  // open and truncate
 //#define _O_EXCL        0x0400  // open only if file doesn't already exist
+
+static unsigned int sleep(unsigned int seconds)
+{
+    std::this_thread::sleep_for(std::chrono::seconds(seconds));
+    return 0;
+}
+
+//struct fd_pair {
+//    long fd[2];
+//};
+//struct fd_pair pipe();
+
+/* On all other architectures */
+static int pipe(int pipefd[2])
+{
+    printf("pipe called\n");
+    return 0;
+}
+
+//#define _GNU_SOURCE             /* See feature_test_macros(7) */
+//#include <fcntl.h>              /* Obtain O_* constant definitions */
+//#include <unistd.h>
+//
+//int pipe2(int pipefd[2], int flags);

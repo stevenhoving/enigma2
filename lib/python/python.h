@@ -4,8 +4,9 @@
 	#define __lib_python_python_class_h
 #endif
 
-#include <string>
+#include <Python.h>
 #include <lib/base/object.h>
+#include <string>
 
 #if !defined(SKIP_PART1) && !defined(SWIG)
 class ePyObject
@@ -389,11 +390,11 @@ inline void Impl_DECREF(PyObject *ob)
 #define Py_XDECREF(obj) Impl_Py_XDECREF(__FILE__, __LINE__, obj)
 #define Py_INCREF(obj) Impl_Py_INCREF(__FILE__, __LINE__, obj)
 #define Py_XINCREF(obj) Impl_Py_XINCREF(__FILE__, __LINE__, obj)
-#define PyList_New(args...) Impl_PyList_New(__FILE__, __LINE__, args)
-#define PyTuple_New(args...) Impl_PyTuple_New(__FILE__, __LINE__, args)
+#define PyList_New(...) Impl_PyList_New(__FILE__, __LINE__, __VA_ARGS__)
+#define PyTuple_New(...) Impl_PyTuple_New(__FILE__, __LINE__, __VA_ARGS__)
 #define PyDict_New(...) Impl_PyDict_New(__FILE__, __LINE__)
 #define PyString_FromString(str) Impl_PyString_FromString(__FILE__, __LINE__, str)
-#define PyString_FromFormat(str, args...) Impl_PyString_FromFormat(__FILE__, __LINE__, str, args)
+#define PyString_FromFormat(str, ...) Impl_PyString_FromFormat(__FILE__, __LINE__, str, __VA_ARGS__)
 #define PyInt_FromLong(val) Impl_PyInt_FromLong(__FILE__, __LINE__, val)
 #define PyLong_FromLong(val) Impl_PyLong_FromLong(__FILE__, __LINE__, val)
 #define PyLong_FromUnsignedLong(val) Impl_PyLong_FromUnsignedLong(__FILE__, __LINE__, val)
@@ -406,11 +407,11 @@ inline void Impl_DECREF(PyObject *ob)
 #define Py_XDECREF(obj) Impl_Py_XDECREF(obj)
 #define Py_INCREF(obj) Impl_Py_INCREF(obj)
 #define Py_XINCREF(obj) Impl_Py_XINCREF(obj)
-#define PyList_New(args...) Impl_PyList_New(args)
-#define PyTuple_New(args...) Impl_PyTuple_New(args)
+#define PyList_New(...) Impl_PyList_New(__VA_ARGS__)
+#define PyTuple_New(...) Impl_PyTuple_New(__VA_ARGS__)
 #define PyDict_New(...) Impl_PyDict_New()
 #define PyString_FromString(str) Impl_PyString_FromString(str)
-#define PyString_FromFormat(str, args...) Impl_PyString_FromFormat(str, args)
+#define PyString_FromFormat(str, ...) Impl_PyString_FromFormat(str, __VA_ARGS__)
 #define PyInt_FromLong(val) Impl_PyInt_FromLong(val)
 #define PyLong_FromLong(val) Impl_PyLong_FromLong(val)
 #define PyLong_FromUnsignedLong(val) Impl_PyLong_FromUnsignedLong(val)
@@ -427,7 +428,7 @@ public:
 	~ePython();
 	int execFile(const char *file);
 	int execute(const std::string &pythonfile, const std::string &funcname);
-	static int call(ePyObject pFunc, ePyObject args);
+	static int call(ePyObject pFunc, ePyObject __VA_ARGS__);
 	static ePyObject resolve(const std::string &pythonfile, const std::string &funcname);
 private:
 };

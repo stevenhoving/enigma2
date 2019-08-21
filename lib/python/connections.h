@@ -64,7 +64,7 @@ public:
 			callPython(pArgs);
 			Org_Py_DECREF(pArgs);
 		}
-		return sigc::signal<R(V0)>::operator()(a0);
+		return sigc::signal<R(V0)>::emit(a0);
 	}
 };
 

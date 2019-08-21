@@ -457,7 +457,7 @@ void eEPGCache::timeUpdated()
 			eDebug("[eEPGCache] time updated.. start EPG Mainloop");
 			run();
 			m_running = true;
-			singleLock s(channel_map_lock);
+			std::scoped_lock<std::mutex> s(channel_map_lock);
 			for (ChannelMap::const_iterator it = m_knownChannels.begin();
 				it != m_knownChannels.end(); ++it)
 			{
@@ -489,7 +489,7 @@ void eEPGCache::DVBChannelAdded(eDVBChannel *chan)
 		data->m_mhw2_title_pid = 0x234; // defaults for astra 19.2 D+
 		data->m_mhw2_summary_pid = 0x236; // defaults for astra 19.2 D+
 #endif
-		singleLock s(channel_map_lock);
+		std::scoped_lock<std::mutex> s(channel_map_lock);
 		m_knownChannels.insert( std::pair<iDVBChannel*, channel_data* >(chan, data) );
 		chan->connectStateChange(sigc::mem_fun(*this, &eEPGCache::DVBChannelStateChanged), data->m_stateChangedConn);
 	}
@@ -707,7 +707,7 @@ void eEPGCache::DVBChannelStateChanged(iDVBChannel *chan)
 					channel_data* cd = it->second;
 					pthread_mutex_lock(&cd->channel_active);
 					{
-						singleLock s(channel_map_lock);
+						std::scoped_lock<std::mutex> s(channel_map_lock);
 						m_knownChannels.erase(it);
 					}
 					pthread_mutex_unlock(&cd->channel_active);
@@ -853,7 +853,7 @@ void eEPGCache::sectionRead(const uint8_t *data, int source, channel_data *chann
 	if ( TM != 3599 && TM > -1 && channel)
 		channel->haveData |= source;
 
-	singleLock s(cache_lock);
+	std::scoped_lock<std::mutex> s(cache_lock);
 	// hier wird immer eine eventMap zurck gegeben.. entweder eine vorhandene..
 	// oder eine durch [] erzeugte
 	EventCacheItem &servicemap = eventDB[service];
@@ -1052,7 +1052,7 @@ next:
 void eEPGCache::flushEPG(const uniqueEPGKey & s)
 {
 	eDebug("[eEPGCache] flushEPG %d", (int)(bool)s);
-	singleLock l(cache_lock);
+	std::scoped_lock<std::mutex> l(cache_lock);
 	if (s)  // clear only this service
 	{
 		eventCache::iterator it = eventDB.find(s);
@@ -1095,7 +1095,7 @@ void eEPGCache::flushEPG(const uniqueEPGKey & s)
 		content_time_tables.clear();
 #endif
 		channelLastUpdated.clear();
-		singleLock m(channel_map_lock);
+		std::scoped_lock<std::mutex> m(channel_map_lock);
 		for (ChannelMap::const_iterator it(m_knownChannels.begin()); it != m_knownChannels.end(); ++it)
 			it->second->startEPG();
 	}
@@ -1105,7 +1105,7 @@ void eEPGCache::cleanLoop()
 {
 	{ /* scope for cache lock */
 		time_t now = ::time(0) - historySeconds;
-		singleLock s(cache_lock);
+		std::scoped_lock<std::mutex> s(cache_lock);
 
 		for (eventCache::iterator DBIt = eventDB.begin(); DBIt != eventDB.end(); DBIt++)
 		{
@@ -1169,7 +1169,7 @@ eEPGCache::~eEPGCache()
 	m_running = false;
 	messages.send(Message::quit);
 	kill(); // waiting for thread shutdown
-	singleLock s(cache_lock);
+	std::scoped_lock<std::mutex> s(cache_lock);
 	for (eventCache::iterator evIt = eventDB.begin(); evIt != eventDB.end(); evIt++)
 		for (eventMap::iterator It = evIt->second.byEvent.begin(); It != evIt->second.byEvent.end(); It++)
 			delete It->second;
@@ -1184,7 +1184,7 @@ void eEPGCache::gotMessage( const Message &msg )
 			break;
 		case Message::startChannel:
 		{
-			singleLock s(channel_map_lock);
+			std::scoped_lock<std::mutex> s(channel_map_lock);
 			ChannelMap::const_iterator channel =
 				m_knownChannels.find(msg.channel);
 			if ( channel != m_knownChannels.end() )
@@ -1193,7 +1193,7 @@ void eEPGCache::gotMessage( const Message &msg )
 		}
 		case Message::leaveChannel:
 		{
-			singleLock s(channel_map_lock);
+			std::scoped_lock<std::mutex> s(channel_map_lock);
 			ChannelMap::const_iterator channel =
 				m_knownChannels.find(msg.channel);
 			if ( channel != m_knownChannels.end() )
@@ -1206,7 +1206,7 @@ void eEPGCache::gotMessage( const Message &msg )
 #ifdef ENABLE_PRIVATE_EPG
 		case Message::got_private_pid:
 		{
-			singleLock s(channel_map_lock);
+			std::scoped_lock<std::mutex> s(channel_map_lock);
 			for (ChannelMap::const_iterator it(m_knownChannels.begin()); it != m_knownChannels.end(); ++it)
 			{
 				eDVBChannel *channel = (eDVBChannel*) it->first;
@@ -1240,7 +1240,7 @@ void eEPGCache::gotMessage( const Message &msg )
 #ifdef ENABLE_MHW_EPG
 		case Message::got_mhw2_channel_pid:
 		{
-			singleLock s(channel_map_lock);
+			std::scoped_lock<std::mutex> s(channel_map_lock);
 			for (ChannelMap::const_iterator it(m_knownChannels.begin()); it != m_knownChannels.end(); ++it)
 			{
 				eDVBChannel *channel = (eDVBChannel*) it->first;
@@ -1258,7 +1258,7 @@ void eEPGCache::gotMessage( const Message &msg )
 		}
 		case Message::got_mhw2_title_pid:
 		{
-			singleLock s(channel_map_lock);
+			std::scoped_lock<std::mutex> s(channel_map_lock);
 			for (ChannelMap::const_iterator it(m_knownChannels.begin()); it != m_knownChannels.end(); ++it)
 			{
 				eDVBChannel *channel = (eDVBChannel*) it->first;
@@ -1276,7 +1276,7 @@ void eEPGCache::gotMessage( const Message &msg )
 		}
 		case Message::got_mhw2_summary_pid:
 		{
-			singleLock s(channel_map_lock);
+			std::scoped_lock<std::mutex> s(channel_map_lock);
 			for (ChannelMap::const_iterator it(m_knownChannels.begin()); it != m_knownChannels.end(); ++it)
 			{
 				eDVBChannel *channel = (eDVBChannel*) it->first;
@@ -1359,7 +1359,7 @@ void eEPGCache::load()
 		ret = fread( text1, 13, 1, f);
 		if ( !memcmp( text1, "ENIGMA_EPG_V7", 13) )
 		{
-			singleLock s(cache_lock);
+			std::scoped_lock<std::mutex> s(cache_lock);
 			ret = fread( &size, sizeof(int), 1, f);
 			eventDB.rehash(size); /* Reserve buckets in advance */
 			while(size--)
@@ -1604,7 +1604,7 @@ void eEPGCache::channel_data::finishEPG()
 #ifdef ENABLE_OPENTV
 		cleanupOPENTV();
 #endif
-		singleLock l(cache_lock);
+		std::scoped_lock<std::mutex> l(cache_lock);
 		cache->channelLastUpdated[channel->getChannelID()] = ::time(0);
 	}
 }
@@ -2745,7 +2745,7 @@ RESULT eEPGCache::lookupEventTime(const eServiceReference &service, time_t t, co
 
 RESULT eEPGCache::lookupEventTime(const eServiceReference &service, time_t t, Event *& result, int direction)
 {
-	singleLock s(cache_lock);
+	std::scoped_lock<std::mutex> s(cache_lock);
 	const eventData *data=0;
 	RESULT ret = lookupEventTime(service, t, data, direction);
 	if ( !ret && data )
@@ -2755,7 +2755,7 @@ RESULT eEPGCache::lookupEventTime(const eServiceReference &service, time_t t, Ev
 
 RESULT eEPGCache::lookupEventTime(const eServiceReference &service, time_t t, ePtr<eServiceEvent> &result, int direction)
 {
-	singleLock s(cache_lock);
+	std::scoped_lock<std::mutex> s(cache_lock);
 	const eventData *data=0;
 	RESULT ret = lookupEventTime(service, t, data, direction);
 	result = NULL;
@@ -2794,7 +2794,7 @@ RESULT eEPGCache::lookupEventId(const eServiceReference &service, int event_id, 
 RESULT eEPGCache::saveEventToFile(const char* filename, const eServiceReference &service, int eit_event_id, time_t begTime, time_t endTime)
 {
 	RESULT ret = -1;
-	singleLock s(cache_lock);
+	std::scoped_lock<std::mutex> s(cache_lock);
 	const eventData *data = NULL;
 	if ( eit_event_id != -1 )
 	{
@@ -2833,7 +2833,7 @@ RESULT eEPGCache::saveEventToFile(const char* filename, const eServiceReference 
 
 RESULT eEPGCache::lookupEventId(const eServiceReference &service, int event_id, Event *& result)
 {
-	singleLock s(cache_lock);
+	std::scoped_lock<std::mutex> s(cache_lock);
 	const eventData *data=0;
 	RESULT ret = lookupEventId(service, event_id, data);
 	if ( !ret && data )
@@ -2843,7 +2843,7 @@ RESULT eEPGCache::lookupEventId(const eServiceReference &service, int event_id, 
 
 RESULT eEPGCache::lookupEventId(const eServiceReference &service, int event_id, ePtr<eServiceEvent> &result)
 {
-	singleLock s(cache_lock);
+	std::scoped_lock<std::mutex> s(cache_lock);
 	const eventData *data=0;
 	RESULT ret = lookupEventId(service, event_id, data);
 	result = NULL;
@@ -2859,7 +2859,7 @@ RESULT eEPGCache::lookupEventId(const eServiceReference &service, int event_id, 
 
 RESULT eEPGCache::startTimeQuery(const eServiceReference &service, time_t begin, int minutes)
 {
-	singleLock s(cache_lock);
+	std::scoped_lock<std::mutex> s(cache_lock);
 	const eServiceReferenceDVB &ref = (const eServiceReferenceDVB&)handleGroup(service);
 	if (begin == -1)
 		begin = ::time(0);
@@ -3208,7 +3208,7 @@ PyObject *eEPGCache::lookupEvent(ePyObject list, ePyObject convertFunc)
 			}
 			if (minutes)
 			{
-				singleLock s(cache_lock);
+				std::scoped_lock<std::mutex> s(cache_lock);
 				if (!startTimeQuery(ref, stime, minutes))
 				{
 					while ( m_timemap_cursor != m_timemap_end )
@@ -3229,7 +3229,7 @@ PyObject *eEPGCache::lookupEvent(ePyObject list, ePyObject convertFunc)
 				const eventData *ev_data=0;
 				if (stime)
 				{
-					singleLock s(cache_lock);
+					std::scoped_lock<std::mutex> s(cache_lock);
 					if (type == 2)
 						lookupEventId(ref, event_id, ev_data);
 					else
@@ -3678,7 +3678,7 @@ PyObject *eEPGCache::search(ePyObject arg)
 					if (ref.valid())
 					{
 						eventid = PyLong_AsLong(PyTuple_GET_ITEM(arg, 4));
-						singleLock s(cache_lock);
+						std::scoped_lock<std::mutex> s(cache_lock);
 						const eventData *evData = 0;
 						lookupEventId(ref, eventid, evData);
 						if (evData)
@@ -3751,7 +3751,7 @@ PyObject *eEPGCache::search(ePyObject arg)
 							break;
 					}
 					Py_BEGIN_ALLOW_THREADS; /* No Python code in this section, so other threads can run */
-					singleLock s(cache_lock);
+					std::scoped_lock<std::mutex> s(cache_lock);
 					std::string text;
 					for (DescriptorMap::iterator it(eventData::descriptors.begin());
 						it != eventData::descriptors.end(); ++it)
@@ -3872,7 +3872,7 @@ PyObject *eEPGCache::search(ePyObject arg)
 		// ref is only valid in SIMILAR_BROADCASTING_SEARCH
 		// in this case we start searching with the base service
 		bool first = ref.valid() ? true : false;
-		singleLock s(cache_lock);
+		std::scoped_lock<std::mutex> s(cache_lock);
 		eventCache::iterator cit(ref.valid() ? eventDB.find(ref) : eventDB.begin());
 		while(cit != eventDB.end() && maxcount)
 		{
@@ -4157,7 +4157,7 @@ struct less_datetime
 void eEPGCache::privateSectionRead(const uniqueEPGKey &current_service, const uint8_t *data)
 {
 	contentMap &content_time_table = content_time_tables[current_service];
-	singleLock s(cache_lock);
+	std::scoped_lock<std::mutex> s(cache_lock);
 	std::map< date_time, std::list<uniqueEPGKey>, less_datetime > start_times;
 	EventCacheItem &eventDBitem = eventDB[current_service];
 	eventMap &evMap = eventDBitem.byEvent;

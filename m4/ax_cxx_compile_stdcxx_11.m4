@@ -112,7 +112,7 @@ AC_DEFUN([AX_CXX_COMPILE_STDCXX_11], [dnl
 
   m4_if([$1], [noext], [], [dnl
   if test x$ac_success = xno; then
-    for switch in -std=gnu++11 -std=gnu++0x; do
+    for switch in -std=gnu++1z -std=gnu++0x; do
       cachevar=AS_TR_SH([ax_cv_cxx_compile_cxx11_$switch])
       AC_CACHE_CHECK(whether $CXX supports C++11 features with $switch,
                      $cachevar,

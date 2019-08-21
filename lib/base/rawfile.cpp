@@ -32,8 +32,10 @@ int eRawFile::open(const char *filename)
 	scan();
 	m_current_offset = 0;
 	m_last_offset = 0;
+#ifndef WIN32
 	m_fd = ::open(filename, O_RDONLY | O_LARGEFILE | O_CLOEXEC);
 	posix_fadvise(m_fd, 0, 0, POSIX_FADV_SEQUENTIAL);
+#endif
 	return m_fd;
 }
 
@@ -54,7 +56,9 @@ int eRawFile::close()
 	int ret = 0;
 	if (m_fd >= 0)
 	{
+#ifndef WIN32
 		posix_fadvise(m_fd, 0, 0, POSIX_FADV_DONTNEED);
+#endif
 		ret = ::close(m_fd);
 		m_fd = -1;
 	}
@@ -63,7 +67,7 @@ int eRawFile::close()
 
 ssize_t eRawFile::read(off_t offset, void *buf, size_t count)
 {
-	eSingleLocker l(m_lock);
+	std::scoped_lock<std::mutex> l(m_lock);
 
 	if (offset != m_current_offset)
 	{
@@ -153,7 +157,12 @@ int eRawFile::openFileUncached(int nr)
 		snprintf(suffix, 5, ".%03d", nr);
 		filename += suffix;
 	}
+#ifndef WIN32
 	return ::open(filename.c_str(), O_RDONLY | O_LARGEFILE | O_CLOEXEC);
+#else
+    __debugbreak();
+    return 0;
+#endif
 }
 
 off_t eRawFile::length()

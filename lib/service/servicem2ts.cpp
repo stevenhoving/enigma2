@@ -16,7 +16,7 @@ DEFINE_REF(eServiceFactoryM2TS)
 class eM2TSFile: public iTsSource
 {
 	DECLARE_REF(eM2TSFile);
-	eSingleLock m_lock;
+	estd::scoped_lock<std::mutex> m_lock;
 public:
 	eM2TSFile(const char *filename);
 	~eM2TSFile();
@@ -247,7 +247,7 @@ off_t eM2TSFile::lseek_internal(off_t offset, int whence)
 
 ssize_t eM2TSFile::read(off_t offset, void *b, size_t count)
 {
-	eSingleLocker l(m_lock);
+	std::scoped_lock<std::mutex> l(m_lock);
 	unsigned char tmp[192*3];
 	unsigned char *buf = (unsigned char*)b;
 

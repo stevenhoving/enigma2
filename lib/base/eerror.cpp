@@ -6,6 +6,10 @@
 #include <cstdlib>
 #include <cstring>
 #include <unistd.h>
+
+#ifdef WIN32
+#include "gettime.h"
+#endif
 #include <time.h>
 
 #include <string>
@@ -79,13 +83,14 @@ void DumpUnfreed()
 int debugLvl = lvlDebug;
 static bool debugTime = false;
 
-static pthread_mutex_t DebugLock = PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP;
+//static pthread_mutex_t DebugLock = PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP;
+static std::mutex DebugLock;
 #define RINGBUFFER_SIZE 16384
 static char ringbuffer[RINGBUFFER_SIZE];
 static unsigned int ringbuffer_head;
 static void logOutput(const char *data, unsigned int len)
 {
-	singleLock s(DebugLock);
+	std::scoped_lock<std::mutex> s(DebugLock);
 	while (len)
 	{
 		unsigned int remaining = RINGBUFFER_SIZE - ringbuffer_head;
@@ -180,7 +185,9 @@ void eDebugImpl(int flags, const char* fmt, ...)
 
 	logOutput(buf, pos);
 
-	::write(2, buf, pos);
+	//::write(2, buf, pos);
+    ::write(_fileno(stdout), buf, pos);
+
 
 	delete[] buf;
 	if (flags & _DBGFLG_FATAL)

@@ -1,8 +1,8 @@
 #include "filepush.h"
 #include <lib/base/eerror.h>
+#include <sys/ioctl.h>
 #include <errno.h>
 #include <fcntl.h>
-#include <sys/ioctl.h>
 
 //#define SHOW_WRITE_TIME
 
@@ -36,11 +36,13 @@ static void signal_handler(int x)
 
 static void ignore_but_report_signals()
 {
+#ifndef WIN32
 	/* we set the signal to not restart syscalls, so we can detect our signal. */
 	struct sigaction act;
 	act.sa_handler = signal_handler; // no, SIG_IGN doesn't do it. we want to receive the -EINTR
 	act.sa_flags = 0;
 	sigaction(SIGUSR1, &act, 0);
+#endif
 }
 
 void eFilePushThread::thread()
@@ -204,12 +206,12 @@ void eFilePushThread::thread()
 	sendEvent(evtStopped);
 
 	{ /* mutex lock scope */
-		eSingleLocker lock(m_run_mutex);
+		std::unique_lock<std::mutex> lock(m_run_mutex);
 		m_run_state = 0;
-		m_run_cond.signal(); /* Tell them we're here */
+        m_run_cond.notify_all();// signal(); /* Tell them we're here */
 		while (m_stop == 2) {
 			eDebug("[eFilePushThread] PAUSED");
-			m_run_cond.wait(m_run_mutex);
+			m_run_cond.wait(lock);
 		}
 		if (m_stop == 0)
 			m_run_state = 1;
@@ -236,7 +238,7 @@ void eFilePushThread::stop()
 		return;
 	m_stop = 1;
 	eDebug("[eFilePushThread] stopping thread");
-	m_run_cond.signal(); /* Break out of pause if needed */
+    m_run_cond.notify_all();// signal(); /* Break out of pause if needed */
 	sendSignal(SIGUSR1);
 	kill(); /* Kill means join actually */
 }
@@ -250,13 +252,13 @@ void eFilePushThread::pause()
 	}
 	/* Set thread into a paused state by setting m_stop to 2 and wait
 	 * for the thread to acknowledge that */
-	eSingleLocker lock(m_run_mutex);
+	std::unique_lock<std::mutex> lock(m_run_mutex);
 	m_stop = 2;
 	sendSignal(SIGUSR1);
-	m_run_cond.signal(); /* Trigger if in weird state */
+    m_run_cond.notify_all();// signal(); /* Trigger if in weird state */
 	while (m_run_state) {
 		eDebug("[eFilePushThread] waiting for pause");
-		m_run_cond.wait(m_run_mutex);
+		m_run_cond.wait(lock);
 	}
 }
 
@@ -269,9 +271,9 @@ void eFilePushThread::resume()
 	}
 	/* Resume the paused thread by resetting the flag and
 	 * signal the thread to release it */
-	eSingleLocker lock(m_run_mutex);
+	std::scoped_lock<std::mutex> lock(m_run_mutex);
 	m_stop = 0;
-	m_run_cond.signal(); /* Tell we're ready to resume */
+    m_run_cond.notify_all();// signal(); /* Tell we're ready to resume */
 }
 
 void eFilePushThread::enablePVRCommit(int s)
@@ -306,9 +308,6 @@ void eFilePushThread::recvEvent(const int &evt)
 void eFilePushThread::filterRecordData(const unsigned char *data, int len)
 {
 }
-
-
-
 
 eFilePushThreadRecorder::eFilePushThreadRecorder(unsigned char* buffer, size_t buffersize):
 	m_fd_source(-1),

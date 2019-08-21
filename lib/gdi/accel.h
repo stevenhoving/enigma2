@@ -1,7 +1,7 @@
 #ifndef __lib_gdi_accel_h
 #define __lib_gdi_accel_h
 
-#include <base/elock.h>
+#include <lib/base/elock.h>
 #include <list>
 
 struct gUnmanagedSurface;
@@ -43,7 +43,7 @@ private:
 	};
 	typedef std::list<MemoryBlock> MemoryBlockList;
 
-	eSingleLock m_allocation_lock;
+	estd::scoped_lock<std::mutex> m_allocation_lock;
 	void *m_accel_addr;
 	int m_accel_phys_addr;
 	int m_accel_size; // in blocks

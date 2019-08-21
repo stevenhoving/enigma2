@@ -12,6 +12,7 @@
 #include <lib/service/service.h>
 #include <libsig_comp.h>
 #include <connection.h>
+#include <shared_mutex>
 
 #define CAID_LIST std::list<uint16_t>
 
@@ -638,10 +639,11 @@ public:
 	void setSkipmode(const pts_t &ratio); /* 90000 is 1:1 */
 	void setDecodingDemux(iDVBDemux *demux, iTSMPEGDecoder *decoder);
 
-			/* frontend and backend */
-	eRdWrLock m_lock;
+	/* frontend and backend */
+	std::shared_mutex m_lock;
 
-			/* backend */
+
+	/* backend */
 	enum { evtSeek, evtSkipmode, evtSpanChanged };
 	RESULT connectEvent(const sigc::slot<void(int)> &event, ePtr<eConnection> &connection);
 

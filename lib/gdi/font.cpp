@@ -155,7 +155,7 @@ std::string fontRenderClass::AddFont(const std::string &filename, const std::str
 
 	n->scale=scale;
 	FT_Face face;
-	singleLock s(ftlock);
+	std::scoped_lock<std::mutex> s(ftlock);
 
 	if ((error=FT_New_Face(library, filename.c_str(), 0, &face)))
 		eFatal("[FONT] failed: %m");
@@ -230,7 +230,7 @@ float fontRenderClass::getLineHeight(const gFont& font)
 	getFont(fnt, font.family.c_str(), font.pointSize);
 	if (!fnt)
 		return 0;
-	singleLock s(ftlock);
+	std::scoped_lock<std::mutex> s(ftlock);
 	FT_Face current_face;
 	if ((FTC_Manager_LookupFace(cacheManager, fnt->scaler.face_id, &current_face) < 0) ||
 	    (FTC_Manager_LookupSize(cacheManager, &fnt->scaler, &fnt->size) < 0))
@@ -250,7 +250,7 @@ float fontRenderClass::getLineHeight(const gFont& font)
 
 fontRenderClass::~fontRenderClass()
 {
-	singleLock s(ftlock);
+	std::scoped_lock<std::mutex> s(ftlock);
 	while(font)
 	{
 		fontListEntry *f=font;
@@ -578,7 +578,7 @@ void eTextPara::setFont(Font *fnt, Font *replacement, Font *fallback)
 	current_font=fnt;
 	replacement_font=replacement;
 	fallback_font=fallback;
-	singleLock s(ftlock);
+	std::scoped_lock<std::mutex> s(ftlock);
 
 			// we ask for replacment_font first becauseof the cache
 	if (replacement_font)
@@ -629,7 +629,7 @@ shape (std::vector<unsigned long> &string, const std::vector<unsigned long> &tex
 
 int eTextPara::renderString(const char *string, int rflags, int border)
 {
-	singleLock s(ftlock);
+	std::scoped_lock<std::mutex> s(ftlock);
 
 	if (!current_font)
 		return -1;
@@ -893,7 +893,7 @@ void eTextPara::blit(gDC &dc, const ePoint &offset, const gRGB &background, cons
 {
 	if (glyphs.empty()) return;
 
-	singleLock s(ftlock);
+	std::scoped_lock<std::mutex> s(ftlock);
 
 	if (!current_font)
 		return;
@@ -1280,7 +1280,7 @@ void eTextPara::realign(int dir)	// der code hier ist ein wenig merkwuerdig.
 
 void eTextPara::clear()
 {
-	singleLock s(ftlock);
+	std::scoped_lock<std::mutex> s(ftlock);
 
 	current_font = 0;
 	replacement_font = 0;
