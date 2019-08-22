@@ -3,6 +3,7 @@
 
 #include <stdio.h>
 #include <string>
+#include <unistd.h>
 
 /* Wrapper around FILE to prevent leaks and to make your code a bit more OO */
 struct CFile

@@ -35,7 +35,7 @@ public:
 class std::scoped_lock<std::mutex>
 {
 protected:
-	estd::scoped_lock<std::mutex> &m_lock;
+	std::scoped_lock<std::mutex> &m_lock;
 public:
 	std::scoped_lock<std::mutex>(estd::scoped_lock<std::mutex> &m)
 		: m_lock(m)

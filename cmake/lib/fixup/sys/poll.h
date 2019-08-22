@@ -2,6 +2,15 @@
 
 //#include <poll.h>
 
+//#include <winsock2.h>
+//#include <ws2tcpip.h>
+
+#ifndef AF_LOCAL
+#define AF_LOCAL AF_UNIX
+#endif
+
+
+
 /* These are specified by iBCS2 */
 #define POLLIN		0x0001
 #define POLLPRI		0x0002
@@ -10,17 +19,17 @@
 #define POLLHUP		0x0010
 #define POLLNVAL	0x0020
 
-struct pollfd
-{
-    int fd;
-    short events;
-    short revents;
-};
+//struct pollfd
+//{
+//    int fd;
+//    short events;
+//    short revents;
+//};
 
 using nfds_t = unsigned int;
 
 
-int poll(struct pollfd *fds, nfds_t nfds, int timeout)
+static int poll(struct pollfd *fds, nfds_t nfds, int timeout)
 {
     printf("poll called\n");
     // don't do shit

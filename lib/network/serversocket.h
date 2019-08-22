@@ -10,10 +10,10 @@ class eServerSocket: public eSocket
 	std::string strRemoteHost;
 protected:
 	virtual void newConnection(int socket) = 0;
-	int startListening(struct addrinfo *addr);
-	int bind(int sockfd, struct sockaddr *addr, socklen_t addrlen);
+	int startListening(addrinfo *addr);
+	int bind(int sockfd, sockaddr *addr, socklen_t addrlen);
 	int listen(int sockfd, int backlog);
-	int accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen);
+	int accept(int sockfd, sockaddr *addr, socklen_t *addrlen);
 public:
 	/* INET serversocket constructor */
 	eServerSocket(int port, eMainloop *ml);

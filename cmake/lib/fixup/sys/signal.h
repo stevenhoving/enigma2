@@ -9,6 +9,7 @@
 typedef	void(*sig_t) __P((int));
 #endif
 
+typedef int pid_t;
 typedef unsigned int sigset_t;
 
 struct	sigaction {

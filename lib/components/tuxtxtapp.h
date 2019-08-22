@@ -15,7 +15,7 @@ class eTuxtxtApp: private eThread, public sigc::trackable
 	int demux;
 	bool enableTtCaching, uiRunning;
 	static eTuxtxtApp *instance;
-	pthread_mutex_t cacheChangeLock;
+	std::mutex cacheChangeLock;
 
 	eFixedMessagePump<int> messagePump;
 	void recvEvent(const int &evt);

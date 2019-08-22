@@ -32,7 +32,7 @@
 
 fontRenderClass *fontRenderClass::instance;
 
-static pthread_mutex_t ftlock=PTHREAD_ADAPTIVE_MUTEX_INITIALIZER_NP;
+static std::mutex ftlock;
 
 struct fntColorCacheKey
 {

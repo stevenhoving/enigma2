@@ -38,6 +38,12 @@ static unsigned int sleep(unsigned int seconds)
     return 0;
 }
 
+static unsigned int usleep(unsigned long long usec)
+{
+    std::this_thread::sleep_for(std::chrono::microseconds(usec));
+    return 0;
+}
+
 //struct fd_pair {
 //    long fd[2];
 //};
@@ -47,6 +53,12 @@ static unsigned int sleep(unsigned int seconds)
 static int pipe(int pipefd[2])
 {
     printf("pipe called\n");
+    return 0;
+}
+
+static int fsync(int fd)
+{
+    printf("fsync\n");
     return 0;
 }
 

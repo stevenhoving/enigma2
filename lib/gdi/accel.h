@@ -43,7 +43,7 @@ private:
 	};
 	typedef std::list<MemoryBlock> MemoryBlockList;
 
-	estd::scoped_lock<std::mutex> m_allocation_lock;
+	std::mutex m_allocation_lock;
 	void *m_accel_addr;
 	int m_accel_phys_addr;
 	int m_accel_size; // in blocks

@@ -143,7 +143,7 @@ private:
 	bool running;
 	unsigned short int pidList[30];
 	unsigned char buffer[4 * 1024 * 188];
-	pthread_t pumpThread;
+	std::thread pumpThread;
 	static void *threadproc(void *arg);
 	void *vtunerPump();
 
@@ -319,7 +319,7 @@ private:
 	void pvrEvent(int event);
 
 	int m_pvr_fd_dst;
-	estd::scoped_lock<std::mutex> m_tstools_lock;
+	std::mutex m_tstools_lock;
 	eDVBTSTools m_tstools;
 
 	ePtr<eCueSheet> m_cue;
@@ -332,7 +332,7 @@ private:
 	void getNextSourceSpan(off_t current_offset, size_t bytes_read, off_t &start, size_t &size, int blocksize, int &sof);
 	void flushPVR(iDVBDemux *decoding_demux=0);
 
-	estd::scoped_lock<std::mutex> m_cuesheet_lock;
+	std::mutex m_cuesheet_lock;
 
 	friend class eUsePtr<eDVBChannel>;
 		/* use count */

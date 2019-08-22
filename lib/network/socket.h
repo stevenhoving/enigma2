@@ -1,7 +1,6 @@
 #ifndef __socket_h
 #define __socket_h
 
-#include <stdio.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
@@ -12,8 +11,9 @@
 #include <lib/base/ebase.h>
 #include <lib/base/eerror.h>
 #include <lib/base/estring.h>
-#include <libsig_comp.h>
 #include <lib/base/buffer.h>
+#include <libsig_comp.h>
+#include <stdio.h>
 
 class eSocket: public sigc::trackable
 {

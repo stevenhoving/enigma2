@@ -16,7 +16,7 @@ DEFINE_REF(eServiceFactoryM2TS)
 class eM2TSFile: public iTsSource
 {
 	DECLARE_REF(eM2TSFile);
-	estd::scoped_lock<std::mutex> m_lock;
+	std::mutex m_lock;
 public:
 	eM2TSFile(const char *filename);
 	~eM2TSFile();

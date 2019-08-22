@@ -6,6 +6,7 @@
 #include <lib/gdi/accel.h>
 
 #include <time.h>
+#include "gettimeofday.h"
 
 gFBDC::gFBDC()
 {

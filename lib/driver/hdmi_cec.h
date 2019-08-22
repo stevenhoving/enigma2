@@ -66,7 +66,7 @@ public:
 		unsigned char address;
 		unsigned char length;
 		unsigned char data[256];
-	}__attribute__((packed));
+    };// __attribute__((packed));
 #define cec_rx_message cec_message
 	struct addressinfo
 	{

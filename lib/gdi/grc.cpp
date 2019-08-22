@@ -27,9 +27,9 @@ gRC::gRC(): rp(0), wp(0)
 	m_spinneronoff = 1;
 	CONNECT(m_notify_pump.recv_msg, gRC::recv_notify);
 #ifndef SYNC_PAINT
-	pthread_mutex_init(&mutex, 0);
-	pthread_cond_init(&cond, 0);
-	pthread_attr_t attr;
+	//pthread_mutex_init(&mutex, 0);
+	//pthread_cond_init(&cond, 0);
+	//pthread_attr_t attr;
 	pthread_attr_init(&attr);
 	if (pthread_attr_setstacksize(&attr, 2048*1024) != 0)
 		eDebug("[gRC] pthread_attr_setstacksize failed");

@@ -51,7 +51,7 @@ int eIOBuffer::empty() const
 int eIOBuffer::peek(void *dest, int len) const
 {
 	uint8_t *dst=(uint8_t*)dest;
-	std::list<eIOBufferData>::const_iterator i(buffer.begin());
+	auto i = buffer.begin();
 	int p=ptr;
 	int written=0;
 	while (len)

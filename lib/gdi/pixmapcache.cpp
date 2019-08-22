@@ -1,14 +1,15 @@
 #include <lib/gdi/pixmapcache.h>
+#include <lib/base/elock.h>
 
 #include <algorithm>
 #include <map>
 #include <string>
-#include <lib/base/elock.h>
 
-uint PixmapCache::MaximumSize = 256;
+
+unsigned int PixmapCache::MaximumSize = 256;
 
 // Cache objects work best when we manage the ref counting manually. ePtr brings memory protection violations on shutdown
-// We track the filesize and modified date of the file. If either change, the item is considered stale is removedand must be reloaded
+// We track the filesize and modified date of the file. If either change, the item is considered stale is removed and must be reloaded
 // We also track the last used time so the cache can remove least recently used items when it gets too full. Full is defined
 // as a number of items, rather than memory used, so there's a potential for the cache to occupy too much memory if
 // many large images are loaded with the cached flag set
@@ -49,7 +50,7 @@ static bool CompareLastUsed(NameToPixmap::value_type i, NameToPixmap::value_type
 	return i.second.lastUsed < j.second.lastUsed;
 }
 
-static estd::scoped_lock<std::mutex> pixmapCacheLock;
+static std::mutex pixmapCacheLock;
 static NameToPixmap pixmapCache;
 
 /* The "dispose" method isn't very efficient, but not called unless

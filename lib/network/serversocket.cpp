@@ -121,7 +121,7 @@ eServerSocket::eServerSocket(std::string path, eMainloop *ml) : eSocket(ml)
 	addr.ai_family = AF_LOCAL;
 	addr.ai_socktype = SOCK_STREAM;
 	addr.ai_protocol = 0; /* any */
-	addr.ai_addr = (struct sockaddr *)&serv_addr_un;
+	addr.ai_addr = (sockaddr *)&serv_addr_un;
 	addr.ai_addrlen = sizeof(serv_addr_un);
 
 	unlink(path.c_str());
@@ -175,7 +175,7 @@ int eServerSocket::startListening(struct addrinfo *addr)
 	return 0;
 }
 
-int eServerSocket::bind(int sockfd, struct sockaddr *addr, socklen_t addrlen)
+int eServerSocket::bind(int sockfd, sockaddr *addr, socklen_t addrlen)
 {
 	int result;
 	while (1)
@@ -197,7 +197,7 @@ int eServerSocket::listen(int sockfd, int backlog)
 	return result;
 }
 
-int eServerSocket::accept(int sockfd, struct sockaddr *addr, socklen_t *addrlen)
+int eServerSocket::accept(int sockfd, sockaddr *addr, socklen_t *addrlen)
 {
 	int result;
 	while (1)

@@ -13,7 +13,7 @@
 
 #include <vector>
 #include <list>
-#include <tr1/unordered_map>
+#include <unordered_map>
 
 #include <errno.h>
 
@@ -106,11 +106,11 @@ struct EventCacheItem {
 
 typedef std::set<uint32_t> tidMap;
 
-typedef std::tr1::unordered_map<uniqueEPGKey, EventCacheItem, hash_uniqueEPGKey, uniqueEPGKey::equal> eventCache;
+typedef std::unordered_map<uniqueEPGKey, EventCacheItem, hash_uniqueEPGKey> eventCache;
 #ifdef ENABLE_PRIVATE_EPG
-	typedef std::tr1::unordered_map<time_t, std::pair<time_t, uint16_t> > contentTimeMap;
-	typedef std::tr1::unordered_map<int, contentTimeMap > contentMap;
-	typedef std::tr1::unordered_map<uniqueEPGKey, contentMap, hash_uniqueEPGKey, uniqueEPGKey::equal > contentMaps;
+	typedef std::unordered_map<time_t, std::pair<time_t, uint16_t> > contentTimeMap;
+	typedef std::unordered_map<int, contentTimeMap > contentMap;
+	typedef std::unordered_map<uniqueEPGKey, contentMap, hash_uniqueEPGKey> contentMaps;
 #endif
 
 #endif
@@ -140,7 +140,7 @@ class eEPGCache: public eMainloop, private eThread, public sigc::trackable
 	DECLARE_REF(eEPGCache)
 	struct channel_data: public sigc::trackable
 	{
-		pthread_mutex_t channel_active;
+		std::mutex channel_active;
 		channel_data(eEPGCache*);
 		eEPGCache *cache;
 		ePtr<eTimer> abortTimer, zapTimer;
@@ -225,7 +225,7 @@ class eEPGCache: public eMainloop, private eThread, public sigc::trackable
 		void cleanupATSC();
 #endif
 #ifdef ENABLE_OPENTV
-		typedef std::tr1::unordered_map<uint32_t, std::string> OpenTvDescriptorMap;
+		typedef std::unordered_map<uint32_t, std::string> OpenTvDescriptorMap;
 		int m_OPENTV_EIT_index;
 		uint16_t m_OPENTV_pid;
 		uint32_t m_OPENTV_crc32;

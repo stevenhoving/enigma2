@@ -23,6 +23,8 @@
 #include <lib/gdi/region.h>
 #include <lib/gdi/gfont.h>
 #include <lib/gdi/compositing.h>
+#include <mutex>
+#include <condition_variable>
 
 class eTextPara;
 
@@ -158,9 +160,9 @@ class gRC: public iObject, public sigc::trackable
 
 #ifndef SYNC_PAINT
 	static void *thread_wrapper(void *ptr);
-	pthread_t the_thread;
-	pthread_mutex_t mutex;
-	pthread_cond_t cond;
+	std::thread the_thread;
+	std::mutex mutex;
+	std::condition_variable cond;
 #endif
 	void *thread();
 

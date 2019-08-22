@@ -1,6 +1,8 @@
 #ifndef __wrappers_h
 #define __wrappers_h
 
+using ssize_t = int64_t;
+
 ssize_t singleRead(int fd, void *buf, size_t count);
 ssize_t timedRead(int fd, void *buf, size_t count, int initialtimeout, int interbytetimeout);
 ssize_t readLine(int fd, char** buffer, size_t* bufsize);

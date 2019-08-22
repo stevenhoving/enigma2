@@ -8,7 +8,7 @@
 class PixmapCache
 {
 private:
-	static uint MaximumSize;
+	static unsigned int MaximumSize;
 public:
 	static void PixmapDisposed(gPixmap *pixmap);
 	static gPixmap* Get(const char *filename);

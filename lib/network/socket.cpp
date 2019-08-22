@@ -1,3 +1,5 @@
+//#include <winsock2.h>
+
 #include <sys/ioctl.h>
 #include <asm/ioctls.h>
 #include <unistd.h>
@@ -6,6 +8,7 @@
 #include <string.h>
 #include <linux/serial.h>
 #include <lib/network/socket.h>
+
 
 void eSocket::close()
 {
@@ -49,14 +52,15 @@ void eSocket::inject(const char *data, int len)
 
 std::string eSocket::readLine()
 {
-	int size=readbuffer.searchchr('\n');
+	int size = readbuffer.searchchr('\n');
 	if (size == -1)
 		return std::string();
-	size++; // ich will auch das \n
-	char buffer[size+1];
-	buffer[size]=0;
-	readbuffer.read(buffer, size);
-	return std::string(buffer);
+	size++; // I also want the '\n'
+    std::string buffer;// [size + 1];
+    buffer.resize(size + 1);
+	//buffer[size]=0;
+	readbuffer.read(std::data(buffer), size);
+	return buffer;
 }
 
 bool eSocket::canReadLine()
@@ -333,19 +337,19 @@ eUnixDomainSocket::~eUnixDomainSocket()
 int eUnixDomainSocket::connectToPath(std::string path)
 {
 	int res;
-	struct sockaddr_un serv_addr_un;
+	sockaddr_un serv_addr_un_;
 	struct addrinfo addr;
 
-	memset(&serv_addr_un, 0, sizeof(serv_addr_un));
-	serv_addr_un.sun_family = AF_LOCAL;
-	strcpy(serv_addr_un.sun_path, path.c_str());
+	memset(&serv_addr_un_, 0, sizeof(serv_addr_un_));
+    serv_addr_un_.sun_family = AF_LOCAL;
+	strcpy(serv_addr_un_.sun_path, path.c_str());
 
 	memset(&addr, 0, sizeof(addr));
 	addr.ai_family = AF_LOCAL;
 	addr.ai_socktype = SOCK_STREAM;
 	addr.ai_protocol = 0; /* any */
-	addr.ai_addr = (struct sockaddr *)&serv_addr_un;
-	addr.ai_addrlen = sizeof(serv_addr_un);
+	addr.ai_addr = (sockaddr *)&serv_addr_un_;
+	addr.ai_addrlen = sizeof(serv_addr_un_);
 
 	res = connect(&addr);
 	return res;

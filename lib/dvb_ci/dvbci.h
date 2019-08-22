@@ -123,7 +123,7 @@ class eCIClient : public eUnixDomainSocket
 		unsigned int magic;
 		unsigned int cmd;
 		unsigned int size;
-	}__attribute__((packed));
+    };// __attribute__((packed));
 
 	struct ciplus_message
 	{
@@ -132,7 +132,7 @@ class eCIClient : public eUnixDomainSocket
 		unsigned char tag[4];
 		unsigned int session;
 		unsigned int size;
-	}__attribute__((packed));
+    };// __attribute__((packed));
 
 	unsigned int receivedLength;
 	unsigned int receivedCmd;
