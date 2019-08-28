@@ -8,12 +8,32 @@
 #include <lib/gui/ewidgetdesktop.h>
 #include <lib/python/python.h>
 
-extern "C" int tuxtxt_run_ui(int pid, int demux);
-extern "C" int tuxtxt_init();
-extern "C" void tuxtxt_start(int tpid, int demux);
-extern "C" int tuxtxt_stop();
-extern "C" void tuxtxt_close();
-extern "C" void tuxtxt_handlePressedKey(int key);
+extern "C" int tuxtxt_run_ui(int pid, int demux)
+{
+    return 0;
+}
+extern "C" int tuxtxt_init()
+{
+    return 0;
+
+}
+extern "C" void tuxtxt_start(int tpid, int demux)
+{
+
+}
+extern "C" int tuxtxt_stop()
+{
+    return 0;
+
+}
+extern "C" void tuxtxt_close()
+{
+
+}
+extern "C" void tuxtxt_handlePressedKey(int key)
+{
+
+}
 
 eAutoInitP0<eTuxtxtApp> init_eTuxtxtApp(eAutoInitNumbers::lowlevel, "Tuxtxt");
 eTuxtxtApp *eTuxtxtApp::instance = NULL;
