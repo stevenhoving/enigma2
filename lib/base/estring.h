@@ -9,8 +9,6 @@
 
 std::string buildShortName( const std::string &str );
 
-int strnicmp(const char*, const char*, int);
-
 std::string getNum(int num, int base=10);
 
 std::string GB18030ToUTF8(const char *szIn, int len,int *pconvertedLen=0);
