@@ -20,6 +20,8 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install")
 
+add_definitions(-DWIN32_LEAN_AND_MEAN)
+
 ###############################################################################
 
 add_subdirectory(dep)

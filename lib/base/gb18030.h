@@ -4073,7 +4073,8 @@ static const Summary16 gb2312_uni2indx_pageff[15] = {
   { 7441, 0x0000 }, { 7441, 0x0000 }, { 7441, 0x002b },
 };
 
-__attribute__ ((unused))
+//__attribute__ ((unused))
+[[maybe_unused]]
 static int
 gb2312_wctomb(unsigned char *r, ucs4_t wc, int n)
 {

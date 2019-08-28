@@ -73,10 +73,9 @@ int eMMI_UI::processMMIData(int slot_id, const unsigned char *tag, const void *d
 			eDebug("[eMMI_UI] %d bytes text", textlen);
 		if ((d+textlen) > max)
 			break;
-		char str[textlen + 1];
-		memcpy(str, ((char*)d), textlen);
-		str[textlen] = '\0';
-		eDebug("[eMMI_UI] enq-text: %s",str);
+        std::string str((char*)d, textlen);
+
+		eDebug("[eMMI_UI] enq-text: %s",str.c_str());
 		mmiScreenEnq(slot_id, blind, alen, (char*)convertDVBUTF8(str).c_str());
 		break;
 	}
@@ -110,11 +109,9 @@ int eMMI_UI::processMMIData(int slot_id, const unsigned char *tag, const void *d
 			eDebug("[eMMI_UI] %d bytes text", textlen);
 			if ((d+textlen) > max)
 				break;
-			char str[textlen + 1];
-			memcpy(str, ((char*)d), textlen);
-			str[textlen] = '\0';
+            std::string str(((char*)d), textlen);
 			mmiScreenAddText(slot_id, pos++, (char*)convertDVBUTF8(str).c_str());
-			eDebug("[eMMI_UI] %s", str);
+			eDebug("[eMMI_UI] %s", str.c_str());
 			d += textlen;
 		}
 		mmiScreenFinish(slot_id);

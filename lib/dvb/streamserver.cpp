@@ -20,6 +20,8 @@
 #include <lib/dvb/streamserver.h>
 #include <lib/dvb/encoder.h>
 
+#define SOL_TCP		6
+
 eStreamClient::eStreamClient(eStreamServer *handler, int socket, const std::string remotehost)
  : parent(handler), encoderFd(-1), streamFd(socket), streamThread(NULL), m_remotehost(remotehost), m_timeout(eTimer::create(eApp))
 {
@@ -51,13 +53,13 @@ void eStreamClient::start()
 
 void eStreamClient::set_socket_option(int fd, int optid, int option)
 {
-	if(::setsockopt(fd, SOL_SOCKET, optid, &option, sizeof(option)))
+	if(::setsockopt(fd, SOL_SOCKET, optid, (const char*)&option, sizeof(option)))
 		eDebug("Failed to set socket option: %m");
 }
 
 void eStreamClient::set_tcp_option(int fd, int optid, int option)
 {
-	if(::setsockopt(fd, SOL_TCP, optid, &option, sizeof(option)))
+	if(::setsockopt(fd, SOL_TCP, optid, (const char*)&option, sizeof(option)))
 		eDebug("Failed to set TCP parameter: %m");
 }
 
@@ -106,6 +108,7 @@ void eStreamClient::notifier(int what)
 						username = authentication.substr(0, pos);
 						password = authentication.substr(pos + 1);
 						getpwnam_r(username.c_str(), &pwd, buffer, 4096, &pwdresult);
+#if 0
 						if (pwdresult)
 						{
 							struct crypt_data cryptdata;
@@ -125,6 +128,7 @@ void eStreamClient::notifier(int what)
 							cryptresult = crypt_r(password.c_str(), crypt.c_str(), &cryptdata);
 							authenticated = cryptresult && cryptresult == crypt;
 						}
+#endif
 						free(buffer);
 					}
 				}
@@ -157,7 +161,7 @@ void eStreamClient::notifier(int what)
 				set_tcp_option(streamFd, TCP_KEEPIDLE, 1);	// after 1 second of idle
 				set_tcp_option(streamFd, TCP_KEEPCNT, 2);	// drop connection after second miss
 				/* also set 10 seconds data push timeout */
-				set_tcp_option(streamFd, TCP_USER_TIMEOUT, 10 * 1000);
+				//set_tcp_option(streamFd, TCP_USER_TIMEOUT, 10 * 1000);
 
 				if (serviceref.substr(0, 10) == "file?file=") /* convert openwebif stream reqeust back to serviceref */
 					serviceref = "1:0:1:0:0:0:0:0:0:0:" + serviceref.substr(10);

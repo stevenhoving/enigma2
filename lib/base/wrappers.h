@@ -3,6 +3,9 @@
 
 using ssize_t = int64_t;
 
+#include <WinSock2.h>
+#include <windows.h>
+
 ssize_t singleRead(int fd, void *buf, size_t count);
 ssize_t timedRead(int fd, void *buf, size_t count, int initialtimeout, int interbytetimeout);
 ssize_t readLine(int fd, char** buffer, size_t* bufsize);

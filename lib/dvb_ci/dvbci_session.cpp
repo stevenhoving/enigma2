@@ -81,13 +81,13 @@ int eDVBCISession::parseLengthField(const unsigned char *pkt, int &len)
 
 void eDVBCISession::sendAPDU(const unsigned char *tag, const void *data, int len)
 {
-	unsigned char pkt[len+3+4];
+	std::vector<unsigned char> pkt(len+3+4);
 	int l;
-	memcpy(pkt, tag, 3);
-	l=buildLengthField(pkt+3, len);
+	memcpy(std::data(pkt), tag, 3);
+	l=buildLengthField(std::data(pkt) +3, len);
 	if (data)
-		memcpy(pkt+3+l, data, len);
-	sendSPDU(0x90, 0, 0, pkt, len+3+l);
+		memcpy(std::data(pkt) +3+l, data, len);
+	sendSPDU(0x90, 0, 0, std::data(pkt), len+3+l);
 }
 
 void eDVBCISession::sendSPDU(unsigned char tag, const void *data, int len, const void *apdu, int alen)

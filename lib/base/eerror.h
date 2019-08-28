@@ -1,6 +1,8 @@
 #ifndef __E_ERROR__
 #define __E_ERROR__
 
+//#include <WinSock2.h>
+
 #include <string>
 #include <map>
 #include <new>

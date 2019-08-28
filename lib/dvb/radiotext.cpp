@@ -408,18 +408,21 @@ void eDVBRdsDecoder::gotAncillaryData(const uint8_t *buf, int len)
 					break;
 				case 10:
 					// TODO build a complete radiotext charcode to UTF8 conversion table for all character > 0x80
-					switch (c)
-					{
-						case 0 ... 0x7f: break;
-						case 0x8d: c='ß'; break;
-						case 0x91: c='ä'; break;
-						case 0xd1: c='Ä'; break;
-						case 0x97: c='ö'; break;
-						case 0xd7: c='Ö'; break;
-						case 0x99: c='ü'; break;
-						case 0xd9: c='Ü'; break;
-						default: c=' '; break;  // convert all unknown to space
-					}
+                    if (!(c >= 0 && c <= 0x7f))
+                    {
+                        switch (c)
+                        {
+                        case 0x8d: c = 'ß'; break;
+                        case 0x91: c = 'ä'; break;
+                        case 0xd1: c = 'Ä'; break;
+                        case 0x97: c = 'ö'; break;
+                        case 0xd7: c = 'Ö'; break;
+                        case 0x99: c = 'ü'; break;
+                        case 0xd9: c = 'Ü'; break;
+                        default: c = ' '; break;  // convert all unknown to space
+                        }
+                    }
+
 					message[msgPtr++]=c;
 					if(text_len)
 						--text_len;

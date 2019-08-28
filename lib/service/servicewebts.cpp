@@ -238,7 +238,7 @@ int eServiceWebTS::openHttpConnection(std::string url)
 
 	struct sockaddr_in addr;
 	addr.sin_family = AF_INET;
-	addr.sin_addr.s_addr = *((in_addr_t*)h->h_addr_list[0]);
+//	addr.sin_addr.s_addr = *((in_addr_t*)h->h_addr_list[0]);
 	addr.sin_port = htons(port);
 
 	eDebug("connecting to %s", url.c_str());
@@ -749,7 +749,7 @@ void eStreamThreadWeb::thread() {
 	hasStarted();
 	eDebug("eStreamThreadWeb started");
 	while (!m_stop) {
-		pthread_testcancel();
+//		pthread_testcancel();
 		FD_ZERO(&rfds);
 		FD_ZERO(&wfds);
 		maxfd = 0;

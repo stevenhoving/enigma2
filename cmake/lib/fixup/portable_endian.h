@@ -105,6 +105,7 @@
 #	    define le64toh(x) letoh64(x)
 #   endif
 #elif defined(_WIN16) || defined(_WIN32) || defined(_WIN64)
+#   include <winsock2.h>
 #   include <windows.h>
 #	if BYTE_ORDER == LITTLE_ENDIAN
 #       if defined(_MSC_VER)

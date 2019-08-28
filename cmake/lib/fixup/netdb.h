@@ -16,7 +16,7 @@
 #define	F_SETLKW	9		/* F_SETLK; wait if blocked */
 
 
-int	fcntl(int, int, ...)
-{
-    return 0;
-}
+//static int	fcntl(int, int, ...)
+//{
+//    return 0;
+//}

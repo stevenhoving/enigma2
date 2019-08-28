@@ -335,7 +335,7 @@ eDVBPESReader::eDVBPESReader(eDVBDemux *demux, eMainloop *context, RESULT &res):
 	if (m_fd >= 0)
 	{
 		setBufferSize(64*1024);
-		::fcntl(m_fd, F_SETFL, O_NONBLOCK);
+		//::fcntl(m_fd, F_SETFL, O_NONBLOCK);
 		m_notifier = eSocketNotifier::create(context, m_fd, eSocketNotifier::Read, false);
 		CONNECT(m_notifier->activated, eDVBPESReader::data);
 		res = 0;
@@ -617,7 +617,7 @@ void eDVBRecordFileThread::flush()
 	}
 	if (m_fd_dest >= 0)
 	{
-		posix_fadvise(m_fd_dest, 0, 0, POSIX_FADV_DONTNEED);
+		//posix_fadvise(m_fd_dest, 0, 0, POSIX_FADV_DONTNEED);
 	}
 }
 

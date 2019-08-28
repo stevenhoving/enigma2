@@ -4,6 +4,7 @@
 #include <lib/base/encoding.h>
 #include <lib/base/eerror.h>
 #include <lib/base/eenv.h>
+#include "getline.h"
 
 eDVBTextEncodingHandler encodingHandler;  // the one and only instance
 int defaultEncodingTable = 1;   // the one and only instance
@@ -70,7 +71,9 @@ eDVBTextEncodingHandler::eDVBTextEncodingHandler()
 	{
 		size_t bufsize = 256;
 		char *line = (char*) malloc(bufsize);
-		char countrycode[bufsize];
+        std::string countrycode;// (bufsize);
+        countrycode.resize(bufsize);
+
 		char *s_table = (char*) malloc(bufsize);
 		while (getline(&line, &bufsize, f) != -1)
 		{
@@ -98,7 +101,7 @@ eDVBTextEncodingHandler::eDVBTextEncodingHandler()
 				m_TransponderUseTwoCharMapping.insert((tsid<<16)|onid);
 				encoding = 0; // avoid spurious error message
 			}
-			else if (sscanf(line, "%s %s", countrycode, s_table) == 2 ) {
+			else if (sscanf(line, "%s %s", std::data(countrycode), s_table) == 2 ) {
 				encoding = mapEncoding(s_table);
 				if (encoding != -1) {
 					if (countrycode[0] == '*')
@@ -120,9 +123,8 @@ eDVBTextEncodingHandler::eDVBTextEncodingHandler()
 
 void eDVBTextEncodingHandler::getTransponderDefaultMapping(int tsidonid, int &table)
 {
-	std::map<int, int>::iterator it =
-		m_TransponderDefaultMapping.find(tsidonid);
-	if ( it != m_TransponderDefaultMapping.end() )
+	const auto it = m_TransponderDefaultMapping.find(tsidonid);
+	if ( it != m_TransponderDefaultMapping.end())
 		table = it->second;
 }
 

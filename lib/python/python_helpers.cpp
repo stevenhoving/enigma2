@@ -1,4 +1,8 @@
+#include <winsock2.h>
+#include <windows.h>
 #include <lib/python/python_helpers.h>
+
+
 
 void PutToDict(ePyObject &dict, const char *key, long value)
 {

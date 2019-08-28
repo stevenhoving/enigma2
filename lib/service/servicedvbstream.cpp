@@ -5,6 +5,7 @@
 #include <lib/dvb/metaparser.h>
 #include <lib/base/nconfig.h>
 #include <fcntl.h>
+#include <iterator>
 
 DEFINE_REF(eDVBServiceStream);
 

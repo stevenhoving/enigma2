@@ -13,6 +13,10 @@
 
 #define TIME_UPDATE_INTERVAL (30*60*1000)
 
+#define timegm _mkgmtime
+#define localtime_r(a, b) localtime_s(b, a)
+#include "gettimeofday.h"
+
 static time_t prev_time;
 
 void setRTC(time_t time)
@@ -89,7 +93,7 @@ static void parseDVBdate(tm& t, int mjd)
 	t.tm_mon--;
 
 	t.tm_isdst =  0;
-	t.tm_gmtoff = 0;
+	//t.tm_gmtoff = 0;
 }
 
 static inline void parseDVBtime_impl(tm& t, const uint8_t *data)
@@ -406,10 +410,10 @@ void eDVBLocalTimeHandler::updateTime( time_t tp_time, eDVBChannel *chan, int up
 
 					tdelta.tv_sec = time_difference;
 
-					if(adjtime(&tdelta, &tolddelta) == 0)
-						eDebug("[eDVBLocalTimerHandler] slewing Linux Time by %03d seconds", time_difference);
-					else
-						eDebug("[eDVBLocalTimerHandler] slewing Linux Time by %03d seconds FAILED", time_difference);
+					//if(adjtime(&tdelta, &tolddelta) == 0)
+					//	eDebug("[eDVBLocalTimerHandler] slewing Linux Time by %03d seconds", time_difference);
+					//else
+					//	eDebug("[eDVBLocalTimerHandler] slewing Linux Time by %03d seconds FAILED", time_difference);
 				}
 				else
 				{

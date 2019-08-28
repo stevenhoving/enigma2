@@ -1,3 +1,5 @@
+#define _CRT_DECLARE_NONSTDC_NAMES 1
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <fcntl.h>
@@ -17,6 +19,8 @@
 #define FBIO_SET_MANUAL_BLIT _IOW('F', 0x21, __u8)
 #define FBIO_BLIT 0x22
 #endif
+
+#define O_RDWR       _O_RDWR
 
 fbClass *fbClass::instance;
 

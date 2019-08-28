@@ -30,15 +30,21 @@ gRC::gRC(): rp(0), wp(0)
 	//pthread_mutex_init(&mutex, 0);
 	//pthread_cond_init(&cond, 0);
 	//pthread_attr_t attr;
-	pthread_attr_init(&attr);
-	if (pthread_attr_setstacksize(&attr, 2048*1024) != 0)
-		eDebug("[gRC] pthread_attr_setstacksize failed");
-	int res = pthread_create(&the_thread, &attr, thread_wrapper, this);
-	pthread_attr_destroy(&attr);
-	if (res)
-		eFatal("[gRC] thread couldn't be created");
-	else
-		eDebug("[gRC] thread created successfully");
+	//pthread_attr_init(&attr);
+	//if (pthread_attr_setstacksize(&attr, 2048*1024) != 0)
+	//	eDebug("[gRC] pthread_attr_setstacksize failed");
+	//int res = pthread_create(&the_thread, &attr, thread_wrapper, this);
+	//pthread_attr_destroy(&attr);
+    the_thread = std::thread(
+        [this]()
+        {
+        thread_wrapper(this);
+        }
+    );
+	//if (res)
+	//	eFatal("[gRC] thread couldn't be created");
+	//else
+	//	eDebug("[gRC] thread created successfully");
 #endif
 	m_spinner_enabled = 0;
 	m_spinneronoff = 1;
@@ -55,7 +61,8 @@ gRC::~gRC()
 	submit(o);
 #ifndef SYNC_PAINT
 	eDebug("[gRC] waiting for gRC thread shutdown");
-	pthread_join(the_thread, 0);
+	//pthread_join(the_thread, 0);
+    the_thread.join();
 	eDebug("[gRC] thread has finished");
 #endif
 }
@@ -65,7 +72,8 @@ void gRC::submit(const gOpcode &o)
 	while(1)
 	{
 #ifndef SYNC_PAINT
-		pthread_mutex_lock(&mutex);
+		//pthread_mutex_lock(&mutex);
+        std::unique_lock lock(mutex);
 #endif
 		int tmp=wp+1;
 		if ( tmp == MAXSIZE )
@@ -73,8 +81,10 @@ void gRC::submit(const gOpcode &o)
 		if ( tmp == rp )
 		{
 #ifndef SYNC_PAINT
-			pthread_cond_signal(&cond);  // wakeup gdi thread
-			pthread_mutex_unlock(&mutex);
+            cond.notify_all();
+			//pthread_cond_signal(&cond);  // wakeup gdi thread
+			//pthread_mutex_unlock(&mutex);
+            lock.unlock();
 #else
 			thread();
 #endif
@@ -89,10 +99,12 @@ void gRC::submit(const gOpcode &o)
 		queue[wp++]=o;
 		if ( wp == MAXSIZE )
 			wp = 0;
-		if (o.opcode==gOpcode::flush||o.opcode==gOpcode::shutdown||o.opcode==gOpcode::notify)
+        if (o.opcode == gOpcode::flush || o.opcode == gOpcode::shutdown || o.opcode == gOpcode::notify)
 #ifndef SYNC_PAINT
-			pthread_cond_signal(&cond);  // wakeup gdi thread
-		pthread_mutex_unlock(&mutex);
+            //pthread_cond_signal(&cond);  // wakeup gdi thread
+            cond.notify_all();
+		//pthread_mutex_unlock(&mutex);
+        mutex.unlock();
 #else
 			thread(); // paint
 #endif
@@ -111,7 +123,8 @@ void *gRC::thread()
 	{
 #endif
 #ifndef SYNC_PAINT
-		pthread_mutex_lock(&mutex);
+		//pthread_mutex_lock(&mutex);
+        std::unique_lock lock(mutex);
 #endif
 		if ( rp != wp )
 		{
@@ -122,7 +135,8 @@ void *gRC::thread()
 			if ( rp == MAXSIZE )
 				rp=0;
 #ifndef SYNC_PAINT
-			pthread_mutex_unlock(&mutex);
+			//pthread_mutex_unlock(&mutex);
+            lock.unlock();
 #endif
 			if (o.opcode==gOpcode::shutdown)
 				break;
@@ -149,7 +163,6 @@ void *gRC::thread()
 #ifndef SYNC_PAINT
 			while(rp == wp)
 			{
-
 					/* when the main thread is non-idle for a too long time without any display output,
 					   we want to display a spinner. */
 				struct timespec timeout;
@@ -170,7 +183,8 @@ void *gRC::thread()
 
 				int idle = 1;
 
-				if (pthread_cond_timedwait(&cond, &mutex, &timeout) == ETIMEDOUT)
+                const auto result = cond.wait_for(lock, std::chrono::seconds(timeout.tv_sec) + std::chrono::nanoseconds(timeout.tv_nsec));
+                if (result != std::cv_status::timeout)
 				{
 					if (eApp && !eApp->isIdle())
 					{
@@ -190,12 +204,12 @@ void *gRC::thread()
 				} else
 					disableSpinner();
 			}
-			pthread_mutex_unlock(&mutex);
+			//pthread_mutex_unlock(&mutex);
 #endif
 		}
 	}
 #ifndef SYNC_PAINT
-	pthread_exit(0);
+	//pthread_exit(0);
 #endif
 	return 0;
 }

@@ -265,7 +265,7 @@ eDVBUsbAdapter::eDVBUsbAdapter(int nr)
 	char name[128] = {0};
 	int vtunerid = nr - 1;
 
-	pumpThread = 0;
+	//pumpThread = 0;
 
 	int num_fe = 0;
 	while (1)
@@ -432,7 +432,14 @@ eDVBUsbAdapter::eDVBUsbAdapter(int nr)
 		goto error;
 	}
 	running = true;
-	pthread_create(&pumpThread, NULL, threadproc, (void*)this);
+	//pthread_create(&pumpThread, NULL, threadproc, (void*)this);
+    pumpThread = std::thread(
+        [this]
+        {
+            threadproc(this);
+        }
+    );
+
 	return;
 
 error:
@@ -456,7 +463,10 @@ eDVBUsbAdapter::~eDVBUsbAdapter()
 		::close(pipeFd[1]);
 		pipeFd[1] = -1;
 	}
-	if (pumpThread) pthread_join(pumpThread, NULL);
+	//if (pumpThread) pthread_join(pumpThread, NULL);
+    if (pumpThread.joinable())
+        pumpThread.join();
+
 	if (pipeFd[0] >= 0)
 	{
 		::close(pipeFd[0]);
@@ -1054,10 +1064,10 @@ RESULT eDVBResourceManager::getChannelList(ePtr<iDVBChannelList> &list)
 		return -ENOENT;
 }
 
-#define eDebugNoSimulate(x...) \
+#define eDebugNoSimulate(...) \
 	do { \
 		if (!simulate) \
-			eDebug(x); \
+			eDebug(__VA_ARGS__); \
 	} while(0)
 
 
@@ -1621,9 +1631,11 @@ void eDVBChannel::cueSheetEvent(int event)
 	case eCueSheet::evtSkipmode:
 	{
 		{
-			m_cue->m_lock.WrLock();
-			m_cue->m_seek_requests.push_back(std::pair<int, pts_t>(1, 0)); /* resync */
-			m_cue->m_lock.Unlock();
+            {
+                std::unique_lock ulock{ m_cue->m_lock };
+		        m_cue->m_seek_requests.push_back(std::pair<int, pts_t>(1, 0)); /* resync */
+            }
+			
 			std::shared_lock<std::shared_mutex> l(m_cue->m_lock);
 			if (m_cue->m_skipmode_ratio)
 			{
@@ -1777,16 +1789,17 @@ void eDVBChannel::getNextSourceSpan(off_t current_offset, size_t bytes_read, off
 		}
 	}
 
-	m_cue->m_lock.RdLock();
+	m_cue->m_lock.lock_shared();
 
 	while (!m_cue->m_seek_requests.empty())
 	{
-		std::pair<int, pts_t> seek = m_cue->m_seek_requests.front();
-		m_cue->m_lock.Unlock();
-		m_cue->m_lock.WrLock();
+		auto seek = m_cue->m_seek_requests.front();
+		m_cue->m_lock.unlock_shared();
+		m_cue->m_lock.lock();
 		m_cue->m_seek_requests.pop_front();
-		m_cue->m_lock.Unlock();
-		m_cue->m_lock.RdLock();
+		m_cue->m_lock.unlock();
+		m_cue->m_lock.lock_shared();
+
 		int relative = seek.first;
 		pts_t pts = seek.second;
 		pts_t now = 0;
@@ -1869,9 +1882,9 @@ void eDVBChannel::getNextSourceSpan(off_t current_offset, size_t bytes_read, off
 		current_offset = align(offset, blocksize); /* in case tstools return non-aligned offset */
 	}
 
-	m_cue->m_lock.Unlock();
+	m_cue->m_lock.unlock_shared();
 
-	for (std::list<std::pair<off_t, off_t> >::const_iterator i(m_source_span.begin()); i != m_source_span.end(); ++i)
+	for (auto i = m_source_span.cbegin(); i != m_source_span.end(); ++i)
 	{
 		if (current_offset >= i->first)
 		{
@@ -2289,25 +2302,27 @@ eCueSheet::eCueSheet()
 
 void eCueSheet::seekTo(int relative, const pts_t &pts)
 {
-	m_lock.WrLock();
-	m_seek_requests.push_back(std::pair<int, pts_t>(relative, pts));
-	m_lock.Unlock();
+    {
+        std::unique_lock ulock(m_lock);
+        m_seek_requests.push_back(std::pair<int, pts_t>(relative, pts));
+    }
+
 	m_event(evtSeek);
 }
 
 void eCueSheet::clear()
 {
-	m_lock.WrLock();
+    std::unique_lock ulock(m_lock);
 	m_spans.clear();
-	m_lock.Unlock();
 }
 
 void eCueSheet::addSourceSpan(const pts_t &begin, const pts_t &end)
 {
 	ASSERT(begin < end);
-	m_lock.WrLock();
-	m_spans.push_back(std::pair<pts_t, pts_t>(begin, end));
-	m_lock.Unlock();
+    {
+        std::unique_lock ulock(m_lock);
+        m_spans.push_back(std::pair<pts_t, pts_t>(begin, end));
+    }
 }
 
 void eCueSheet::commitSpans()
@@ -2317,9 +2332,10 @@ void eCueSheet::commitSpans()
 
 void eCueSheet::setSkipmode(const pts_t &ratio)
 {
-	m_lock.WrLock();
-	m_skipmode_ratio = ratio;
-	m_lock.Unlock();
+    {
+        std::unique_lock ulock(m_lock);
+        m_skipmode_ratio = ratio;
+    }
 	m_event(evtSkipmode);
 }
 

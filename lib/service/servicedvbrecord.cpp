@@ -11,6 +11,12 @@
 #include <byteswap.h>
 #include <netinet/in.h>
 
+#include <iterator>
+
+#ifndef O_LARGEFILE
+#define O_LARGEFILE        00100000
+#endif
+
 DEFINE_REF(eDVBServiceRecord);
 
 eDVBServiceRecord::eDVBServiceRecord(const eServiceReferenceDVB &ref, bool isstreamclient): m_ref(ref)

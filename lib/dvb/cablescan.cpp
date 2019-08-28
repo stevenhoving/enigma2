@@ -162,9 +162,9 @@ void eCableScan::parseNIT()
 				}
 				case LOGICAL_CHANNEL_DESCRIPTOR:
 				{
-					unsigned char buf[(*desc)->getLength() + 2];
-					(*desc)->writeToBuffer(buf);
-					LogicalChannelDescriptor d(buf);
+					std::vector<unsigned char> buf((*desc)->getLength() + 2);
+					(*desc)->writeToBuffer(std::data(buf));
+					LogicalChannelDescriptor d(std::data(buf));
 					const LogicalChannelList &channels = *d.getChannelList();
 					for (LogicalChannelListConstIterator c(channels.begin()); c != channels.end(); ++c)
 					{
@@ -174,9 +174,9 @@ void eCableScan::parseNIT()
 				}
 				case HD_SIMULCAST_LOGICAL_CHANNEL_DESCRIPTOR:
 				{
-					unsigned char buf[(*desc)->getLength() + 2];
-					(*desc)->writeToBuffer(buf);
-					LogicalChannelDescriptor d(buf);
+					std::vector<unsigned char> buf((*desc)->getLength() + 2);
+					(*desc)->writeToBuffer(std::data(buf));
+					LogicalChannelDescriptor d(std::data(buf));
 					const LogicalChannelList &channels = *d.getChannelList();
 					for (LogicalChannelListConstIterator c(channels.begin()); c != channels.end(); ++c)
 					{

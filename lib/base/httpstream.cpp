@@ -5,6 +5,9 @@
 #include <lib/base/wrappers.h>
 #include <lib/base/nconfig.h> // access to python config
 
+#define strcasecmp  stricmp
+#define strncasecmp  strnicmp
+
 DEFINE_REF(eHttpStream);
 
 eHttpStream::eHttpStream()
@@ -240,7 +243,8 @@ int eHttpStream::open(const char *url)
 void eHttpStream::thread()
 {
 	hasStarted();
-	usleep(startDelay); // wait up to half a second
+	//usleep(startDelay); // wait up to half a second
+    std::this_thread::sleep_for(std::chrono::microseconds(startDelay));
 	std::string currenturl, newurl;
 	currenturl = streamUrl;
 	for (unsigned int i = 0; i < 5; i++)

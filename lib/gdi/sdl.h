@@ -9,7 +9,8 @@
 class gSDLDC: public gMainDC, public eThread, public sigc::trackable
 {
 private:
-	SDL_Surface *m_screen;
+	//SDL_Surface *m_screen;
+    SDL_Window * m_screen;
 	void exec(const gOpcode *opcode);
 
 	gUnmanagedSurface m_surface;

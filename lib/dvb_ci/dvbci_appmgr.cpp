@@ -40,15 +40,15 @@ int eDVBCIApplicationManagerSession::receivedAPDU(const unsigned char *tag,const
 				eDebug("[CI AM] warning, invalid length (%d vs %d)", dl+6, len);
 				dl=len-6;
 			}
-			char str[dl + 1];
-			memcpy(str, ((char*)data) + 6, dl);
+			std::vector<char> str(dl + 1);
+			memcpy(str.data(), ((char*)data) + 6, dl);
 			str[dl] = '\0';
 			eDebugNoNewLine("[CI AM]   menu string: ");
 			for (int i = 0; i < dl; ++i)
 				eDebugNoNewLine("%c", ((unsigned char*)data)[i+6]);
 			eDebugNoNewLine("\n");
 
-			eDVBCI_UI::getInstance()->setAppName(slot->getSlotID(), str);
+			eDVBCI_UI::getInstance()->setAppName(slot->getSlotID(), str.data());
 
 			eDVBCI_UI::getInstance()->setState(slot->getSlotID(), 2);
 			break;

@@ -12,6 +12,15 @@
 #endif
 #include <lib/gdi/glcddc.h>
 
+#define O_RDONLY     _O_RDONLY
+#define O_WRONLY     _O_WRONLY
+#define O_RDWR       _O_RDWR
+#define O_APPEND     _O_APPEND
+#define O_CREAT      _O_CREAT
+#define O_TRUNC      _O_TRUNC
+#define O_EXCL       _O_EXCL
+#define O_TEXT       _O_TEXT
+
 eLCD *eLCD::instance;
 
 eLCD::eLCD()
@@ -253,7 +262,7 @@ void eDBoxLCD::update()
 		{
 			unsigned int height = res.height();
 			unsigned int width = res.width();
-			unsigned char raw[_stride * height];
+			std::vector<unsigned char> raw(_stride * height);
 			for (unsigned int y = 0; y < height; y++)
 			{
 				for (unsigned int x = 0; x < width; x++)
@@ -265,7 +274,7 @@ void eDBoxLCD::update()
 						raw[y * width + x] = _buffer[y * width + x] ^ inverted;
 				}
 			}
-			write(lcdfd, raw, _stride * height);
+			write(lcdfd, std::data(raw), _stride * height);
 		}
 		else
 			write(lcdfd, _buffer, _stride * res.height());

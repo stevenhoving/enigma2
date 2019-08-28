@@ -16,7 +16,7 @@ using caddr_t = unsigned int;
 
  /*
   * Sharing types; choose one
-  */
+  */    
 #define	MAP_COPY	0x0020	/* "copy" region at mmap time */
 #define	MAP_SHARED	0x0010	/* share changes */
 #define	MAP_PRIVATE	0x0000	/* changes are private */
@@ -28,6 +28,8 @@ using caddr_t = unsigned int;
 #define	MAP_NOEXTEND	0x0200	/* for MAP_FILE, don't change file size */
 #define	MAP_HASSEMPHORE	0x0400	/* region may contain semaphores */
 #define	MAP_INHERIT	0x0800	/* region is retained after exec */
+
+#define MAP_ANONYMOUS   0x1000 // hack
 
    /*
     * Advice to madvise
@@ -42,6 +44,8 @@ using caddr_t = unsigned int;
 #define MS_ASYNC        1
 #define MS_SYNC         2
 #define MS_INVALIDATE   4
+
+#define MAP_FAILED      ((void *)-1)
 
 static caddr_t mmap(caddr_t, size_t, int, int, int, off_t)
 {

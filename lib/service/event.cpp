@@ -16,6 +16,8 @@
 #include <sys/types.h>
 #include <fcntl.h>
 
+#define localtime_r(a, b) localtime_s(b, a)
+
 // static members / methods
 std::string eServiceEvent::m_language = "";
 std::string eServiceEvent::m_language_alternative = "";

@@ -9,6 +9,14 @@
 #include <sys/wait.h>
 #include <fcntl.h>
 
+#define SIGKILL 9
+#define F_SETFL		4	/* set file->f_flags */
+static int kill(pid_t pid, int sig)
+{
+    printf("kill\n");
+    return 0;
+}
+
 int bidirpipe(int pfd[], const char *cmd , const char * const argv[], const char *cwd )
 {
 	int pfdin[2];  /* from child to parent */
@@ -18,7 +26,7 @@ int bidirpipe(int pfd[], const char *cmd , const char * const argv[], const char
 
 	if ( pipe(pfdin) == -1 || pipe(pfdout) == -1 || pipe(pfderr) == -1)
 		return(-1);
-
+#ifndef WIN32
 	if ( ( pid = vfork() ) == -1 )
 		return(-1);
 	else if (pid == 0) /* child process */
@@ -46,6 +54,7 @@ int bidirpipe(int pfd[], const char *cmd , const char * const argv[], const char
 		eDebug("[eConsoleAppContainer] Finished %s", cmd);
 		_exit(0);
 	}
+#endif
 	if (close(pfdout[0]) == -1 || close(pfdin[1]) == -1 || close(pfderr[1]) == -1)
 			return(-1);
 
@@ -93,13 +102,13 @@ void eConsoleAppContainer::setBufferSize(int size)
 int eConsoleAppContainer::execute( const char *cmd )
 {
 	int argc = 3;
-	const char *argv[argc + 1];
+	std::vector<const char *>argv(argc + 1);
 	argv[0] = "/bin/sh";
 	argv[1] = "-c";
 	argv[2] = cmd;
 	argv[argc] = NULL;
 
-	return execute(argv[0], argv);
+	return execute(argv[0], std::data(argv));
 }
 
 int eConsoleAppContainer::execute(const char *cmdline, const char * const argv[])

@@ -16,7 +16,9 @@
 #include <dvbsi++/service_descriptor.h>
 #include <dvbsi++/satellite_delivery_system_descriptor.h>
 #include <dvbsi++/s2_satellite_delivery_system_descriptor.h>
-#include <dirent.h>
+//#include <dirent.h>
+#include <filesystem>
+#include "getline.h"
 
 /*
  * Copyright (C) 2017 Marcus Metzler <mocm@metzlerbros.de>
@@ -1003,25 +1005,25 @@ void eDVBDB::loadBouquet(const char *path)
 		extension = ".tv";
 	if (!strcmp(path, "bouquets.radio"))
 		extension = ".radio";
-	if (extension.length())
-	{
-		std::string p = eEnv::resolve("${sysconfdir}/enigma2/");
-		DIR *dir = opendir(p.c_str());
-		if (!dir)
-		{
-			eDebug("[eDVBDB] Cannot open directory where the userbouquets should be expected..");
-			return;
-		}
-		dirent *entry;
-		while((entry = readdir(dir)) != NULL)
-			if (entry->d_type == DT_REG)
-			{
-				std::string filename = entry->d_name;
-				if (filename.find("userbouquet") != std::string::npos && filename.find(extension, (filename.length() - extension.size())) != std::string::npos)
-					userbouquetsfiles.push_back(filename);
-			}
-		closedir(dir);
-	}
+    //if (extension.length())
+    //{
+    //	std::string p = eEnv::resolve("${sysconfdir}/enigma2/");
+    //	DIR *dir = opendir(p.c_str());
+    //	if (!dir)
+    //	{
+    //		eDebug("[eDVBDB] Cannot open directory where the userbouquets should be expected..");
+    //		return;
+    //	}
+    //	dirent *entry;
+    //	while((entry = readdir(dir)) != NULL)
+    //		if (entry->d_type == DT_REG)
+    //		{
+    //			std::string filename = entry->d_name;
+    //			if (filename.find("userbouquet") != std::string::npos && filename.find(extension, (filename.length() - extension.size())) != std::string::npos)
+    //				userbouquetsfiles.push_back(filename);
+    //		}
+    //	closedir(dir);
+    //}
 	std::string bouquet_name = path;
 	if (!bouquet_name.length())
 	{

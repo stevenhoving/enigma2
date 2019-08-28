@@ -20,6 +20,7 @@
 #endif
 
 #include <windows.h>
+#include <WinSock2.h>
 
 /*
  * The event structure itself
@@ -57,6 +58,18 @@ struct input_absinfo {
 	__s32 flat;
 	__s32 resolution;
 };
+
+#ifndef _IOC_NONE
+# define _IOC_NONE        0U
+#endif
+
+#ifndef _IOC_WRITE
+# define _IOC_WRITE        1U
+#endif
+
+#ifndef _IOC_READ
+# define _IOC_READ        2U
+#endif
 
 #define EVIOCGVERSION		_IOR('E', 0x01, int)			/* get driver version */
 #define EVIOCGID		_IOR('E', 0x02, struct input_id)	/* get device ID */

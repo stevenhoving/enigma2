@@ -16,6 +16,8 @@
 #define FBIO_BLIT 0x22
 #endif
 
+#define O_RDWR       _O_RDWR
+
 eFbLCD::eFbLCD(const char *fb)
 {
 	m_manual_blit = -1;

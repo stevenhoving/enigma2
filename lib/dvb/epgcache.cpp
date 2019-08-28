@@ -34,6 +34,11 @@
 /* Time to wait after tuning in before EPG data capturing starts */
 #define ZAP_DELAY 2000          // 2 sec
 
+using off64_t = int64_t;
+#define strncasecmp  strnicmp
+#define localtime_r(a, b) localtime_s(b, a)
+#define gmtime_r(a, b) gmtime_s(b, a)
+
 struct DescriptorPair
 {
 	int reference_count;
@@ -43,7 +48,7 @@ struct DescriptorPair
 	DescriptorPair(int c, __u8* d): reference_count(c), data(d) {}
 };
 
-typedef std::tr1::unordered_map<uint32_t, DescriptorPair> DescriptorMap;
+typedef std::unordered_map<uint32_t, DescriptorPair> DescriptorMap;
 
 struct eventData
 {
@@ -372,10 +377,13 @@ void eventData::cacheCorrupt(const char* context)
 
 
 eEPGCache* eEPGCache::instance;
-static pthread_mutex_t cache_lock =
-	PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
-static pthread_mutex_t channel_map_lock =
-	PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
+//static pthread_mutex_t cache_lock =
+//	PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
+//static pthread_mutex_t channel_map_lock =
+//	PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP;
+
+std::recursive_mutex cache_lock;
+std::recursive_mutex channel_map_lock;
 
 DEFINE_REF(eEPGCache)
 
@@ -457,7 +465,7 @@ void eEPGCache::timeUpdated()
 			eDebug("[eEPGCache] time updated.. start EPG Mainloop");
 			run();
 			m_running = true;
-			std::scoped_lock<std::mutex> s(channel_map_lock);
+			std::scoped_lock s(channel_map_lock);
 			for (ChannelMap::const_iterator it = m_knownChannels.begin();
 				it != m_knownChannels.end(); ++it)
 			{
@@ -489,7 +497,7 @@ void eEPGCache::DVBChannelAdded(eDVBChannel *chan)
 		data->m_mhw2_title_pid = 0x234; // defaults for astra 19.2 D+
 		data->m_mhw2_summary_pid = 0x236; // defaults for astra 19.2 D+
 #endif
-		std::scoped_lock<std::mutex> s(channel_map_lock);
+		std::scoped_lock s(channel_map_lock);
 		m_knownChannels.insert( std::pair<iDVBChannel*, channel_data* >(chan, data) );
 		chan->connectStateChange(sigc::mem_fun(*this, &eEPGCache::DVBChannelStateChanged), data->m_stateChangedConn);
 	}
@@ -705,12 +713,13 @@ void eEPGCache::DVBChannelStateChanged(iDVBChannel *chan)
 					if (it->second->state >= 0)
 						messages.send(Message(Message::leaveChannel, chan));
 					channel_data* cd = it->second;
-					pthread_mutex_lock(&cd->channel_active);
-					{
-						std::scoped_lock<std::mutex> s(channel_map_lock);
-						m_knownChannels.erase(it);
-					}
-					pthread_mutex_unlock(&cd->channel_active);
+                    {
+                        std::scoped_lock slock(cd->channel_active);
+                        {
+                            std::scoped_lock s(channel_map_lock);
+                            m_knownChannels.erase(it);
+                        }
+                    }
 					delete cd;
 					// -> gotMessage -> abortEPG
 					return;
@@ -853,7 +862,7 @@ void eEPGCache::sectionRead(const uint8_t *data, int source, channel_data *chann
 	if ( TM != 3599 && TM > -1 && channel)
 		channel->haveData |= source;
 
-	std::scoped_lock<std::mutex> s(cache_lock);
+	std::scoped_lock s(cache_lock);
 	// hier wird immer eine eventMap zurck gegeben.. entweder eine vorhandene..
 	// oder eine durch [] erzeugte
 	EventCacheItem &servicemap = eventDB[service];
@@ -1052,7 +1061,7 @@ next:
 void eEPGCache::flushEPG(const uniqueEPGKey & s)
 {
 	eDebug("[eEPGCache] flushEPG %d", (int)(bool)s);
-	std::scoped_lock<std::mutex> l(cache_lock);
+	std::scoped_lock l(cache_lock);
 	if (s)  // clear only this service
 	{
 		eventCache::iterator it = eventDB.find(s);
@@ -1095,7 +1104,7 @@ void eEPGCache::flushEPG(const uniqueEPGKey & s)
 		content_time_tables.clear();
 #endif
 		channelLastUpdated.clear();
-		std::scoped_lock<std::mutex> m(channel_map_lock);
+		std::scoped_lock m(channel_map_lock);
 		for (ChannelMap::const_iterator it(m_knownChannels.begin()); it != m_knownChannels.end(); ++it)
 			it->second->startEPG();
 	}
@@ -1105,7 +1114,7 @@ void eEPGCache::cleanLoop()
 {
 	{ /* scope for cache lock */
 		time_t now = ::time(0) - historySeconds;
-		std::scoped_lock<std::mutex> s(cache_lock);
+		std::scoped_lock s(cache_lock);
 
 		for (eventCache::iterator DBIt = eventDB.begin(); DBIt != eventDB.end(); DBIt++)
 		{
@@ -1169,7 +1178,7 @@ eEPGCache::~eEPGCache()
 	m_running = false;
 	messages.send(Message::quit);
 	kill(); // waiting for thread shutdown
-	std::scoped_lock<std::mutex> s(cache_lock);
+	std::scoped_lock s(cache_lock);
 	for (eventCache::iterator evIt = eventDB.begin(); evIt != eventDB.end(); evIt++)
 		for (eventMap::iterator It = evIt->second.byEvent.begin(); It != evIt->second.byEvent.end(); It++)
 			delete It->second;
@@ -1184,7 +1193,7 @@ void eEPGCache::gotMessage( const Message &msg )
 			break;
 		case Message::startChannel:
 		{
-			std::scoped_lock<std::mutex> s(channel_map_lock);
+			std::scoped_lock s(channel_map_lock);
 			ChannelMap::const_iterator channel =
 				m_knownChannels.find(msg.channel);
 			if ( channel != m_knownChannels.end() )
@@ -1193,7 +1202,7 @@ void eEPGCache::gotMessage( const Message &msg )
 		}
 		case Message::leaveChannel:
 		{
-			std::scoped_lock<std::mutex> s(channel_map_lock);
+			std::scoped_lock s(channel_map_lock);
 			ChannelMap::const_iterator channel =
 				m_knownChannels.find(msg.channel);
 			if ( channel != m_knownChannels.end() )
@@ -1206,7 +1215,7 @@ void eEPGCache::gotMessage( const Message &msg )
 #ifdef ENABLE_PRIVATE_EPG
 		case Message::got_private_pid:
 		{
-			std::scoped_lock<std::mutex> s(channel_map_lock);
+			std::scoped_lock s(channel_map_lock);
 			for (ChannelMap::const_iterator it(m_knownChannels.begin()); it != m_knownChannels.end(); ++it)
 			{
 				eDVBChannel *channel = (eDVBChannel*) it->first;
@@ -1240,7 +1249,7 @@ void eEPGCache::gotMessage( const Message &msg )
 #ifdef ENABLE_MHW_EPG
 		case Message::got_mhw2_channel_pid:
 		{
-			std::scoped_lock<std::mutex> s(channel_map_lock);
+			std::scoped_lock s(channel_map_lock);
 			for (ChannelMap::const_iterator it(m_knownChannels.begin()); it != m_knownChannels.end(); ++it)
 			{
 				eDVBChannel *channel = (eDVBChannel*) it->first;
@@ -1258,7 +1267,7 @@ void eEPGCache::gotMessage( const Message &msg )
 		}
 		case Message::got_mhw2_title_pid:
 		{
-			std::scoped_lock<std::mutex> s(channel_map_lock);
+			std::scoped_lock s(channel_map_lock);
 			for (ChannelMap::const_iterator it(m_knownChannels.begin()); it != m_knownChannels.end(); ++it)
 			{
 				eDVBChannel *channel = (eDVBChannel*) it->first;
@@ -1276,7 +1285,7 @@ void eEPGCache::gotMessage( const Message &msg )
 		}
 		case Message::got_mhw2_summary_pid:
 		{
-			std::scoped_lock<std::mutex> s(channel_map_lock);
+			std::scoped_lock s(channel_map_lock);
 			for (ChannelMap::const_iterator it(m_knownChannels.begin()); it != m_knownChannels.end(); ++it)
 			{
 				eDVBChannel *channel = (eDVBChannel*) it->first;
@@ -1359,7 +1368,7 @@ void eEPGCache::load()
 		ret = fread( text1, 13, 1, f);
 		if ( !memcmp( text1, "ENIGMA_EPG_V7", 13) )
 		{
-			std::scoped_lock<std::mutex> s(cache_lock);
+			std::scoped_lock s(cache_lock);
 			ret = fread( &size, sizeof(int), 1, f);
 			eventDB.rehash(size); /* Reserve buckets in advance */
 			while(size--)
@@ -1432,7 +1441,7 @@ void eEPGCache::load()
 		}
 		else
 			eDebug("[eEPGCache] don't read old epg database");
-		posix_fadvise(fileno(f), 0, 0, POSIX_FADV_DONTNEED);
+		//posix_fadvise(fileno(f), 0, 0, POSIX_FADV_DONTNEED);
 		fclose(f);
 		// We got this far, so the EPG file is okay.
 		if (renameResult == 0)
@@ -1464,7 +1473,7 @@ void eEPGCache::save()
 			return;
 	}
 
-	char* buf = realpath(EPGDAT, NULL);
+    char* buf = nullptr;// realpath(EPGDAT, NULL);
 	if (!buf)
 	{
 		eDebug("[eEPGCache] realpath to %s failed in save: %m", EPGDAT);
@@ -1474,18 +1483,19 @@ void eEPGCache::save()
 
 	eDebug("[eEPGCache] store epg to realpath '%s'", buf);
 
-	struct statfs s;
-	off64_t tmp;
-	if (statfs(buf, &s) < 0) {
-		eDebug("[eEPGCache] statfs %s failed in save: %m", buf);
-		fclose(f);
-		free(buf);
-		return;
-	}
+	//struct statfs s;
+	//if (statfs(buf, &s) < 0) {
+	//	eDebug("[eEPGCache] statfs %s failed in save: %m", buf);
+	//	fclose(f);
+	//	free(buf);
+	//	return;
+	//}
+
+    off64_t tmp;
 
 	// check for enough free space on storage
-	tmp=s.f_bfree;
-	tmp*=s.f_bsize;
+	//tmp=s.f_bfree;
+	//tmp*=s.f_bsize;
 	if ( tmp < (eventData::CacheSize*12)/10 ) // 20% overhead
 	{
 		eDebug("[eEPGCache] not enough free space at '%s' %zu bytes available but %u needed", buf, tmp, (eventData::CacheSize*12)/10);
@@ -1580,7 +1590,7 @@ eEPGCache::channel_data::channel_data(eEPGCache *ml)
 #ifdef ENABLE_OPENTV
 	CONNECT(m_OPENTV_Timer->timeout, eEPGCache::channel_data::cleanupOPENTV);
 #endif
-	pthread_mutex_init(&channel_active, 0);
+	//pthread_mutex_init(&channel_active, 0);
 }
 
 void eEPGCache::channel_data::finishEPG()
@@ -1604,7 +1614,7 @@ void eEPGCache::channel_data::finishEPG()
 #ifdef ENABLE_OPENTV
 		cleanupOPENTV();
 #endif
-		std::scoped_lock<std::mutex> l(cache_lock);
+		std::scoped_lock l(cache_lock);
 		cache->channelLastUpdated[channel->getChannelID()] = ::time(0);
 	}
 }
@@ -2325,7 +2335,7 @@ void eEPGCache::channel_data::abortNonAvail()
 
 void eEPGCache::channel_data::startChannel()
 {
-	pthread_mutex_lock(&channel_active);
+    channel_active.lock();
 	updateMap::iterator It = cache->channelLastUpdated.find( channel->getChannelID() );
 
 	int update = ( It != cache->channelLastUpdated.end() ? ( UPDATE_INTERVAL - ( (::time(0)-It->second) * 1000 ) ) : ZAP_DELAY );
@@ -2451,7 +2461,7 @@ void eEPGCache::channel_data::abortEPG()
 	if (m_PrivateConn)
 		m_PrivateConn=0;
 #endif
-	pthread_mutex_unlock(&channel_active);
+    channel_active.unlock();
 }
 
 void eEPGCache::channel_data::readData( const uint8_t *data, int source)
@@ -2745,7 +2755,7 @@ RESULT eEPGCache::lookupEventTime(const eServiceReference &service, time_t t, co
 
 RESULT eEPGCache::lookupEventTime(const eServiceReference &service, time_t t, Event *& result, int direction)
 {
-	std::scoped_lock<std::mutex> s(cache_lock);
+	std::scoped_lock s(cache_lock);
 	const eventData *data=0;
 	RESULT ret = lookupEventTime(service, t, data, direction);
 	if ( !ret && data )
@@ -2755,7 +2765,7 @@ RESULT eEPGCache::lookupEventTime(const eServiceReference &service, time_t t, Ev
 
 RESULT eEPGCache::lookupEventTime(const eServiceReference &service, time_t t, ePtr<eServiceEvent> &result, int direction)
 {
-	std::scoped_lock<std::mutex> s(cache_lock);
+	std::scoped_lock s(cache_lock);
 	const eventData *data=0;
 	RESULT ret = lookupEventTime(service, t, data, direction);
 	result = NULL;
@@ -2794,7 +2804,7 @@ RESULT eEPGCache::lookupEventId(const eServiceReference &service, int event_id, 
 RESULT eEPGCache::saveEventToFile(const char* filename, const eServiceReference &service, int eit_event_id, time_t begTime, time_t endTime)
 {
 	RESULT ret = -1;
-	std::scoped_lock<std::mutex> s(cache_lock);
+	std::scoped_lock s(cache_lock);
 	const eventData *data = NULL;
 	if ( eit_event_id != -1 )
 	{
@@ -2833,7 +2843,7 @@ RESULT eEPGCache::saveEventToFile(const char* filename, const eServiceReference 
 
 RESULT eEPGCache::lookupEventId(const eServiceReference &service, int event_id, Event *& result)
 {
-	std::scoped_lock<std::mutex> s(cache_lock);
+	std::scoped_lock s(cache_lock);
 	const eventData *data=0;
 	RESULT ret = lookupEventId(service, event_id, data);
 	if ( !ret && data )
@@ -2843,7 +2853,7 @@ RESULT eEPGCache::lookupEventId(const eServiceReference &service, int event_id, 
 
 RESULT eEPGCache::lookupEventId(const eServiceReference &service, int event_id, ePtr<eServiceEvent> &result)
 {
-	std::scoped_lock<std::mutex> s(cache_lock);
+	std::scoped_lock s(cache_lock);
 	const eventData *data=0;
 	RESULT ret = lookupEventId(service, event_id, data);
 	result = NULL;
@@ -2859,7 +2869,7 @@ RESULT eEPGCache::lookupEventId(const eServiceReference &service, int event_id, 
 
 RESULT eEPGCache::startTimeQuery(const eServiceReference &service, time_t begin, int minutes)
 {
-	std::scoped_lock<std::mutex> s(cache_lock);
+	std::scoped_lock s(cache_lock);
 	const eServiceReferenceDVB &ref = (const eServiceReferenceDVB&)handleGroup(service);
 	if (begin == -1)
 		begin = ::time(0);
@@ -3208,7 +3218,7 @@ PyObject *eEPGCache::lookupEvent(ePyObject list, ePyObject convertFunc)
 			}
 			if (minutes)
 			{
-				std::scoped_lock<std::mutex> s(cache_lock);
+				std::scoped_lock s(cache_lock);
 				if (!startTimeQuery(ref, stime, minutes))
 				{
 					while ( m_timemap_cursor != m_timemap_end )
@@ -3229,7 +3239,7 @@ PyObject *eEPGCache::lookupEvent(ePyObject list, ePyObject convertFunc)
 				const eventData *ev_data=0;
 				if (stime)
 				{
-					std::scoped_lock<std::mutex> s(cache_lock);
+					std::scoped_lock s(cache_lock);
 					if (type == 2)
 						lookupEventId(ref, event_id, ev_data);
 					else
@@ -3678,7 +3688,7 @@ PyObject *eEPGCache::search(ePyObject arg)
 					if (ref.valid())
 					{
 						eventid = PyLong_AsLong(PyTuple_GET_ITEM(arg, 4));
-						std::scoped_lock<std::mutex> s(cache_lock);
+						std::scoped_lock s(cache_lock);
 						const eventData *evData = 0;
 						lookupEventId(ref, eventid, evData);
 						if (evData)
@@ -3694,7 +3704,8 @@ PyObject *eEPGCache::search(ePyObject arg)
 									uint8_t *descr_data = it->second.data;
 									switch(descr_data[0])
 									{
-									case 0x4D ... 0x4E:
+                                    case 0x4D:
+                                    case 0x4E:
 										descr.push_back(crc);
 										break;
 									default:
@@ -3751,7 +3762,7 @@ PyObject *eEPGCache::search(ePyObject arg)
 							break;
 					}
 					Py_BEGIN_ALLOW_THREADS; /* No Python code in this section, so other threads can run */
-					std::scoped_lock<std::mutex> s(cache_lock);
+					std::scoped_lock s(cache_lock);
 					std::string text;
 					for (DescriptorMap::iterator it(eventData::descriptors.begin());
 						it != eventData::descriptors.end(); ++it)
@@ -3872,7 +3883,7 @@ PyObject *eEPGCache::search(ePyObject arg)
 		// ref is only valid in SIMILAR_BROADCASTING_SEARCH
 		// in this case we start searching with the base service
 		bool first = ref.valid() ? true : false;
-		std::scoped_lock<std::mutex> s(cache_lock);
+		std::scoped_lock s(cache_lock);
 		eventCache::iterator cit(ref.valid() ? eventDB.find(ref) : eventDB.begin());
 		while(cit != eventDB.end() && maxcount)
 		{
@@ -4092,9 +4103,9 @@ void eEPGCache::PMTready(eDVBServicePMTHandler *pmthandler)
 								int descr_len = descr->getLength();
 								if (descr_len == 4)
 								{
-									uint8_t data[descr_len+2];
-									descr->writeToBuffer(data);
-									if ( !data[2] && !data[3] && data[4] == 0xFF && data[5] == 0xFF )
+									std::vector<uint8_t> data(descr_len+2);
+									descr->writeToBuffer(std::data(data));
+									if (!data[2] && !data[3] && data[4] == 0xFF && data[5] == 0xFF)
 										tmp |= 2;
 								}
 								break;
@@ -4157,7 +4168,7 @@ struct less_datetime
 void eEPGCache::privateSectionRead(const uniqueEPGKey &current_service, const uint8_t *data)
 {
 	contentMap &content_time_table = content_time_tables[current_service];
-	std::scoped_lock<std::mutex> s(cache_lock);
+	std::scoped_lock s(cache_lock);
 	std::map< date_time, std::list<uniqueEPGKey>, less_datetime > start_times;
 	EventCacheItem &eventDBitem = eventDB[current_service];
 	eventMap &evMap = eventDBitem.byEvent;
@@ -4438,10 +4449,10 @@ void eEPGCache::channel_data::timeMHW2DVB( u_char day, u_char hours, u_char minu
 	tm recdate;
 	gmtime_r( &dt, &recdate );   // This will also take care of DST.
 
-	if ( old_tz == NULL )
-		unsetenv( "TZ" );
-	else
-		setenv("TZ", tz_saved, 1);
+	//if ( old_tz == NULL )
+	//	unsetenv( "TZ" );
+	//else
+	//	setenv("TZ", tz_saved, 1);
 	tzset();
 
 	// Calculate MJD according to annex in ETSI EN 300 468

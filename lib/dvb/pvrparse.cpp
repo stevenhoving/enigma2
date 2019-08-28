@@ -72,7 +72,7 @@ int eMPEGStreamInformation::load(const char *filename)
 		d[0] = be64toh(d[0]);
 		d[1] = be64toh(d[1]);
 		m_access_points[d[0]] = d[1];
-		m_pts_to_offset.insert(std::pair<pts_t,off_t>(d[1], d[0]));
+		m_pts_to_offset.emplace((pts_t)d[1], (off_t)d[0]);
 	}
 	/* assume the accesspoints are in streamtime, if they start with a 0 timestamp */
 	m_streamtime_accesspoints = (!m_access_points.empty() && m_access_points.begin()->second == 0);

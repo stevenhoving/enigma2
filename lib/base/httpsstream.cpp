@@ -8,6 +8,9 @@
 // for shutdown
 #include <sys/socket.h>
 
+#define strcasecmp  stricmp
+#define strncasecmp  strnicmp
+
 DEFINE_REF(eHttpsStream);
 
 eHttpsStream::eHttpsStream()
@@ -315,7 +318,8 @@ int eHttpsStream::open(const char *url)
 void eHttpsStream::thread()
 {
 	hasStarted();
-	usleep(startDelay); // wait up to half a second
+    std::this_thread::sleep_for(std::chrono::microseconds(startDelay));
+	//usleep(startDelay); // wait up to half a second
 	std::string currenturl, newurl;
 	currenturl = streamUrl;
 	for (unsigned int i = 0; i < 5; i++)

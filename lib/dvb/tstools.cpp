@@ -155,9 +155,9 @@ int eDVBTSTools::getPTS(off_t &offset, pts_t &pts, int fixed)
 
 	while (left >= m_packet_size)
 	{
-		unsigned char buffer[m_packet_size];
+		std::vector<unsigned char> buffer(m_packet_size);
 		unsigned char *packet = &buffer[m_packet_size - 188];
-		if (m_source->read(offset, buffer, m_packet_size) != m_packet_size)
+		if (m_source->read(offset, std::data(buffer), m_packet_size) != m_packet_size)
 		{
 			eDebug("[eDVBTSTools] getPTS read error");
 			return -1;
@@ -272,7 +272,17 @@ int eDVBTSTools::getPTS(off_t &offset, pts_t &pts, int fixed)
 							continue;
 						switch (payload[9+offs])
 						{
-						case 0x55 ... 0x5f: // VC-1
+                        case 0x55:
+                        case 0x56:
+                        case 0x57:
+                        case 0x58:
+                        case 0x59:
+                        case 0x5a:
+                        case 0x5b:
+                        case 0x5c:
+                        case 0x5d:
+                        case 0x5e:
+                        case 0x5f: // VC-1
 							break;
 						case 0x71: // AC3 / DTS
 							break;
@@ -722,9 +732,9 @@ int eDVBTSTools::findPMT(eDVBPMTParser::program &program)
 
 	for (int attempts_left = (5*1024*1024)/m_packet_size; attempts_left != 0; --attempts_left)
 	{
-		unsigned char buffer[m_packet_size];
+		std::vector<unsigned char> buffer(m_packet_size);
 		unsigned char *packet = &buffer[m_packet_size - 188];
-		int ret = m_source->read(position, buffer, m_packet_size);
+		int ret = m_source->read(position, std::data(buffer), m_packet_size);
 		if (ret != m_packet_size)
 		{
 			eDebug("[eDVBTSTools] findPMT read error");

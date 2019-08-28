@@ -456,7 +456,18 @@ std::string convertDVBUTF8(const unsigned char *data, int len, int table, int ts
 	// first byte in strings may override general encoding table.
 	switch(data[0] | mask_no_tableid)
 	{
-		case ISO8859_5 ... ISO8859_15:
+    case ISO8859_5:
+    case ISO8859_6:
+    case ISO8859_7:
+    case ISO8859_8:
+    case ISO8859_9:
+    case ISO8859_10:
+    case ISO8859_11:
+    case ISO8859_12:
+    case ISO8859_13:
+    case ISO8859_14:
+    case ISO8859_15:
+
 			// For Thai providers, encoding char is present but faulty.
 			if (table != 11)
 				table = data[i] + 4;
@@ -523,8 +534,17 @@ std::string convertDVBUTF8(const unsigned char *data, int len, int table, int ts
 			eDebug("[convertDVBUTF8] failed to decode bbc freesat huffman");
 			break;
 		case 0x0:
-		case 0xC ... 0xF:
-		case 0x18 ... 0x1E:
+        case 0xC:// ... 0xF:
+        case 0xE:
+        case 0xF:
+        case 0x18://... 0x1E:
+        case 0x19:
+        case 0x1A:
+        case 0x1B:
+        case 0x1C:
+        case 0x1D:
+        case 0x1E:
+            
 			eDebug("[convertDVBUTF8] reserved %d", data[0]);
 			++i;
 			break;
@@ -649,7 +669,7 @@ std::string convertUTF8DVB(const std::string &string, int table)
 
 	int len=string.length(), t=0;
 
-	unsigned char buf[len];
+	std::vector<unsigned char> buf(len);
 
 	for (int i = 0; i < len; i++)
 	{
@@ -702,7 +722,7 @@ std::string convertUTF8DVB(const std::string &string, int table)
 		}
 		buf[t++] = (unsigned char)c;
 	}
-	return std::string((char*)buf, t);
+	return std::string((char*)std::data(buf), t);
 }
 
 std::string convertLatin1UTF8(const std::string &string)

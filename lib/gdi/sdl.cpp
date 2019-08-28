@@ -96,25 +96,33 @@ void gSDLDC::setResolution(int xres, int yres, int bpp)
 
 void gSDLDC::evSetVideoMode(unsigned long xres, unsigned long yres)
 {
-	m_screen = SDL_SetVideoMode(xres, yres, 32, SDL_HWSURFACE);
+    m_screen = SDL_CreateWindow("My Game Window",
+        SDL_WINDOWPOS_UNDEFINED,
+        SDL_WINDOWPOS_UNDEFINED,
+        xres, yres,
+        SDL_WINDOW_FULLSCREEN | SDL_WINDOW_OPENGL);
+
+	//m_screen = SDL_SetVideoMode(xres, yres, 32, SDL_HWSURFACE);
 	if (!m_screen) {
 		eFatal("[gSDLDC] Could not create SDL surface: %s", SDL_GetError());
 		return;
 	}
 
-	m_surface.x = m_screen->w;
-	m_surface.y = m_screen->h;
-	m_surface.bpp = m_screen->format->BitsPerPixel;
-	m_surface.bypp = m_screen->format->BytesPerPixel;
-	m_surface.stride = m_screen->pitch;
-	m_surface.data = m_screen->pixels;
+	//m_surface.x = m_screen->w;
+	//m_surface.y = m_screen->h;
+	//m_surface.bpp = m_screen->format->BitsPerPixel;
+	//m_surface.bypp = m_screen->format->BytesPerPixel;
+	//m_surface.stride = m_screen->pitch;
+	//m_surface.data = m_screen->pixels;
 
-	SDL_EnableUNICODE(1);
+	//SDL_EnableUNICODE(1);
 }
 
 void gSDLDC::evFlip()
 {
-	SDL_Flip(m_screen);
+    printf("evflip...\n");
+    //SDL_RenderPresent()
+	//SDL_Flip(m_screen);
 }
 
 void gSDLDC::thread()

@@ -37,6 +37,7 @@
 #include <ios>
 #include <sstream>
 #include <iomanip>
+#include <iterator>
 
 class eStaticServiceDVBInformation: public iStaticServiceInformation
 {
@@ -366,10 +367,10 @@ RESULT eStaticServiceDVBPVRInformation::getName(const eServiceReference &ref, st
 			if (dash2 != std::string::npos)
 			{
 				struct tm stm = {0};
-				if (strptime(name.c_str(), "%Y%m%d %H%M", &stm) != NULL)
-				{
-					m_parser.m_time_create = mktime(&stm);
-				}
+				//if (strptime(name.c_str(), "%Y%m%d %H%M", &stm) != NULL)
+				//{
+				//	m_parser.m_time_create = mktime(&stm);
+				//}
 				name.erase(0,dash2+3);
 			}
 			if (name[name.size()-3] == '.')
@@ -2533,7 +2534,7 @@ RESULT eDVBServicePlay::startTimeshift()
 	tspath.append("timeshift.XXXXXX");
 	char* templ = new char[tspath.length() + 1];
 	strcpy(templ, tspath.c_str());
-	m_timeshift_fd = mkstemp(templ);
+	//m_timeshift_fd = mkstemp(templ);
 	m_timeshift_file = std::string(templ);
 	eDebug("[eDVBServicePlay] timeshift recording to %s", templ);
 	delete [] templ;
@@ -3366,8 +3367,18 @@ RESULT eDVBServicePlay::getSubtitleList(std::vector<SubtitleTrack> &subtitlelist
 					}
 					break;
 				}
-				case 0x10 ... 0x15:
-				case 0x20 ... 0x25: // dvb subtitles
+                case 0x10: //... 0x15:
+                case 0x11:
+                case 0x12:
+                case 0x13:
+                case 0x14:
+                case 0x15:
+                case 0x20:// ... 0x25: // dvb subtitles
+                case 0x21:
+                case 0x22:
+                case 0x23:
+                case 0x24:
+                case 0x25:
 				{
 					track.type = 0;
 					track.pid = it->pid;

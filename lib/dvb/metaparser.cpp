@@ -2,8 +2,9 @@
 #include <lib/base/cfile.h>
 #include <lib/base/eerror.h>
 #include <lib/service/iservice.h>
-#include <errno.h>
 #include <sys/stat.h>
+#include <errno.h>
+#include <filesystem>
 
 eDVBMetaParser::eDVBMetaParser()
 {
@@ -27,6 +28,10 @@ static int getctime(const std::string &basename)
 
 static long long fileSize(const std::string &basename)
 {
+    // we ignore old behaviour for now!!
+    return std::filesystem::file_size(basename);
+
+#if 0
 	long long filesize = 0;
 	char buf[8];
 	std::string splitname;
@@ -46,6 +51,7 @@ static long long fileSize(const std::string &basename)
 		filesize += (long long) s.st_size;
 	}
 	return filesize;
+#endif
 }
 
 int eDVBMetaParser::parseFile(const std::string &basename)

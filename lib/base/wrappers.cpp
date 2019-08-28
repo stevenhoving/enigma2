@@ -263,45 +263,47 @@ ssize_t writeAll(int fd, const void *buf, size_t count)
 
 std::string base64encode(const std::string str)
 {
-	if(str.empty())
+    assert(false);
+	//if(str.empty())
 	{
 		return std::string();
 	}
 
-	char *out = g_base64_encode((const guchar*)str.c_str(), (gsize)str.length());
-
-	if(!out)
-	{
-		g_free(out);
-		return std::string();
-	}
-
-	std::string ret((const char*)out);
-	g_free(out);
-
-	return ret;
+	//char *out = g_base64_encode((const guchar*)str.c_str(), (gsize)str.length());
+    //
+	//if(!out)
+	//{
+	//	g_free(out);
+	//	return std::string();
+	//}
+    //
+	//std::string ret((const char*)out);
+	//g_free(out);
+    //
+	//return ret;
 }
 
 std::string base64decode(const std::string hash)
 {
-	if(hash.empty())
+    assert(false);
+	//if(hash.empty())
 	{
 		return std::string();
 	}
 
-	gsize len;
-	guchar *out = g_base64_decode((const gchar*)hash.c_str(), &len);
-
-	if(!out || !len)
-	{
-		g_free(out);
-		return std::string();
-	}
-
-	std::string ret((const char*)out, len);
-	g_free(out);
-
-	return ret;
+    //gsize len;
+    //guchar *out = g_base64_decode((const gchar*)hash.c_str(), &len);
+    //
+    //if(!out || !len)
+    //{
+    //	g_free(out);
+    //	return std::string();
+    //}
+    //
+    //std::string ret((const char*)out, len);
+    //g_free(out);
+    //
+    //return ret;
 }
 
 std::string readLink(const std::string &link)

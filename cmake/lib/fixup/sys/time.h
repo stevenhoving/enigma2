@@ -1,6 +1,7 @@
 #pragma once
 
 /* this is incorrect, because clock_gettime should actually be located in the real time.h*/
+#include <WinSock2.h>
 #include <windows.h>
 #include <time.h>
 

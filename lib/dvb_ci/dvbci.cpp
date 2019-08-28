@@ -28,9 +28,9 @@
 //#define CIDEBUG 1
 
 #ifdef CIDEBUG
-	#define eDebugCI(x...) eDebug(x)
+	#define eDebugCI(...) eDebug(__VA_ARGS__)
 #else
-	#define eDebugCI(x...)
+	#define eDebugCI(...)
 #endif
 
 eDVBCIInterfaces *eDVBCIInterfaces::instance = 0;

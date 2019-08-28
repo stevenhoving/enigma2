@@ -642,7 +642,6 @@ public:
 	/* frontend and backend */
 	std::shared_mutex m_lock;
 
-
 	/* backend */
 	enum { evtSeek, evtSkipmode, evtSpanChanged };
 	RESULT connectEvent(const sigc::slot<void(int)> &event, ePtr<eConnection> &connection);

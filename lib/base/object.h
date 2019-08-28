@@ -7,6 +7,7 @@
 #ifndef WIN32
 #include <ext/atomicity.h>
 #else
+//#include <winsock2.h>
 #include <windows.h>
 #endif
 
@@ -27,7 +28,7 @@ protected:
 	virtual void Release()=0;
 #endif
 public:
-    void operator delete(void *p) { ::operator delete(p); }
+    //void operator delete(void *p) { ::operator delete(p); }
     virtual ~iObject() { }
 
 #ifndef SWIG

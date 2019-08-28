@@ -225,17 +225,19 @@ int eDVBPMTParser::getProgramInfo(program &program)
 								for (const auto it : *list)
 								{
 									s.subtitling_type = it->getSubtitlingType();
-									switch(s.subtitling_type)
-									{
-									case 0x10 ... 0x15: // dvb subtitles normal
-									case 0x20 ... 0x25: // dvb subtitles hearing impaired
-										break;
-									default:
-										eDebug("[eDVBPMTParser] dvb subtitle %s PID %04x with wrong subtitling type (%02x)... force 0x10!!",
-										s.language_code.c_str(), s.pid, s.subtitling_type);
-										s.subtitling_type = 0x10;
-										break;
-									}
+                                    
+                                    // dvb subtitles normal
+                                    if (s.subtitling_type >= 0x10 && s.subtitling_type <= 0x15)
+                                        continue;
+
+                                    // dvb subtitles hearing impaired
+                                    if (s.subtitling_type >= 0x20 && s.subtitling_type <= 0x25)
+                                        continue;
+
+                                    eDebug("[eDVBPMTParser] dvb subtitle %s PID %04x with wrong subtitling type (%02x)... force 0x10!!",
+                                        s.language_code.c_str(), s.pid, s.subtitling_type);
+                                    s.subtitling_type = 0x10;
+
 									s.composition_page_id = it->getCompositionPageId();
 									s.ancillary_page_id = it->getAncillaryPageId();
 									std::string language = it->getIso639LanguageCode();
@@ -301,7 +303,9 @@ int eDVBPMTParser::getProgramInfo(program &program)
 								RegistrationDescriptor *d = (RegistrationDescriptor*)(desc);
 								switch (d->getFormatIdentifier())
 								{
-								case 0x44545331 ... 0x44545333: // DTS1/DTS2/DTS3
+                                case 0x44545331:
+                                case 0x44545332:
+                                case 0x44545333: // DTS1/DTS2/DTS3
 									isaudio = 1;
 									audio.type = audioStream::atDTS;
 									break;

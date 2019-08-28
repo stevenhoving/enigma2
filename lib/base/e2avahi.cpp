@@ -1,13 +1,64 @@
 #include "e2avahi.h"
 #include "ebase.h"
+#ifndef WIN32
 #include <avahi-common/error.h>
 #include <avahi-client/client.h>
 #include <avahi-client/publish.h>
 #include <avahi-client/lookup.h>
 #include <avahi-common/malloc.h>
 #include <avahi-common/timeval.h>
+#endif
 #include <list>
 #include <algorithm>
+
+#ifdef WIN32
+
+// Avahi is not ported to windows yet, so define some rough skeleton types.
+struct AvahiClient;
+struct AvahiTimeout;
+struct AvahiWatch;
+struct AvahiEntryGroup;
+struct AvahiServiceBrowser;
+
+using AvahiPoll = int;
+using AvahiWatchEvent = int;
+using AvahiEntryGroupState = int;
+
+typedef void(*AvahiWatchCallback)(AvahiWatch *w, int fd, AvahiWatchEvent event, void *userdata);
+typedef void(*AvahiTimeoutCallback) (AvahiTimeout *t, void *userdata);
+typedef void(*AvahiEntryGroupCallback) (AvahiEntryGroup *g, AvahiEntryGroupState state, void *userdata);
+
+
+typedef enum {
+    AVAHI_SERVER_INVALID,
+    AVAHI_SERVER_REGISTERING,
+    AVAHI_SERVER_RUNNING,
+    AVAHI_SERVER_COLLISION,
+    AVAHI_SERVER_FAILURE
+} AvahiServerState;
+
+typedef enum {
+    AVAHI_CLIENT_S_REGISTERING = AVAHI_SERVER_REGISTERING,
+    AVAHI_CLIENT_S_RUNNING = AVAHI_SERVER_RUNNING,
+    AVAHI_CLIENT_S_COLLISION = AVAHI_SERVER_COLLISION,
+    AVAHI_CLIENT_FAILURE = 100,
+    AVAHI_CLIENT_CONNECTING = 101
+} AvahiClientState;
+
+static bool avahi_client_get_state(AvahiClient* avahi_client)
+{
+    return false;
+}
+
+static AvahiEntryGroup* avahi_entry_group_new(
+    AvahiClient* c,
+    AvahiEntryGroupCallback callback,
+    void *userdata)
+{
+    return nullptr;
+}
+#endif
+
 
 /* Our link to avahi */
 static AvahiClient *avahi_client = NULL;
@@ -133,6 +184,7 @@ static void avahi_service_try_register(AvahiServiceEntry *entry)
 		return;
 	}
 
+#ifndef WIN32
 	const char *service_name = entry->service_name;
 	/* Blank or NULL service name, use our host name as service name,
 	 * this appears to be what other services do. */
@@ -151,10 +203,12 @@ static void avahi_service_try_register(AvahiServiceEntry *entry)
 			avahi_client_get_host_name(avahi_client), entry->port_num);
 	}
 	/* NOTE: group is freed by avahi_client_free */
+#endif
 }
 
 
 /* Browser part */
+#ifndef WIN32
 
 static void avahi_resolver_callback(AvahiServiceResolver *resolver,
 		AvahiIfIndex iface, AvahiProtocol proto,
@@ -217,6 +271,8 @@ static void avahi_browser_callback(AvahiServiceBrowser *browser,
 	}
 }
 
+#endif
+
 static void avahi_browser_try_register(AvahiBrowserEntry *entry)
 {
 	if (entry->browser)
@@ -227,7 +283,7 @@ static void avahi_browser_try_register(AvahiBrowserEntry *entry)
 		eDebug("[Avahi] Not running yet, cannot browse for type %s.", entry->service_type);
 		return;
 	}
-
+#ifndef WIN32
 	entry->browser = avahi_service_browser_new(avahi_client,
 			AVAHI_IF_UNSPEC, AVAHI_PROTO_UNSPEC,
 			entry->service_type, NULL, (AvahiLookupFlags)0,
@@ -236,17 +292,16 @@ static void avahi_browser_try_register(AvahiBrowserEntry *entry)
 		eDebug("[Avahi] avahi_service_browser_new failed: %s",
 				avahi_strerror(avahi_client_errno(avahi_client)));
 	}
+#endif
 }
 
 static void avahi_client_try_register_all()
 {
-	for (AvahiServiceEntryList::iterator it = avahi_services.begin();
-		it != avahi_services.end(); ++it)
+	for (auto it = avahi_services.begin(); it != avahi_services.end(); ++it)
 	{
 		avahi_service_try_register(&(*it));
 	}
-	for (AvahiBrowserEntryList::iterator it = avahi_browsers.begin();
-		it != avahi_browsers.end(); ++it)
+	for (auto it = avahi_browsers.begin(); it != avahi_browsers.end(); ++it)
 	{
 		avahi_browser_try_register(&(*it));
 	}
@@ -254,7 +309,8 @@ static void avahi_client_try_register_all()
 
 static void avahi_client_reset_all()
 {
-	for (AvahiServiceEntryList::iterator it = avahi_services.begin();
+#ifndef WIN32
+	for (auto it = avahi_services.begin();
 		it != avahi_services.end(); ++it)
 	{
 		if (it->group)
@@ -263,7 +319,7 @@ static void avahi_client_reset_all()
 			it->group = NULL;
 		}
 	}
-	for (AvahiBrowserEntryList::iterator it = avahi_browsers.begin();
+	for (auto it = avahi_browsers.begin();
 		it != avahi_browsers.end(); ++it)
 	{
 		if (it->browser)
@@ -272,11 +328,13 @@ static void avahi_client_reset_all()
 			it->browser = NULL;
 		}
 	}
+#endif
 }
 
 static void avahi_client_callback(AvahiClient *client, AvahiClientState state, void *d)
 {
 	eDebug("[Avahi] client state: %d", state);
+#ifndef WIN32
 	switch(state)
 	{
 		case AVAHI_CLIENT_S_RUNNING:
@@ -303,6 +361,7 @@ static void avahi_client_callback(AvahiClient *client, AvahiClientState state, v
 			/* No action... */
 			break;
 	}
+#endif
 }
 
 /** Create a new watch for the specified file descriptor and for
@@ -310,24 +369,34 @@ static void avahi_client_callback(AvahiClient *client, AvahiClientState state, v
  * whenever any of the events happens. */
 static AvahiWatch* avahi_watch_new(const AvahiPoll *api, int fd, AvahiWatchEvent event, AvahiWatchCallback callback, void *userdata)
 {
+#ifndef WIN32
 	eDebug("[Avahi] %s(%d %#x)", __func__, fd, event);
 
 	return new AvahiWatch((eMainloop*)api->userdata, fd, event, callback, userdata);
+#else
+    return nullptr;
+#endif
 }
 
 
 /** Update the events to wait for. It is safe to call this function from an AvahiWatchCallback */
 static void avahi_watch_update(AvahiWatch *w, AvahiWatchEvent event)
 {
+#ifndef WIN32
 	eDebug("[Avahi] %s(%#x)", __func__, event);
 	w->sn->setRequested(event);
+#endif
 }
 
 /** Return the events that happened. It is safe to call this function from an AvahiWatchCallback  */
 AvahiWatchEvent avahi_watch_get_events(AvahiWatch *w)
 {
+#ifndef WIN32
 	eDebug("[Avahi] %s", __func__);
 	return (AvahiWatchEvent)w->lastEvent;
+#else
+    return 0;
+#endif
 }
 
 /** Free a watch. It is safe to call this function from an AvahiWatchCallback */
@@ -339,6 +408,7 @@ void avahi_watch_free(AvahiWatch *w)
 
 static void avahi_set_timer(AvahiTimeout *t, const struct timeval *tv)
 {
+#ifndef WIN32
 	if (tv)
 	{
 		/*struct timeval now;
@@ -348,6 +418,7 @@ static void avahi_set_timer(AvahiTimeout *t, const struct timeval *tv)
 			usec = 0;
 		t->timer->start((usec + 999) / 1000, true);
 	}
+#endif
 }
 
 /** Set a wakeup time for the polling loop. The API will call the
@@ -357,12 +428,16 @@ callback function will be called and the timeout is disabled. You
 can reenable it by calling timeout_update()  */
 AvahiTimeout* avahi_timeout_new(const AvahiPoll *api, const struct timeval *tv, AvahiTimeoutCallback callback, void *userdata)
 {
+#ifndef WIN32
 	eDebug("[Avahi] %s", __func__);
 
 	AvahiTimeout* result = new AvahiTimeout((eMainloop*)api->userdata, callback, userdata);
 	avahi_set_timer(result, tv);
 
 	return result;
+#else
+    return nullptr;
+#endif
 }
 
 /** Update the absolute expiration time for a timeout, If tv is
@@ -386,6 +461,7 @@ void avahi_timeout_free(AvahiTimeout *t)
 /* Connect the mainloop to avahi... */
 void e2avahi_init(eMainloop* reactor)
 {
+#ifndef WIN32
 	avahi_poll_api.userdata = reactor;
 	avahi_poll_api.watch_new = avahi_watch_new;
 	avahi_poll_api.watch_update = avahi_watch_update;
@@ -397,10 +473,12 @@ void e2avahi_init(eMainloop* reactor)
 
 	avahi_client = avahi_client_new(&avahi_poll_api,
 		AVAHI_CLIENT_NO_FAIL, avahi_client_callback, NULL, NULL);
+#endif
 }
 
 void e2avahi_close()
 {
+#ifndef WIN32
 	if (avahi_client)
 	{
 		avahi_client_free(avahi_client);
@@ -412,8 +490,8 @@ void e2avahi_close()
 			it->group = NULL;
 		}
 	}
+#endif
 }
-
 
 void e2avahi_announce(const char* service_name, const char* service_type, unsigned short port_num)
 {
@@ -429,6 +507,7 @@ void e2avahi_resolve(const char* service_type, E2AvahiResolveCallback callback, 
 
 void e2avahi_resolve_cancel(const char* service_type, E2AvahiResolveCallback callback, void *userdata)
 {
+#ifndef WIN32
 	AvahiBrowserEntry entry(service_type, callback, userdata);
 	AvahiBrowserEntryList::iterator it = std::find(avahi_browsers.begin(), avahi_browsers.end(), entry);
 	if (it == avahi_browsers.end()) {
@@ -441,4 +520,5 @@ void e2avahi_resolve_cancel(const char* service_type, E2AvahiResolveCallback cal
 		it->browser = NULL;
 	}
 	avahi_browsers.erase(it);
+#endif
 }

@@ -4,6 +4,8 @@
 #include <stdio.h>
 #include <fcntl.h>
 #include <unistd.h>
+#include <sys/ioctl.h>
+#include <linux/input.h>
 
 #include <lib/base/init.h>
 #include <lib/base/init_num.h>

@@ -224,8 +224,8 @@ int eMainloop::processOneEvent(long user_timeout, PyObject **res, ePyObject addi
 		fdcount += PyDict_Size(additional);
 
 		// build the poll aray
-	pollfd pfd[fdcount];  // make new pollfd array
-	std::map<int,eSocketNotifier*>::iterator it = notifiers.begin();
+	std::vector<pollfd> pfd(fdcount);  // make new pollfd array
+	auto it = notifiers.begin();
 
 	int i=0;
 	for (; i < nativecount; ++i, ++it)
@@ -251,7 +251,7 @@ int eMainloop::processOneEvent(long user_timeout, PyObject **res, ePyObject addi
 	}
 
 
-	ret = _poll(pfd, fdcount, poll_timeout);
+	ret = _poll(std::data(pfd), fdcount, poll_timeout);
 
 	/* ret > 0 means that there are some active poll entries. */
 	if (ret > 0)

@@ -18,30 +18,30 @@
 #define I2C_SLAVE_FORCE	0x0706
 #endif
 
-#define eDebugNoSimulate(x...) \
+#define eDebugNoSimulate(...) \
 	do { \
 		if (!m_simulate) \
-			eDebug(x); \
+			eDebug(__VA_ARGS__); \
 	} while(0)
 #if 0
 		else \
 		{ \
 			eDebugNoNewLineStart("SIMULATE:"); \
-			eDebugNoNewLine(x); \
+			eDebugNoNewLine(__VA_ARGS__); \
 			eDebugNoNewLine("\n"); \
 		}
 #endif
 
-#define eDebugNoSimulateNoNewLineStart(x...) \
+#define eDebugNoSimulateNoNewLineStart(...) \
 	do { \
 		if (!m_simulate) \
-			eDebugNoNewLineStart(x); \
+			eDebugNoNewLineStart(__VA_ARGS__); \
 	} while(0)
 #if 0
 		else \
 		{ \
 			eDebugNoNewLineStart("SIMULATE:"); \
-			eDebugNoNewLine(x); \
+			eDebugNoNewLine(__VA_ARGS__); \
 		}
 #endif
 
@@ -65,15 +65,14 @@ void eDVBDiseqcCommand::setCommandString(const char *str)
 	for (int i=0; i < slen; ++i)
 	{
 		unsigned char c = str[i];
-		switch(c)
-		{
-			case '0' ... '9': c-=48; break;
-			case 'a' ... 'f': c-=87; break;
-			case 'A' ... 'F': c-=55; break;
-			default:
-				eDebug("[eDVBDiseqcCommand] invalid character in hex string..ignore complete diseqc command !");
-				return;
-		}
+        if (c >= '0' && c <= '9')c -= 48;
+        else if (c >= 'a' && c <= 'f')c -= 87;
+        else if (c >= 'A' && c <= 'F')c -= 55;
+        else
+        {
+            eDebug("[eDVBDiseqcCommand] invalid character in hex string..ignore complete diseqc command !");
+            return;
+        }
 		if ( i % 2 )
 		{
 			val |= c;

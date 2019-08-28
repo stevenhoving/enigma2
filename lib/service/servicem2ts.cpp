@@ -210,7 +210,7 @@ eM2TSFile::eM2TSFile(const char *filename):
 	}
 #endif
 	if (m_fd == -1)
-		m_fd = ::open(filename, O_RDONLY | O_LARGEFILE | O_CLOEXEC);
+		m_fd = ::open(filename, O_RDONLY | O_CLOEXEC); // O_LARGEFILE
 
 	if (m_fd != -1)
 		m_current_offset = m_length = lseek_internal(0, SEEK_END);

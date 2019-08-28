@@ -152,7 +152,7 @@ int eServerSocket::startListening(struct addrinfo *addr)
 		}
 
 		int val = 1;
-		setsockopt(getDescriptor(), SOL_SOCKET, SO_REUSEADDR, &val, sizeof(val));
+		setsockopt(getDescriptor(), SOL_SOCKET, SO_REUSEADDR, (const char *)&val, sizeof(val));
 
 		if (bind(getDescriptor(), ptr->ai_addr, ptr->ai_addrlen) < 0)
 		{

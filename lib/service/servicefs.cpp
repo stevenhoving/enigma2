@@ -11,6 +11,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
+#include <cctype>
 
 class eStaticServiceFSInformation: public iStaticServiceInformation
 {
@@ -90,15 +91,16 @@ RESULT eServiceFactoryFS::offlineOperations(const eServiceReference &, ePtr<iSer
 
 DEFINE_REF(eServiceFS);
 
-eServiceFS::eServiceFS(const char *path, const char *additional_extensions): path(path)
+eServiceFS::eServiceFS(const char *path, const char *additional_extensions)
+    : path(path)
 {
 	m_list_valid = 0;
 	if (additional_extensions)
 	{
 		size_t slen=strlen(additional_extensions);
-		char buf[slen+1];
-		char *tmp=0, *cmds = buf;
-		memcpy(buf, additional_extensions, slen+1);
+		std::vector<char> buf(slen+1);
+		char *tmp=0, *cmds = std::data(buf);
+		memcpy(std::data(buf), additional_extensions, slen+1);
 
 		// strip spaces at beginning
 		while(cmds[0] == ' ')
@@ -161,6 +163,7 @@ int lower(char c)
 
 RESULT eServiceFS::getContent(std::list<eServiceReference> &list, bool sorted)
 {
+#ifndef WIN32
 	DIR *d=opendir(path.c_str());
 	if (!d)
 		return -errno;
@@ -221,7 +224,7 @@ RESULT eServiceFS::getContent(std::list<eServiceReference> &list, bool sorted)
 
 	if (sorted)
 		list.sort(iListableServiceCompare(this));
-
+#endif
 	return 0;
 }
 

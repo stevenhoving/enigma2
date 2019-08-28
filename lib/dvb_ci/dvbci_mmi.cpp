@@ -113,12 +113,12 @@ int eDVBCIMMISession::answerEnq(char *answer)
 	unsigned int len = strlen(answer);
 	eDebug("[CI MMI] eDVBCIMMISession::answerEnq(%d bytes)", len);
 
-	unsigned char data[len+1];
+	std::vector<unsigned char> data(len+1);
 	data[0] = 0x01; // answer ok
-	memcpy(data+1, answer, len);
+	memcpy(std::data(data)+1, answer, len);
 
 	unsigned char tag[]={0x9f, 0x88, 0x08};
-	sendAPDU(tag, data, len+1);
+	sendAPDU(tag, std::data(data), len+1);
 
 	return 0;
 }

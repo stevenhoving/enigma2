@@ -4142,7 +4142,8 @@ static const Summary16 big5_uni2indx_pagefe[23] = {
   { 13673, 0xfffe }, { 13688, 0x3fff }, { 13702, 0x0010 },
 };
 
-__attribute__ ((unused))
+//__attribute__ ((unused))
+[[maybe_unused]]
 static int
 big5_wctomb ( unsigned char *r, ucs4_t wc, int n)
 {

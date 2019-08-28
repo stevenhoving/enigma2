@@ -18,8 +18,8 @@ struct	sigaction {
     int	sa_flags;		/* see signal options below */
 };
 
-void(*signal __P((int, void(*) __P((int))))) __P((int));
-int	raise __P((int));
+//void(*signal __P((int, void(*) __P((int))))) __P((int));
+//int	raise __P((int));
 
 #ifndef	_ANSI_SOURCE
 int	kill __P((pid_t, int));

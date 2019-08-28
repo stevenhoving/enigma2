@@ -16,3 +16,46 @@ struct aiocb {
 
                                        /* Various implementation-internal fields not shown */
 };
+
+enum
+{
+    AIO_CANCELED,
+#define AIO_CANCELED AIO_CANCELED
+    AIO_NOTCANCELED,
+#define AIO_NOTCANCELED AIO_NOTCANCELED
+    AIO_ALLDONE
+#define AIO_ALLDONE AIO_ALLDONE
+};
+
+
+
+static int aio_error(const struct aiocb *aiocbp)
+{
+    printf("aio_error\n");
+    return 0;
+}
+
+static int aio_suspend(const struct aiocb * const aiocb_list[],
+    int nitems, const struct timespec *timeout)
+{
+    printf("aio_suspend\n");
+    return 0;
+}
+
+static ssize_t aio_return(struct aiocb *aiocbp)
+{
+    printf("aio_return\n");
+    return 0;
+}
+
+static int aio_write(struct aiocb *aiocbp)
+{
+    printf("aio_write\n");
+    return 0;
+}
+
+static int aio_cancel(int fd, struct aiocb *aiocbp)
+{
+    printf("aio_cancel\n");
+    return 0;
+}

@@ -12,10 +12,12 @@
 #define SEC_DEBUG
 
 #ifdef SEC_DEBUG
-#define eSecDebug(arg...) eDebug(arg)
+#define eSecDebug(...) eDebug(__VA_ARGS__)
 #else
-#define eSecDebug(arg...)
+#define eSecDebug(...)
 #endif
+
+#define localtime_r(a, b) localtime_s(b, a)
 
 DEFINE_REF(eDVBSatelliteEquipmentControl);
 
@@ -41,11 +43,11 @@ eDVBSatelliteEquipmentControl::eDVBSatelliteEquipmentControl(eSmartPtrList<eDVBR
 	clear();
 }
 
-#define eSecDebugNoSimulate(x...) \
+#define eSecDebugNoSimulate(...) \
 	do { \
 		if (!simulate) \
 		{ \
-			eSecDebug(x); \
+			eSecDebug(__VA_ARGS__); \
 		} \
 	} while(0)
 
@@ -281,10 +283,10 @@ bool need_turn_fast(int turn_speed)
 
 #define VOLTAGE(x) (lnb_param.m_increased_voltage ? iDVBFrontend::voltage##x##_5 : iDVBFrontend::voltage##x)
 
-#define eDebugNoSimulate(x...) \
+#define eDebugNoSimulate(...) \
 	do { \
 		if (!simulate) \
-			eDebug(x); \
+			eDebug(__VA_ARGS__); \
 	} while(0)
 
 RESULT eDVBSatelliteEquipmentControl::prepare(iDVBFrontend &frontend, const eDVBFrontendParametersSatellite &sat, int &frequency, int slot_id, unsigned int tunetimeout)

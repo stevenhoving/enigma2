@@ -7,7 +7,19 @@
 #)
 
 add_library(fixup STATIC
+    aio.h
+    byteswap.h
     compat_wordex.cpp
+    getline.h
+    gettime.h
+    gettimeofday.h
+    memrchr.h
+    netdb.h
+    poll.h
+    portable_endian.h
+    strings.h
+    unistd.h
+    wordexp.h
 )
 
 target_include_directories(fixup

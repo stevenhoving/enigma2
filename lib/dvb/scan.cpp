@@ -26,9 +26,9 @@
 #include <errno.h>
 #include "absdiff.h"
 
-#define SCAN_eDebug(x...) do { if (m_scan_debug) eDebug(x); } while(0)
-#define SCAN_eDebugNoNewLineStart(x...) do { if (m_scan_debug) eDebugNoNewLineStart(x); } while(0)
-#define SCAN_eDebugNoNewLine(x...) do { if (m_scan_debug) eDebugNoNewLine(x); } while(0)
+#define SCAN_eDebug(...) do { if (m_scan_debug) eDebug(__VA_ARGS__); } while(0)
+#define SCAN_eDebugNoNewLineStart(...) do { if (m_scan_debug) eDebugNoNewLineStart(__VA_ARGS__); } while(0)
+#define SCAN_eDebugNoNewLine(...) do { if (m_scan_debug) eDebugNoNewLine(__VA_ARGS__); } while(0)
 
 DEFINE_REF(eDVBScan);
 
@@ -562,7 +562,9 @@ void eDVBScan::PMTready(int err)
 								RegistrationDescriptor *d = (RegistrationDescriptor*)(*desc);
 								switch (d->getFormatIdentifier())
 								{
-								case 0x44545331 ... 0x44545333: // DTS1/DTS2/DTS3
+                                case 0x44545331:
+                                case 0x44545332:
+                                case 0x44545333: // DTS1/DTS2/DTS3
 								case 0x41432d33: // == 'AC-3'
 								case 0x42535344: // == 'BSSD' (LPCM)
 									isaudio = 1;

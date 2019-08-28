@@ -10,16 +10,33 @@
 #include <lib/base/nconfig.h>
 #include <lib/gdi/gmaindc.h>
 
-#if defined(__MIPSEL__)
-#include <asm/ptrace.h>
-#else
-#warning "no oops support!"
+#define localtime_r(a, b) localtime_s(b, a)
+
+inline void* memrchr(const void* bytes, int find_char, size_t len)
+{
+    const unsigned char* cursor =
+        reinterpret_cast<const unsigned char*>(bytes) + len - 1;
+    unsigned char actual_char = find_char;
+    for (; cursor >= bytes; --cursor) {
+        if (*cursor == actual_char) {
+            return const_cast<void*>(reinterpret_cast<const void*>(cursor));
+        }
+    }
+    return NULL;
+}
+
+//#if defined(__MIPSEL__)
+//#include <asm/ptrace.h>
+//#else
+//#warning "no oops support!"
 #define NO_OOPS_SUPPORT
-#endif
+//#endif
 
 #include "version_info.h"
 
 /************************************************/
+
+#define SIGKILL 9
 
 static const char *crash_emailaddr =
 #ifndef CRASH_EMAILADDR
@@ -64,6 +81,7 @@ static void getKlog(FILE* f)
 {
 	fprintf(f, "\n\ndmesg\n\n");
 
+#ifndef WIN32
 	ssize_t len = klogctl(10, NULL, 0); /* read ring buffer size */
 	if (len == -1)
 	{
@@ -86,6 +104,7 @@ static void getKlog(FILE* f)
 
 	buf.resize(len);
 	fprintf(f, "%s\n", &buf[0]);
+#endif
 }
 
 static void stringFromFile(FILE* f, const char* context, const char* filename)
@@ -304,23 +323,25 @@ void oops(const mcontext_t &context)
  */
 void print_backtrace()
 {
-	void *array[15];
-	size_t size;
-	size_t cnt;
-
-	size = backtrace(array, 15);
-	eLog(lvlFatal, "Backtrace:");
-	for (cnt = 1; cnt < size; ++cnt)
-	{
-		Dl_info info;
-
-		if (dladdr(array[cnt], &info)
-			&& info.dli_fname != NULL && info.dli_fname[0] != '\0')
-		{
-			eLog(lvlFatal, "%s(%s) [0x%lX]", info.dli_fname, info.dli_sname != NULL ? info.dli_sname : "n/a", (unsigned long int) array[cnt]);
-		}
-	}
+	//void *array[15];
+	//size_t size;
+	//size_t cnt;
+    //
+	//size = backtrace(array, 15);
+	//eLog(lvlFatal, "Backtrace:");
+	//for (cnt = 1; cnt < size; ++cnt)
+	//{
+	//	Dl_info info;
+    //
+	//	if (dladdr(array[cnt], &info)
+	//		&& info.dli_fname != NULL && info.dli_fname[0] != '\0')
+	//	{
+	//		eLog(lvlFatal, "%s(%s) [0x%lX]", info.dli_fname, info.dli_sname != NULL ? info.dli_sname : "n/a", (unsigned long int) array[cnt]);
+	//	}
+	//}
 }
+
+struct siginfo_t;
 
 void handleFatalSignal(int signum, siginfo_t *si, void *ctx)
 {
@@ -335,15 +356,15 @@ void handleFatalSignal(int signum, siginfo_t *si, void *ctx)
 
 void bsodCatchSignals()
 {
-	struct sigaction act;
-	act.sa_sigaction = handleFatalSignal;
-	act.sa_flags = SA_RESTART | SA_SIGINFO;
-	if (sigemptyset(&act.sa_mask) == -1)
-		perror("sigemptyset");
-
-		/* start handling segfaults etc. */
-	sigaction(SIGSEGV, &act, 0);
-	sigaction(SIGILL, &act, 0);
-	sigaction(SIGBUS, &act, 0);
-	sigaction(SIGABRT, &act, 0);
+	//struct sigaction act;
+	//act.sa_sigaction = handleFatalSignal;
+	//act.sa_flags = SA_RESTART | SA_SIGINFO;
+	//if (sigemptyset(&act.sa_mask) == -1)
+	//	perror("sigemptyset");
+    //
+	//	/* start handling segfaults etc. */
+	//sigaction(SIGSEGV, &act, 0);
+	//sigaction(SIGILL, &act, 0);
+	//sigaction(SIGBUS, &act, 0);
+	//sigaction(SIGABRT, &act, 0);
 }

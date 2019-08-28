@@ -177,10 +177,10 @@ void catchTermSignal()
 	struct sigaction act;
 
 	act.sa_handler = sigterm_handler;
-	act.sa_flags = SA_RESTART;
+	//act.sa_flags = SA_RESTART;
 
-	if (sigemptyset(&act.sa_mask) == -1)
-		perror("sigemptyset");
+	//if (sigemptyset(&act.sa_mask) == -1)
+		//perror("sigemptyset");
 	if (sigaction(SIGTERM, &act, 0) == -1)
 		perror("SIGTERM");
 }
@@ -194,11 +194,11 @@ int main(int argc, char **argv)
 #ifdef OBJECT_DEBUG
 	atexit(object_dump);
 #endif
-
+#define setenv(a, b, c) SetEnvironmentVariable(a, b)
 	// set pythonpath if unset
 	setenv("PYTHONPATH", eEnv::resolve("${libdir}/enigma2/python").c_str(), 0);
 	printf("PYTHONPATH: %s\n", getenv("PYTHONPATH"));
-	printf("DVB_API_VERSION %d DVB_API_VERSION_MINOR %d\n", DVB_API_VERSION, DVB_API_VERSION_MINOR);
+	//printf("DVB_API_VERSION %d DVB_API_VERSION_MINOR %d\n", DVB_API_VERSION, DVB_API_VERSION_MINOR);
 
 	// get enigma2 debug level settings
 	debugLvl = getenv("ENIGMA_DEBUG_LVL") ? atoi(getenv("ENIGMA_DEBUG_LVL")) : 3;
@@ -345,13 +345,14 @@ const char *getEnigmaVersionString()
 
 const char *getBoxType()
 {
-	return BOXTYPE;
+	//return BOXTYPE;
+    return "something";
 }
 
 #include <malloc.h>
 
 void dump_malloc_stats(void)
 {
-	struct mallinfo mi = mallinfo();
-	eDebug("MALLOC: %d total", mi.uordblks);
+	//struct mallinfo mi = mallinfo();
+	//eDebug("MALLOC: %d total", mi.uordblks);
 }

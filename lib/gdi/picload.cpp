@@ -4,10 +4,14 @@
 
 #include <lib/base/cfile.h>
 #include <lib/gdi/picload.h>
+#include <unistd.h>
+
+#include <filesystem>
+
 
 extern "C" {
-#define HAVE_BOOLEAN
-#define boolean int
+//#define HAVE_BOOLEAN
+//#define boolean int
 #include <jpeglib.h>
 #include <gif_lib.h>
 }
@@ -18,11 +22,12 @@ DEFINE_REF(ePicLoad);
 
 static std::string getSize(const char* file)
 {
-	struct stat64 s;
-	if (stat64(file, &s) < 0)
-		return "";
+	//struct stat64 s;
+	//if (stat64(file, &s) < 0)
+	//	return "";
+    const auto size = std::filesystem::file_size(file);
 	char tmp[20];
-	snprintf(tmp, 20, "%ld kB", (long)s.st_size / 1024);
+	snprintf(tmp, 20, "%ld kB", (long)size / 1024);
 	return tmp;
 }
 
@@ -803,8 +808,8 @@ void ePicLoad::decodeThumb()
 		// Save cachefile
 		if (m_conf.usecache && !exif_thumbnail && !cachefile_found)
 		{
-			if (access(cachedir.c_str(), R_OK))
-				::mkdir(cachedir.c_str(), 0755);
+			//if (access(cachedir.c_str(), R_OK))
+			//	::mkdir(cachedir.c_str(), 0755);
 
 			// Resize for Thumbnail
 			int imx, imy;

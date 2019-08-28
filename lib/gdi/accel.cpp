@@ -1,3 +1,6 @@
+#include <winsock2.h>
+#include <windows.h>
+
 #include <cstring>
 #include <lib/base/init.h>
 #include <lib/base/init_num.h>

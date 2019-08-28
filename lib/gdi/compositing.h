@@ -2,7 +2,6 @@
 #define __lib_gdi_compositing_h
 
 #include <lib/gdi/gpixmap.h>
-
 #include <vector>
 
 class gDC;

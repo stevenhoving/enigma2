@@ -21,7 +21,6 @@ eTuxtxtApp *eTuxtxtApp::instance = NULL;
 eTuxtxtApp::eTuxtxtApp() : pid(0), enableTtCaching(false), uiRunning(false), messagePump(eApp, 0)
 {
 	CONNECT(messagePump.recv_msg, eTuxtxtApp::recvEvent);
-	pthread_mutex_init( &cacheChangeLock, 0 );
 	if (!instance)
 		instance=this;
 }
@@ -31,7 +30,6 @@ eTuxtxtApp::~eTuxtxtApp()
 	if (instance==this)
 		instance=0;
 	kill();
-	pthread_mutex_destroy( &cacheChangeLock );
 }
 
 void eTuxtxtApp::recvEvent(const int &evt)
@@ -48,9 +46,9 @@ int eTuxtxtApp::startUi()
 	if (fbClass::getInstance()->lock() >= 0)
 	{
 		eDBoxLCD::getInstance()->lock();
-		pthread_mutex_lock( &cacheChangeLock );
+        cacheChangeLock.lock();
 		uiRunning = true;
-		pthread_mutex_unlock( &cacheChangeLock );
+        cacheChangeLock.unlock();
 		run();
 	}
 	else
@@ -78,13 +76,12 @@ void eTuxtxtApp::initCache()
 
 void eTuxtxtApp::freeCache()
 {
-	pthread_mutex_lock( &cacheChangeLock );
+    std::scoped_lock slock(cacheChangeLock);
 	if ( !uiRunning )
 	{
 		tuxtxt_close();
 		pid = 0;
 	}
-	pthread_mutex_unlock( &cacheChangeLock );
 }
 
 void eTuxtxtApp::startCaching( int tpid, int tdemux)
@@ -97,11 +94,9 @@ void eTuxtxtApp::startCaching( int tpid, int tdemux)
 
 void eTuxtxtApp::stopCaching()
 {
-	pthread_mutex_lock( &cacheChangeLock );
+    std::scoped_lock slock(cacheChangeLock);
 	if ( !uiRunning )
 		tuxtxt_stop();
-
-	pthread_mutex_unlock( &cacheChangeLock );
 }
 
 void eTuxtxtApp::setEnableTtCachingOnOff( int onoff )

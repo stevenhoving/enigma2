@@ -1,5 +1,5 @@
 #include "version_info.h"
-#include "version.h"
+//#include "version.h"
 
 #ifndef ENIGMA2_COMMIT_DATE
 #define ENIGMA2_COMMIT_DATE __DATE__
