@@ -265,7 +265,9 @@ void gRC::disableSpinner()
 
 static int gPainter_instances;
 
-gPainter::gPainter(gDC *dc, eRect rect): m_dc(dc), m_rc(gRC::getInstance())
+gPainter::gPainter(gDC *dc, eRect rect)
+    : m_dc(dc)
+    , m_rc(gRC::getInstance())
 {
 //	ASSERT(!gPainter_instances);
 	gPainter_instances++;
@@ -525,8 +527,12 @@ void gPainter::moveOffset(ePoint rel)
 
 void gPainter::resetOffset()
 {
-	if ( m_dc->islocked() )
+	if (!m_dc)
 		return;
+
+    if (m_dc->islocked())
+        return;
+
 	gOpcode o;
 	o.opcode=gOpcode::setOffset;
 	o.dc = m_dc.grabRef();

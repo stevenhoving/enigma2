@@ -7,6 +7,7 @@
 #include <map>
 #include <new>
 #include <libsig_comp.h>
+#include <cassert>
 
 // to use memleak check change the following in configure.ac
 // * add -DMEMLEAK_CHECK and -rdynamic to CPP_FLAGS
@@ -155,7 +156,7 @@ enum { lvlDebug=4, lvlInfo=3, lvlWarning=2, lvlError=1, lvlFatal=0 };
 #define eDebug(...)			eDebugLow(lvlDebug,   0,                   __VA_ARGS__)
 #define eDebugNoNewLineStart(...)	eDebugLow(lvlDebug,   _DBGFLG_NONEWLINE,   __VA_ARGS__)
 #define eDebugNoNewLine(...)		eDebugLow(lvlDebug,   _DBGFLG_NOTIME | _DBGFLG_NONEWLINE, __VA_ARGS__)
-#define ASSERT(x) { if (!(x)) eFatal("%s:%d ASSERTION %s FAILED!", __FILE__, __LINE__, #x); }
+#define ASSERT(x) { assert(x); if (!(x)) eFatal("%s:%d ASSERTION %s FAILED!", __FILE__, __LINE__, #x); }
 
 #endif // SWIG
 

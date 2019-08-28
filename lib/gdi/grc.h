@@ -2,9 +2,9 @@
 #define __grc_h
 
 /*
-	gPainter ist die high-level version. die highlevel daten werden zu low level opcodes ueber
-	die gRC-queue geschickt und landen beim gDC der hardwarespezifisch ist, meist aber auf einen
-	gPixmap aufsetzt (und damit unbeschleunigt ist).
+    gPainter is the high-level version. the highlevel data becomes low level opcodes
+    the gRC queue sent and land at the gDC is the hardware specific, but mostly on one
+    gPixmap touches down (and thus is unaccelerated).
 */
 
 // for debugging use:

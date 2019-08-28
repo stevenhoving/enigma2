@@ -88,6 +88,8 @@ target_include_directories(giflib
 
 set_target_properties(giflib PROPERTIES FOLDER "External/giflib")
 
+add_subdirectory(asio/asio)
+
 
 #set(AVAHI_PATH
 #    "D:/dev/enigma2/cmake/dep/avahi"

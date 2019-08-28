@@ -1,6 +1,7 @@
 %{
 #include <lib/base/console.h>
 #include "structmember.h"
+#include <vector>
 
 extern "C" {
 
@@ -152,7 +153,7 @@ eConsolePy_execute(eConsolePy* self, PyObject *argt)
 	Py_ssize_t argc = PyTuple_Size(argt);
 	if (argc > 1)
 	{
-		const char *argv[argc + 1];
+		std::vector<const char *>argv(argc + 1);
 		int argpos=0;
 		while(argpos < argc)
 		{
@@ -170,7 +171,7 @@ eConsolePy_execute(eConsolePy* self, PyObject *argt)
 			argv[argpos++] = PyString_AsString(arg);
 		}
 		argv[argpos] = 0;
-		return PyInt_FromLong(self->cont->execute(argv[0], argv+1));
+		return PyInt_FromLong(self->cont->execute(argv[0], std::data(argv)+1));
 	}
 	else
 	{
