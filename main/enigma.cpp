@@ -35,6 +35,11 @@
 #include "bsod.h"
 #include "version_info.h"
 
+static int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact)
+{
+    return 0;
+}
+
 #ifdef OBJECT_DEBUG
 int object_total_remaining;
 

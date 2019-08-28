@@ -6,6 +6,11 @@
 
 //#define SHOW_WRITE_TIME
 
+static int sigaction(int signum, const struct sigaction *act, struct sigaction *oldact)
+{
+    return 0;
+}
+
 DEFINE_REF(eFilePushThread);
 
 eFilePushThread::eFilePushThread(int blocksize, size_t buffersize):
