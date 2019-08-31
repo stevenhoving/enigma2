@@ -1,5 +1,7 @@
 #include <lib/base/cfile.h>
 #include <lib/base/eerror.h>
+#include <lib/base/etimer.h>
+
 #include <lib/dvb/radiotext.h>
 #include <lib/dvb/idemux.h>
 #include <lib/gdi/gpixmap.h>

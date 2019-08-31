@@ -2,6 +2,7 @@
 #include <lib/dvb/decoder.h>
 #include <lib/base/cfile.h>
 #include <lib/base/eerror.h>
+#include <lib/base/etime.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>

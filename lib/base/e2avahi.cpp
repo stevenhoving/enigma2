@@ -1,5 +1,7 @@
 #include "e2avahi.h"
 #include "ebase.h"
+#include <lib/base/etimer.h>
+#include <lib/base/esocketnotifier.h>
 #ifndef WIN32
 #include <avahi-common/error.h>
 #include <avahi-client/client.h>

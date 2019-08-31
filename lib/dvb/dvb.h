@@ -5,6 +5,7 @@
 
 #include <lib/base/ebase.h>
 #include <lib/base/elock.h>
+#include <lib/base/etimer.h>
 #include <lib/dvb/idvb.h>
 #include <lib/dvb/fbc.h>
 #include <lib/dvb/demux.h>

@@ -4,6 +4,7 @@
 #include <lib/dvb/frontendparms.h>
 #include <lib/base/cfile.h>
 #include <lib/base/eerror.h>
+#include <lib/base/etimer.h>
 #include <lib/base/nconfig.h> // access to python config
 #include <errno.h>
 #include <unistd.h>

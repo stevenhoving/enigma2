@@ -7,7 +7,6 @@
 #ifndef WIN32
 #include <ext/atomicity.h>
 #else
-//#include <winsock2.h>
 #include <windows.h>
 #endif
 

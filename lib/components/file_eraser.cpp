@@ -1,4 +1,5 @@
 #include <lib/components/file_eraser.h>
+#include <lib/base/etimer.h>
 #include <lib/base/ioprio.h>
 #include <lib/base/eerror.h>
 #include <lib/base/init.h>

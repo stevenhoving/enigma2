@@ -1,4 +1,5 @@
-//#include <winsock2.h>
+#include <lib/network/socket.h>
+#include <lib/base/esocketnotifier.h>
 
 #include <sys/ioctl.h>
 #include <asm/ioctls.h>
@@ -7,8 +8,6 @@
 #include <time.h>
 #include <string.h>
 #include <linux/serial.h>
-#include <lib/network/socket.h>
-
 
 void eSocket::close()
 {

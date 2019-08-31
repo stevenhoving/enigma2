@@ -11,6 +11,7 @@
 #include <lib/dvb/db.h>
 #include <lib/dvb/cahandler.h>
 #include <lib/base/eerror.h>
+#include <lib/base/etimer.h>
 #include <lib/base/init.h>
 #include <lib/base/init_num.h>
 

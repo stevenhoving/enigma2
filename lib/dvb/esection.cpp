@@ -1,4 +1,5 @@
 #include <lib/dvb/esection.h>
+#include <lib/base/etimer.h>
 #include <lib/base/eerror.h>
 
 void eGTable::sectionRead(const uint8_t *d)

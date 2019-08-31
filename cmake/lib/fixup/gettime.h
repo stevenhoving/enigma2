@@ -7,8 +7,7 @@
 
 #define CLOCK_MONOTONIC 0
 
-static
-LARGE_INTEGER getFILETIMEoffset()
+static LARGE_INTEGER getFILETIMEoffset()
 {
     SYSTEMTIME s;
     FILETIME f;

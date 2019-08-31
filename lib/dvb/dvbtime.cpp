@@ -1,5 +1,6 @@
 #include <lib/dvb/dvbtime.h>
 #include <lib/dvb/dvb.h>
+#include <lib/base/etimer.h>
 
 #include <sys/ioctl.h>
 #include <stdio.h>

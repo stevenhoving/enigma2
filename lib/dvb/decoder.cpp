@@ -1,5 +1,6 @@
 #include <lib/base/cfile.h>
 #include <lib/base/ebase.h>
+#include <lib/base/etimer.h>
 #include <lib/base/eerror.h>
 #include <lib/base/wrappers.h>
 #include <lib/dvb/decoder.h>

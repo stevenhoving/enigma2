@@ -2,20 +2,20 @@
 #include <lib/base/eerror.h>
 #include <unistd.h>
 
-eMessagePumpMT::eMessagePumpMT():
-	content(1024*1024)
+eMessagePumpMT::eMessagePumpMT()
+    : content(1024*1024)
 {
-	if (pipe(fd) == -1)
-	{
-		eDebug("[eMessagePumpMT] failed to create pipe (%m)");
-	}
+	//if (pipe(fd) == -1)
+	//{
+	//	eDebug("[eMessagePumpMT] failed to create pipe (%m)");
+	//}
 }
 
 eMessagePumpMT::~eMessagePumpMT()
 {
 	content.lock(); // blocks until all messages are processed.
-	close(fd[0]);
-	close(fd[1]);
+	//close(fd[0]);
+	//close(fd[1]);
 }
 
 int eMessagePumpMT::send(const void *data, int len)

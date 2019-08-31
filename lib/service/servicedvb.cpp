@@ -1,6 +1,3 @@
-#include <lib/base/eerror.h>
-#include <lib/base/object.h>
-#include <string>
 #include <lib/service/servicedvb.h>
 #include <lib/service/service.h>
 #include <lib/base/estring.h>
@@ -9,6 +6,10 @@
 #include <lib/dvb/dvb.h>
 #include <lib/dvb/db.h>
 #include <lib/dvb/decoder.h>
+
+#include <lib/base/eerror.h>
+#include <lib/base/object.h>
+#include <lib/base/etimer.h>
 
 #include <lib/components/file_eraser.h>
 #include <lib/service/servicedvbrecord.h>
@@ -34,6 +35,7 @@
 #error no byte order defined!
 #endif
 
+#include <string>
 #include <ios>
 #include <sstream>
 #include <iomanip>

@@ -2,6 +2,7 @@
 #define __esection_h
 
 #include <lib/dvb/idemux.h>
+#include <lib/base/etime.h>
 #include <set>
 
 #define TABLE_eDebug(...) do { if (m_debug) eDebug(__VA_ARGS__); } while(0)

@@ -3,7 +3,8 @@
 
 #include <string>
 
-class eEnv {
+class eEnv
+{
 private:
 	static bool initialized;
 	static void initialize();

@@ -1,14 +1,16 @@
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <string.h>
+#include <lib/driver/avswitch.h>
 
+#include <lib/base/esocketnotifier.h>
+#include <lib/base/ebase.h>
 #include <lib/base/cfile.h>
 #include <lib/base/init.h>
 #include <lib/base/init_num.h>
 #include <lib/base/eerror.h>
-#include <lib/base/ebase.h>
-#include <lib/driver/avswitch.h>
+
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <string.h>
 
 eAVSwitch *eAVSwitch::instance = 0;
 

@@ -1,5 +1,7 @@
 #include <lib/base/console.h>
 #include <lib/base/eerror.h>
+#include <lib/base/esocketnotifier.h>
+
 #include <sys/vfs.h> // for statfs
 #include <unistd.h>
 #include <signal.h>

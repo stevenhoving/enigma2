@@ -1,7 +1,8 @@
 /* DVB CI DateTime Manager */
 
-#include <lib/base/eerror.h>
 #include <lib/dvb_ci/dvbci_datetimemgr.h>
+#include <lib/base/eerror.h>
+#include <lib/base/etimer.h>
 
 eDVBCIDateTimeSession::eDVBCIDateTimeSession():
 	m_timer(eTimer::create(eApp)), m_interval(0)

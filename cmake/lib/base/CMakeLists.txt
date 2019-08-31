@@ -24,10 +24,33 @@ configure_file(
     ${BASE_PATH}/eenv_data.h.in
     eenv_data.h @ONLY)
 
-add_library(base STATIC
-    #${PROJECT_BINARY_DIR}/lib/base/eenv.cpp
+set(BASE_SOURCE
+    # generated
     ${PROJECT_BINARY_DIR}/lib/base/eenv_data.h
     ${BASE_PATH}/eenv.cpp
+    ${BASE_PATH}/eenv.h
+
+    ${BASE_PATH}/ebase.cpp
+    ${BASE_PATH}/ebase.h
+    ${BASE_PATH}/etimer.cpp
+    ${BASE_PATH}/etimer.h
+    ${BASE_PATH}/emainloop.cpp
+    ${BASE_PATH}/emainloop.h
+    ${BASE_PATH}/esocketnotifier.cpp
+    ${BASE_PATH}/esocketnotifier.h
+
+    # utils
+    ${BASE_PATH}/eerror.cpp
+    ${BASE_PATH}/eerror.h
+    ${BASE_PATH}/elock.cpp
+    ${BASE_PATH}/elock.h
+    ${BASE_PATH}/eptrlist.h
+    ${BASE_PATH}/etime.h
+)
+
+
+add_library(base STATIC
+    ${BASE_SOURCE}
     ${BASE_PATH}/benchmark.h
     ${BASE_PATH}/big5.h
     ${BASE_PATH}/buffer.cpp
@@ -41,16 +64,10 @@ add_library(base STATIC
     ${BASE_PATH}/console.h
     ${BASE_PATH}/e2avahi.cpp
     ${BASE_PATH}/e2avahi.h
-    ${BASE_PATH}/ebase.cpp
-    ${BASE_PATH}/ebase.h
-    ${BASE_PATH}/eenv.h
-    ${BASE_PATH}/eerror.cpp
-    ${BASE_PATH}/eerror.h
-    ${BASE_PATH}/elock.cpp
-    ${BASE_PATH}/elock.h
+
     ${BASE_PATH}/encoding.cpp
     ${BASE_PATH}/encoding.h
-    ${BASE_PATH}/eptrlist.h
+    
     ${BASE_PATH}/estring.cpp
     ${BASE_PATH}/estring.h
     ${BASE_PATH}/freesatv2.cpp
@@ -83,10 +100,14 @@ add_library(base STATIC
     ${BASE_PATH}/thread.h
     ${BASE_PATH}/wrappers.cpp
     ${BASE_PATH}/wrappers.h
-
     ${BASE_PATH}/base64.cpp
     ${BASE_PATH}/base64.h
 )
+
+source_group("base" FILES
+    ${BASE_SOURCE}
+)
+
 
 target_include_directories(base
   PUBLIC
@@ -101,6 +122,7 @@ target_link_libraries(base
     sigc-3.0
     openssl
     fixup::fixup
+    asio
 )
 
 target_compile_definitions(base

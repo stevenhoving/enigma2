@@ -1,7 +1,5 @@
-#include <unistd.h>
-#include <fcntl.h>
-#include <sys/ioctl.h>
-#include <string.h>
+#include <lib/driver/hdmi_cec.h>
+#include <lib/base/esocketnotifier.h>
 
 #include <lib/base/init.h>
 #include <lib/base/init_num.h>
@@ -9,10 +7,15 @@
 #include <lib/base/ebase.h>
 #include <lib/base/nconfig.h>
 #include <lib/driver/input_fake.h>
-#include <lib/driver/hdmi_cec.h>
+
 #include <lib/driver/avswitch.h>
 /* NOTE: this header will move to linux uapi, once the cec framework is out of staging */
 #include <lib/driver/linux-uapi-cec.h>
+
+#include <unistd.h>
+#include <fcntl.h>
+#include <sys/ioctl.h>
+#include <string.h>
 
 eHdmiCEC *eHdmiCEC::instance = NULL;
 

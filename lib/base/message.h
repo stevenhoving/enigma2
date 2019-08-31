@@ -3,12 +3,14 @@
 
 #include <queue>
 #include <lib/base/ebase.h>
+#include <lib/base/esocketnotifier.h>
 #include <lib/python/connections.h>
 #include <lib/python/swig.h>
 #include <unistd.h>
 #include <lib/base/elock.h>
 #include <lib/base/wrappers.h>
 #include <sys/eventfd.h>
+#include <asio/io_service.hpp>
 
 /**
  * \brief A generic messagepump.
@@ -20,24 +22,29 @@
 class eMessagePumpMT
 {
 	int fd[2];
+    asio::io_service service;
 	eLock content;
 public:
 	eMessagePumpMT();
 	virtual ~eMessagePumpMT();
 protected:
 	int send(const void *data, int len);
-	int recv(void *data, int len); // blockierend
+	int recv(void *data, int len); // sync
 	int getInputFD() const { return fd[1]; }
 	int getOutputFD() const { return fd[0]; }
 };
 
-class FD
+class scoped_file_descriptor
 {
 protected:
 	int m_fd;
 public:
-	FD(int fd): m_fd(fd) {}
-	~FD()
+	scoped_file_descriptor(int fd)
+        : m_fd(fd)
+    {
+    }
+
+	~scoped_file_descriptor()
 	{
 		::close(m_fd);
 	}
@@ -50,7 +57,7 @@ public:
  * Automatically creates a eSocketNotifier and gives you a callback.
  */
 template<class T>
-class eFixedMessagePump: public sigc::trackable, FD
+class eFixedMessagePump: public sigc::trackable, scoped_file_descriptor
 {
 	std::mutex lock;
 	ePtr<eSocketNotifier> sn;
@@ -105,9 +112,9 @@ public:
 		}
 		trigger_event();
 	}
-	eFixedMessagePump(eMainloop *context, int mt):
-		FD(eventfd(0, EFD_CLOEXEC)),
-		sn(eSocketNotifier::create(context, m_fd, eSocketNotifier::Read, false))
+	eFixedMessagePump(eMainloop *context, int mt)
+        : scoped_file_descriptor(eventfd(0, EFD_CLOEXEC))
+        , sn(eSocketNotifier::create(context, m_fd, eSocketNotifier::Read, false))
 	{
 		CONNECT(sn->activated, eFixedMessagePump<T>::do_recv);
 		sn->start();

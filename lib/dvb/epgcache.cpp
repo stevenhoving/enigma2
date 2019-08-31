@@ -1,6 +1,7 @@
 #include <lib/dvb/epgcache.h>
 #include <lib/dvb/dvb.h>
 #include <lib/dvb/lowlevel/eit.h>
+#include <lib/base/etimer.h>
 
 #undef EPG_DEBUG
 

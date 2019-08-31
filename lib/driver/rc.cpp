@@ -1,3 +1,5 @@
+#include <lib/base/esocketnotifier.h>
+
 #include <lib/driver/rc.h>
 
 #include <asm/types.h>

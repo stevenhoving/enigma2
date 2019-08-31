@@ -3,6 +3,7 @@
 #include <lib/gdi/font.h>
 #include <lib/base/estring.h>
 #include <lib/base/nconfig.h>
+#include <lib/base/etimer.h>
 #include <lib/gui/ewidgetdesktop.h>
 
 std::map<eSubtitleWidget::subfont_t, eSubtitleWidget::eSubtitleStyle> eSubtitleWidget::subtitleStyles;

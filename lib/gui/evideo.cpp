@@ -1,6 +1,8 @@
-#include <lib/base/cfile.h>
 #include <lib/gui/evideo.h>
 #include <lib/gui/ewidgetdesktop.h>
+
+#include <lib/base/cfile.h>
+#include <lib/base/etimer.h>
 
 ePtr<eTimer> eVideoWidget::fullsizeTimer;
 int eVideoWidget::pendingFullsize = 0;

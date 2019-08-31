@@ -1,6 +1,7 @@
 #include <lib/gui/ewidgetdesktop.h>
 #include <lib/gui/ewidget.h>
 #include <lib/base/ebase.h>
+#include <lib/base/etimer.h>
 #include <lib/gdi/grc.h>
 
 extern void dumpRegion(const gRegion &region);
